@@ -12,6 +12,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../navigator/RootNavigator';
 import Button from '../../components/buttons/Button';
 import {users} from '../../data/users';
+import DateForm from '../../components/forms/DateForm';
 
 type AddNewUserScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -23,7 +24,8 @@ export default function AddNewUserScreen() {
   const [project, setProject] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
-  const [birthday, setBirthday] = useState<string>('');
+  const [birthday, setBirthday] = useState<Date>(new Date());
+  const [open, setOpen] = useState<boolean>(false);
   const navigation = useNavigation<AddNewUserScreenNavigationProp>();
   function onPress() {
     navigation.goBack();
@@ -33,7 +35,20 @@ export default function AddNewUserScreen() {
     const projectSaved = projects.filter(item => item.name === project.name);
     const roleSaved = roles.indexOf(role);
 
-    if (!name || !email || !project || !role) {
+    const validBirthday: boolean = birthday < new Date();
+    const validEmail: boolean = email.includes('@');
+
+    if (!validEmail) {
+      Alert.alert('Invalid Email!');
+      return;
+    }
+
+    if (!validBirthday) {
+      Alert.alert('Invalid Date!');
+      return;
+    }
+
+    if (!name || !project || !role) {
       Alert.alert('Fill the Boxes!');
       return;
     }
@@ -46,7 +61,7 @@ export default function AddNewUserScreen() {
       project: [projectSaved[0].projectId],
       password: '',
       avatar: 'https://picsum.photos/seed/picsum20/200/300',
-      birthday: new Date(),
+      birthday: new Date(birthday),
     });
 
     navigation.navigate('Users');
@@ -68,12 +83,31 @@ export default function AddNewUserScreen() {
           <View style={styles.infoContainer}>
             <Text style={styles.info}>Personal Information</Text>
           </View>
-          <InputForm info="Email" text={email} onChangeText={setEmail} />
-          <InputForm info="Name" text={name} onChangeText={setName} />
           <InputForm
+            info="Email"
+            text={email}
+            onChangeText={setEmail}
+            isBirthday={false}
+          />
+          <InputForm
+            info="Name"
+            text={name}
+            onChangeText={setName}
+            isBirthday={false}
+          />
+          <DateForm
             info="Birthday"
-            text={birthday}
-            onChangeText={setBirthday}
+            value={birthday.toLocaleDateString('en-GB')}
+            open={open}
+            date={birthday}
+            onConfirm={date => {
+              setOpen(false);
+              setBirthday(date);
+            }}
+            onCancel={() => {
+              setOpen(false);
+            }}
+            onPressButton={() => setOpen(true)}
           />
           <View style={styles.infoContainer}>
             <Text style={styles.info}>Project Information</Text>

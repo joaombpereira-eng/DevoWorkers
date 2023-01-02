@@ -4,9 +4,15 @@ type Props = {
   info: string;
   text: string;
   onChangeText: (text: string) => void;
+  isBirthday: boolean;
 };
 
-export default function InputForm({info, text, onChangeText}: Props) {
+export default function InputForm({
+  info,
+  text,
+  onChangeText,
+  isBirthday,
+}: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
@@ -15,6 +21,7 @@ export default function InputForm({info, text, onChangeText}: Props) {
       <View style={styles.valueContainer}>
         <TextInput
           style={styles.value}
+          placeholder={isBirthday ? 'DD/MM/YYYY' : ''}
           value={text}
           onChangeText={onChangeText}
         />

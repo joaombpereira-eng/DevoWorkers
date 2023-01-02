@@ -54,7 +54,7 @@ export default function ProjectCard({
             <View style={styles.infoContainer}>
               <Text style={styles.name}>{name}</Text>
               <Text style={styles.startDate}>
-                {startingDate.toLocaleDateString()}
+                {startingDate.toLocaleDateString('en-GB')}
               </Text>
             </View>
             <View style={styles.statusContainer}>

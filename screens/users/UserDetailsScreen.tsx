@@ -6,12 +6,7 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import {
-  CompositeNavigationProp,
-  useNavigation,
-  RouteProp,
-  useRoute,
-} from '@react-navigation/native';
+import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {TabStackParamList} from '../../navigator/TabNavigator';
@@ -70,7 +65,7 @@ export default function UserDetailsScreen() {
           <InfoForm info="Email" value={user.email} />
           <InfoForm
             info="Birthday"
-            value={user.birthday.toLocaleDateString()}
+            value={user.birthday.toLocaleDateString('en-GB')}
           />
           <View style={[styles.infoContainer, {marginTop: 20}]}>
             <Text style={styles.info}>DevoWorker Information</Text>

@@ -68,11 +68,11 @@ export default function ProjectDetailsScreen() {
           <View style={styles.dateContainer}>
             <InfoForm
               info="Start at"
-              value={project.startingDate.toLocaleDateString()}
+              value={project.startingDate.toLocaleDateString('en-GB')}
             />
             <InfoForm
               info="End at"
-              value={project.endDate.toLocaleDateString()}
+              value={project.endDate.toLocaleDateString('en-GB')}
             />
           </View>
           <InfoForm info="Budget" value={`${project.budget.toString()}€`} />
