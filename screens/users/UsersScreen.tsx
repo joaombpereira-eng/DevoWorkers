@@ -54,14 +54,26 @@ export default function UsersScreen() {
       <View style={styles.headerContainer}>
         <Text style={styles.title}>Users</Text>
         {/* {route.params.role === 'SysAdmin' && ( */}
-        <IconButton
-          name="user-plus"
-          color="black"
-          onPress={() => {
-            navigation.navigate('AddNewUser');
-          }}
-          size={25}
-        />
+        <View style={styles.iconsContainer}>
+          <IconButton
+            name="user-plus"
+            color="black"
+            onPress={() => {
+              navigation.navigate('AddNewUser');
+            }}
+            size={25}
+          />
+          <View style={styles.logoutContainer}>
+            <IconButton
+              name="sign-out"
+              color="black"
+              onPress={() => {
+                navigation.navigate('Login');
+              }}
+              size={25}
+            />
+          </View>
+        </View>
         {/* )} */}
       </View>
       <Input isUserScreen onChangeText={searchFilter} text={search} />
@@ -88,6 +100,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  iconsContainer: {
+    flexDirection: 'row',
+  },
+  logoutContainer: {
+    marginLeft: 20,
   },
   title: {
     fontWeight: 'bold',

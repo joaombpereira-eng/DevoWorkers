@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   sort: {
-    marginLeft: 15,
+    marginLeft: 20,
   },
   filterContainer: {
     flexDirection: 'row',

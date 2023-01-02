@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     marginHorizontal: 16,
     borderRadius: 10,
+    elevation: 4,
   },
   rootContainer: {
     flexDirection: 'row',
