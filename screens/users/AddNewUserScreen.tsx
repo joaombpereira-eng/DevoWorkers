@@ -20,13 +20,14 @@ import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {TabStackParamList} from '../../navigator/TabNavigator';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../navigator/RootNavigator';
-import {ProjectData, projects} from '../../data/projects';
+import {ProjectData} from '../../data/projects';
 import {Role, roles} from '../../data/roles';
 import {users} from '../../data/users';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {addUser} from '../../redux/slices/usersSlice';
+import {selectProjects} from '../../redux/slices/projectsSlice';
 
 type AddNewUserScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -35,6 +36,7 @@ type AddNewUserScreenNavigationProp = CompositeNavigationProp<
 
 export default function AddNewUserScreen() {
   const [role, setRole] = useState<Role>(roles[0]);
+  const projects = useSelector(selectProjects);
   const [project, setProject] = useState<ProjectData>(projects[0]);
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -261,7 +263,7 @@ export default function AddNewUserScreen() {
           <Dropdown
             style={styles.dropdown}
             data={roles}
-            value={role}
+            value={role.name}
             onChange={item => setRole(item)}
             labelField="name"
             valueField="id"
@@ -275,7 +277,7 @@ export default function AddNewUserScreen() {
           <Dropdown
             style={styles.dropdown}
             data={projects}
-            value={project}
+            value={project.name}
             onChange={item => setProject(item)}
             labelField="name"
             valueField="projectId"

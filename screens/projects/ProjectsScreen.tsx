@@ -8,8 +8,10 @@ import Input from '../../components/forms/Input';
 import IconButton from '../../components/buttons/IconButton';
 import ProjectCard from '../../components/cards/ProjectCard';
 import {useEffect, useState} from 'react';
-import {ProjectData, projects} from '../../data/projects';
+import {ProjectData} from '../../data/projects';
 import {status} from '../../data/status';
+import {useSelector} from 'react-redux';
+import {selectProjects} from '../../redux/slices/projectsSlice';
 
 export type ProjectsScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList, 'Projects'>,
@@ -22,6 +24,7 @@ export default function ProjectsScreen() {
   const [dateAscending, setDateAscending] = useState<boolean>(false);
   const [nameAscending, setNameAscending] = useState<boolean>(true);
   const [nameSort, setNameSort] = useState<boolean>(true);
+  const projects = useSelector(selectProjects);
 
   useEffect(() => {
     setFilteredData(projects);
