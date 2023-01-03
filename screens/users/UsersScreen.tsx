@@ -81,7 +81,7 @@ export default function UsersScreen() {
         <FlatList
           data={filteredData}
           renderItem={({item}) => <UserCard {...item} />}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={item => (item.id + Math.random()).toString()}
         />
       </View>
     </View>

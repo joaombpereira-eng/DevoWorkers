@@ -24,8 +24,8 @@ type ProjectDetailsScreenNavigationProp = CompositeNavigationProp<
 
 export default function ProjectDetailsScreen() {
   const navigation = useNavigation<ProjectDetailsScreenNavigationProp>();
-  const project = useSelector(selectProject);
   const dispatch = useDispatch();
+  const project = useSelector(selectProject);
 
   return (
     <View style={styles.container}>

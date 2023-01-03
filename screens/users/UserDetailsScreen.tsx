@@ -37,7 +37,10 @@ export default function UserDetailsScreen() {
   );
 
   function onDelete() {
-    users.filter(item => item.id !== user.id);
+    const indexUser = users.findIndex(object => {
+      return object.name === user.name;
+    });
+    users.splice(indexUser, 1);
     navigation.navigate('Users');
   }
 

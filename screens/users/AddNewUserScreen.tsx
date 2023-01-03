@@ -20,8 +20,8 @@ import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {TabStackParamList} from '../../navigator/TabNavigator';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../navigator/RootNavigator';
-import {projects} from '../../data/projects';
-import {roles} from '../../data/roles';
+import {ProjectData, projects} from '../../data/projects';
+import {Role, roles} from '../../data/roles';
 import {users} from '../../data/users';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -32,8 +32,8 @@ type AddNewUserScreenNavigationProp = CompositeNavigationProp<
 >;
 
 export default function AddNewUserScreen() {
-  const [role, setRole] = useState<string>('');
-  const [project, setProject] = useState<string>('');
+  const [role, setRole] = useState<Role>(roles[0]);
+  const [project, setProject] = useState<ProjectData>(projects[0]);
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [birthday, setBirthday] = useState<Date>(new Date());
@@ -46,8 +46,17 @@ export default function AddNewUserScreen() {
   }
 
   function saveHandler() {
+    console.log('Project1');
+    console.log(project);
+    console.log('Role1');
+    console.log(role);
     const projectSaved = projects.filter(item => item.name === project.name);
     const roleSaved = roles.indexOf(role);
+
+    console.log('Project');
+    console.log(projectSaved);
+    console.log('Role');
+    console.log(roleSaved);
 
     const validBirthday: boolean = birthday < new Date();
     const validEmail: boolean = email.includes('@');
@@ -183,7 +192,7 @@ export default function AddNewUserScreen() {
       ],
       {
         cancelable: true,
-        onDismiss: () => console.log('Tratar depois...'),
+        onDismiss: () => console.log('Deal later'),
       },
     );
   }
@@ -354,7 +363,7 @@ const styles = StyleSheet.create({
     marginVertical: 30,
   },
   touchableCamera: {
-    backgroundColor: 'gray',
+    backgroundColor: '#A0A0A0',
     height: 150,
     width: 150,
     borderRadius: 75,
