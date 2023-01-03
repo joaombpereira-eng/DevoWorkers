@@ -25,6 +25,8 @@ import {Role, roles} from '../../data/roles';
 import {users} from '../../data/users';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {useDispatch} from 'react-redux';
+import {addUser} from '../../redux/slices/usersSlice';
 
 type AddNewUserScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -40,23 +42,15 @@ export default function AddNewUserScreen() {
   const [imagePicked, setImagePicked] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
   const navigation = useNavigation<AddNewUserScreenNavigationProp>();
+  const dispatch = useDispatch();
 
   function onPress() {
     navigation.goBack();
   }
 
   function saveHandler() {
-    console.log('Project1');
-    console.log(project);
-    console.log('Role1');
-    console.log(role);
     const projectSaved = projects.filter(item => item.name === project.name);
     const roleSaved = roles.indexOf(role);
-
-    console.log('Project');
-    console.log(projectSaved);
-    console.log('Role');
-    console.log(roleSaved);
 
     const validBirthday: boolean = birthday < new Date();
     const validEmail: boolean = email.includes('@');
@@ -87,16 +81,18 @@ export default function AddNewUserScreen() {
       return;
     }
 
-    users.push({
-      id: users.length,
-      name: name,
-      email: email,
-      role: roles[roleSaved],
-      project: [projectSaved[0].projectId],
-      password: '',
-      avatar: imagePicked,
-      birthday: new Date(birthday),
-    });
+    dispatch(
+      addUser({
+        id: users.length,
+        name: name,
+        email: email,
+        role: roles[roleSaved],
+        project: [projectSaved[0].projectId],
+        password: '',
+        avatar: imagePicked,
+        birthday: new Date(birthday),
+      }),
+    );
 
     navigation.navigate('Users');
   }

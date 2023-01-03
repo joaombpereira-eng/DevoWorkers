@@ -6,6 +6,7 @@ import AuthForm from '../components/forms/AuthForm';
 import Button from '../components/buttons/Button';
 import {useState} from 'react';
 import {users} from '../data/users';
+import {useDispatch} from 'react-redux';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,

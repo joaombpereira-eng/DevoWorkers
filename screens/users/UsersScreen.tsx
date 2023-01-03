@@ -9,11 +9,13 @@ import {
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {TabStackParamList} from '../../navigator/TabNavigator';
 import {RootStackParamList} from '../../navigator/RootNavigator';
-import {UserData, users} from '../../data/users';
+import {UserData} from '../../data/users';
 import {useEffect, useState} from 'react';
 import UserCard from '../../components/cards/UserCard';
 import Input from '../../components/forms/Input';
 import IconButton from '../../components/buttons/IconButton';
+import {useSelector} from 'react-redux';
+import {selectUsers} from '../../redux/slices/usersSlice';
 
 export type UsersScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList, 'Users'>,
@@ -25,6 +27,7 @@ type UsersScreenRouteProp = RouteProp<RootStackParamList, 'Tab'>;
 export default function UsersScreen() {
   const [filteredData, setFilteredData] = useState<UserData[]>([]);
   const [search, setSearch] = useState<string>('');
+  const users = useSelector(selectUsers);
   const navigation = useNavigation<UsersScreenNavigationProps>();
   const route = useRoute<UsersScreenRouteProp>();
   console.log('Route');

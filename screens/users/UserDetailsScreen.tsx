@@ -19,6 +19,7 @@ import IconButton from '../../components/buttons/IconButton';
 import Button from '../../components/buttons/Button';
 import {ProjectData, projects} from '../../data/projects';
 import {users} from '../../data/users';
+import {removeUser} from '../../redux/slices/usersSlice';
 
 type UserDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -37,10 +38,9 @@ export default function UserDetailsScreen() {
   );
 
   function onDelete() {
-    const indexUser = users.findIndex(object => {
-      return object.name === user.name;
-    });
-    users.splice(indexUser, 1);
+    dispatch(removeUser(user));
+    console.log('User');
+    console.log(user);
     navigation.navigate('Users');
   }
 
