@@ -10,9 +10,9 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {TabStackParamList} from '../../navigator/TabNavigator';
 import {RootStackParamList} from '../../navigator/RootNavigator';
 import {UserData, users} from '../../data/users';
+import {useEffect, useState} from 'react';
 import UserCard from '../../components/cards/UserCard';
 import Input from '../../components/forms/Input';
-import {useEffect, useState} from 'react';
 import IconButton from '../../components/buttons/IconButton';
 
 export type UsersScreenNavigationProps = CompositeNavigationProp<

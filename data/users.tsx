@@ -1,4 +1,3 @@
-import {ProjectData, projects} from './projects';
 import {Role, roles} from './roles';
 
 export type UserData = {

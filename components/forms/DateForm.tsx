@@ -1,5 +1,4 @@
 import {View, Text, StyleSheet, Pressable} from 'react-native';
-import IconButton from '../buttons/IconButton';
 import DatePicker from 'react-native-date-picker';
 
 type Props = {

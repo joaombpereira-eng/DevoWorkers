@@ -11,13 +11,13 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {TabStackParamList} from '../../navigator/TabNavigator';
 import {RootStackParamList} from '../../navigator/RootNavigator';
-import InfoForm from '../../components/forms/InfoForm';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectUser} from '../../redux/slices/userSlice';
-import IconButton from '../../components/buttons/IconButton';
-import {ProjectData, projects} from '../../data/projects';
 import {setProject} from '../../redux/slices/projectSlice';
+import InfoForm from '../../components/forms/InfoForm';
+import IconButton from '../../components/buttons/IconButton';
 import Button from '../../components/buttons/Button';
+import {ProjectData, projects} from '../../data/projects';
 import {users} from '../../data/users';
 
 type UserDetailsScreenNavigationProp = CompositeNavigationProp<

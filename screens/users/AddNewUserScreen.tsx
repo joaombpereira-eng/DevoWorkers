@@ -6,22 +6,24 @@ import {
   Alert,
   TouchableOpacity,
   Image,
+  PermissionsAndroid,
+  Platform,
 } from 'react-native';
 import {useState} from 'react';
 import IconButton from '../../components/buttons/IconButton';
 import InputForm from '../../components/forms/InputForm';
+import DateForm from '../../components/forms/DateForm';
+import Button from '../../components/buttons/Button';
 import {Dropdown} from 'react-native-element-dropdown';
-import {projects} from '../../data/projects';
-import {roles} from '../../data/roles';
 import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {TabStackParamList} from '../../navigator/TabNavigator';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../navigator/RootNavigator';
-import Button from '../../components/buttons/Button';
+import {projects} from '../../data/projects';
+import {roles} from '../../data/roles';
 import {users} from '../../data/users';
-import DateForm from '../../components/forms/DateForm';
-import {launchImageLibrary} from 'react-native-image-picker';
+import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 type AddNewUserScreenNavigationProp = CompositeNavigationProp<
@@ -90,19 +92,100 @@ export default function AddNewUserScreen() {
     navigation.navigate('Users');
   }
 
+  async function requestCameraPermission() {
+    if (Platform.OS === 'android') {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          {
+            title: 'Camera Permission',
+            message: 'App needs camera permission',
+            buttonPositive: '',
+          },
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      } catch (e) {
+        console.warn(e);
+        return false;
+      }
+    } else return true;
+  }
+
+  async function requestExternalWritePermission() {
+    if (Platform.OS === 'android') {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'External Storage Write Permission',
+            message: 'App needs write permission',
+            buttonPositive: '',
+          },
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      } catch (e) {
+        console.warn(e);
+        Alert.alert('Write permission err');
+      }
+      return false;
+    } else return true;
+  }
+
   async function pickImage() {
-    let result = await launchImageLibrary({
-      mediaType: 'photo',
-      quality: 1,
-    });
+    const isCameraPermitted = await requestCameraPermission();
+    const isStoragePermitted = await requestExternalWritePermission();
 
-    console.log(result);
+    if (isCameraPermitted && isStoragePermitted) {
+      let result = await launchImageLibrary({
+        mediaType: 'photo',
+        quality: 1,
+      });
 
-    if (!result.didCancel) {
-      setImagePicked(result.assets[0].uri);
-      console.log('Result');
-      console.log(result.assets[0].uri);
+      if (!result.didCancel) {
+        setImagePicked(result.assets[0].uri);
+      }
     }
+  }
+
+  async function captureImage() {
+    const isCameraPermitted = await requestCameraPermission();
+    const isStoragePermitted = await requestExternalWritePermission();
+
+    if (isCameraPermitted && isStoragePermitted) {
+      let result = await launchCamera({
+        mediaType: 'photo',
+        quality: 1,
+      });
+
+      console.log(result);
+
+      if (!result.didCancel) {
+        setImagePicked(result.assets[0].uri);
+      }
+    }
+  }
+
+  function selectType() {
+    Alert.alert(
+      'Select',
+      'Let us know where you want the photo from',
+      [
+        {
+          text: 'Gallery',
+          onPress: () => pickImage(),
+          style: 'default',
+        },
+        {
+          text: 'Camera',
+          onPress: () => captureImage(),
+          style: 'default',
+        },
+      ],
+      {
+        cancelable: true,
+        onDismiss: () => console.log('Tratar depois...'),
+      },
+    );
   }
 
   let imageOrIcon = imagePicked ? (
@@ -131,7 +214,7 @@ export default function AddNewUserScreen() {
           <View style={styles.cameraContainer}>
             <TouchableOpacity
               style={styles.touchableCamera}
-              onPress={pickImage}>
+              onPress={selectType}>
               {imageOrIcon}
             </TouchableOpacity>
           </View>

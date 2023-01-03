@@ -5,11 +5,11 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {TabStackParamList} from '../../navigator/TabNavigator';
 import {RootStackParamList} from '../../navigator/RootNavigator';
 import Input from '../../components/forms/Input';
-import {ProjectData, projects} from '../../data/projects';
+import IconButton from '../../components/buttons/IconButton';
 import ProjectCard from '../../components/cards/ProjectCard';
 import {useEffect, useState} from 'react';
+import {ProjectData, projects} from '../../data/projects';
 import {status} from '../../data/status';
-import IconButton from '../../components/buttons/IconButton';
 
 export type ProjectsScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList, 'Projects'>,

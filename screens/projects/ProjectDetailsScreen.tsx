@@ -13,8 +13,8 @@ import {TabStackParamList} from '../../navigator/TabNavigator';
 import {RootStackParamList} from '../../navigator/RootNavigator';
 import InfoForm from '../../components/forms/InfoForm';
 import {useDispatch, useSelector} from 'react-redux';
-import {selectProject} from '../../redux/slices/projectSlice';
 import IconButton from '../../components/buttons/IconButton';
+import {selectProject} from '../../redux/slices/projectSlice';
 import {setUser} from '../../redux/slices/userSlice';
 
 type ProjectDetailsScreenNavigationProp = CompositeNavigationProp<
