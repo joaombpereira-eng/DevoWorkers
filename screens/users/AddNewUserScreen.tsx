@@ -1,4 +1,12 @@
-import {View, Text, StyleSheet, ScrollView, Alert} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Alert,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import {useState} from 'react';
 import IconButton from '../../components/buttons/IconButton';
 import InputForm from '../../components/forms/InputForm';
@@ -13,6 +21,8 @@ import {RootStackParamList} from '../../navigator/RootNavigator';
 import Button from '../../components/buttons/Button';
 import {users} from '../../data/users';
 import DateForm from '../../components/forms/DateForm';
+import {launchImageLibrary} from 'react-native-image-picker';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 type AddNewUserScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -25,6 +35,7 @@ export default function AddNewUserScreen() {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [birthday, setBirthday] = useState<Date>(new Date());
+  const [imagePicked, setImagePicked] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
   const navigation = useNavigation<AddNewUserScreenNavigationProp>();
 
@@ -55,6 +66,11 @@ export default function AddNewUserScreen() {
       return;
     }
 
+    if (!imagePicked) {
+      Alert.alert('Pick an Image!');
+      return;
+    }
+
     if (!name || !project || !role) {
       Alert.alert('Fill the Boxes!');
       return;
@@ -67,12 +83,37 @@ export default function AddNewUserScreen() {
       role: roles[roleSaved],
       project: [projectSaved[0].projectId],
       password: '',
-      avatar: `https://picsum.photos/seed/picsum${users.length}/200/300`,
+      avatar: imagePicked,
       birthday: new Date(birthday),
     });
 
     navigation.navigate('Users');
   }
+
+  async function pickImage() {
+    let result = await launchImageLibrary({
+      mediaType: 'photo',
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.didCancel) {
+      setImagePicked(result.assets[0].uri);
+      console.log('Result');
+      console.log(result.assets[0].uri);
+    }
+  }
+
+  let imageOrIcon = imagePicked ? (
+    <Image
+      source={{uri: imagePicked}}
+      style={styles.image}
+      resizeMode="contain"
+    />
+  ) : (
+    <Icon name="camera" size={30} />
+  );
 
   return (
     <View style={styles.container}>
@@ -87,6 +128,13 @@ export default function AddNewUserScreen() {
       </View>
       <View style={styles.bodyContainer}>
         <ScrollView>
+          <View style={styles.cameraContainer}>
+            <TouchableOpacity
+              style={styles.touchableCamera}
+              onPress={pickImage}>
+              {imageOrIcon}
+            </TouchableOpacity>
+          </View>
           <View style={styles.infoContainer}>
             <Text style={styles.info}>Personal Information</Text>
           </View>
@@ -217,5 +265,24 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginHorizontal: 120,
+  },
+  cameraContainer: {
+    alignItems: 'center',
+    marginVertical: 30,
+  },
+  touchableCamera: {
+    backgroundColor: 'gray',
+    height: 150,
+    width: 150,
+    borderRadius: 75,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    height: 150,
+    width: 150,
+    borderRadius: 75,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
