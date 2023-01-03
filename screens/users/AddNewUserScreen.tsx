@@ -27,6 +27,7 @@ export default function AddNewUserScreen() {
   const [birthday, setBirthday] = useState<Date>(new Date());
   const [open, setOpen] = useState<boolean>(false);
   const navigation = useNavigation<AddNewUserScreenNavigationProp>();
+
   function onPress() {
     navigation.goBack();
   }
@@ -37,9 +38,15 @@ export default function AddNewUserScreen() {
 
     const validBirthday: boolean = birthday < new Date();
     const validEmail: boolean = email.includes('@');
+    const validName: boolean = name.trim().length > 1;
 
     if (!validEmail) {
       Alert.alert('Invalid Email!');
+      return;
+    }
+
+    if (!validName) {
+      Alert.alert('Invalid Name!');
       return;
     }
 
@@ -54,13 +61,13 @@ export default function AddNewUserScreen() {
     }
 
     users.push({
-      id: Math.random(),
+      id: users.length,
       name: name,
       email: email,
       role: roles[roleSaved],
       project: [projectSaved[0].projectId],
       password: '',
-      avatar: 'https://picsum.photos/seed/picsum20/200/300',
+      avatar: `https://picsum.photos/seed/picsum${users.length}/200/300`,
       birthday: new Date(birthday),
     });
 
