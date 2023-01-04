@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
   },
   iconsContainer: {
     flexDirection: 'row',
+    marginRight: 10,
   },
   logoutContainer: {
     marginLeft: 20,

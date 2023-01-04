@@ -108,6 +108,8 @@ const styles = StyleSheet.create({
   bodyContainer: {
     justifyContent: 'center',
     marginRight: 15,
+    paddingBottom: 30,
+    marginBottom: 30,
   },
   exitButton: {
     alignItems: 'flex-end',
