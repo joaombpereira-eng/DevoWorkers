@@ -6,6 +6,8 @@ import AuthForm from '../components/forms/AuthForm';
 import Button from '../components/buttons/Button';
 import {useState} from 'react';
 import {users} from '../data/users';
+import {useDispatch} from 'react-redux';
+import { setUserLogged } from '../redux/slices/loginSlice';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -16,12 +18,14 @@ export default function LoginScreen() {
   const navigation = useNavigation<LoginScreenNavigationProp>();
   const [emailInput, setEmailInput] = useState<string>('');
   const [passwordInput, setPasswordInput] = useState<string>('');
+  const dispatch = useDispatch();
 
   const validEmail: boolean = emailInput.includes('@');
   const validPassword: boolean = passwordInput.length > 6;
 
   function loginHandler() {
     const user = users.filter(item => item.email === emailInput);
+    dispatch(setUserLogged(user[0]))
 
     if (user[0]?.password === passwordInput && validEmail && validPassword) {
       const role = user[0].role;

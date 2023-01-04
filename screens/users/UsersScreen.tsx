@@ -16,6 +16,7 @@ import Input from '../../components/forms/Input';
 import IconButton from '../../components/buttons/IconButton';
 import {useSelector} from 'react-redux';
 import {selectUsers} from '../../redux/slices/usersSlice';
+import {selectUserLogged} from '../../redux/slices/loginSlice';
 
 export type UsersScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList, 'Users'>,
@@ -29,9 +30,7 @@ export default function UsersScreen() {
   const [search, setSearch] = useState<string>('');
   const users = useSelector(selectUsers);
   const navigation = useNavigation<UsersScreenNavigationProps>();
-  const route = useRoute<UsersScreenRouteProp>();
-  console.log('Route');
-  console.log(route.params);
+  const userLogged = useSelector(selectUserLogged);
 
   useEffect(() => {
     setFilteredData(users);
@@ -56,16 +55,17 @@ export default function UsersScreen() {
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.title}>Users</Text>
-        {/* {route.params.role === 'SysAdmin' && ( */}
         <View style={styles.iconsContainer}>
-          <IconButton
-            name="user-plus"
-            color="black"
-            onPress={() => {
-              navigation.navigate('AddNewUser');
-            }}
-            size={25}
-          />
+          {userLogged.role.name === 'SysAdmin' && (
+            <IconButton
+              name="user-plus"
+              color="black"
+              onPress={() => {
+                navigation.navigate('AddNewUser');
+              }}
+              size={25}
+            />
+          )}
           <View style={styles.logoutContainer}>
             <IconButton
               name="sign-out"
@@ -77,7 +77,6 @@ export default function UsersScreen() {
             />
           </View>
         </View>
-        {/* )} */}
       </View>
       <Input isUserScreen onChangeText={searchFilter} text={search} />
       <View style={styles.bodyContainer}>

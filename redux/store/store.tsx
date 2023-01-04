@@ -3,6 +3,7 @@ import userReducer from '../slices/userSlice';
 import usersReducer from '../slices/usersSlice';
 import projectReducer from '../slices/projectSlice';
 import projectsReducer from '../slices/projectsSlice';
+import loginReducer from '../slices/loginSlice';
 import logger from 'redux-logger';
 
 export const store = configureStore({
@@ -11,6 +12,7 @@ export const store = configureStore({
     users: usersReducer,
     project: projectReducer,
     projects: projectsReducer,
+    login: loginReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

@@ -24,6 +24,7 @@ import Button from '../../components/buttons/Button';
 import {ProjectData, projects} from '../../data/projects';
 import {removeUser, selectUserById} from '../../redux/slices/usersSlice';
 import {RootState} from '../../redux/store/store';
+import {selectUserLogged} from '../../redux/slices/loginSlice';
 
 type UserDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -42,6 +43,7 @@ export default function UserDetailsScreen() {
   );
   const user = userFromRoute[0];
   const dispatch = useDispatch();
+  const userLogged = useSelector(selectUserLogged);
 
   const moreThanOneProject: boolean = user.project.length > 1;
 
@@ -51,8 +53,6 @@ export default function UserDetailsScreen() {
 
   function onDelete() {
     dispatch(removeUser(user));
-    console.log('User');
-    console.log(user);
     navigation.navigate('Users');
   }
 
@@ -106,11 +106,13 @@ export default function UserDetailsScreen() {
               </TouchableOpacity>
             ))}
           </View>
-          <View style={styles.buttonContainer}>
-            <Button deleteStyle={styles.deleteButton} onPress={onDelete}>
-              Delete
-            </Button>
-          </View>
+          {userLogged.role.name === 'SysAdmin' && (
+            <View style={styles.buttonContainer}>
+              <Button deleteStyle={styles.deleteButton} onPress={onDelete}>
+                Delete
+              </Button>
+            </View>
+          )}
         </View>
       </ScrollView>
     </View>
