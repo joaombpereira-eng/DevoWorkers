@@ -192,6 +192,7 @@ const styles = StyleSheet.create({
   bodyContainer: {
     backgroundColor: '#EFEDEC',
     flex: 1,
+    marginRight: 10,
   },
   sortContainer: {
     flexDirection: 'row',

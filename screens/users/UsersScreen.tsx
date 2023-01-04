@@ -117,7 +117,6 @@ const styles = StyleSheet.create({
   bodyContainer: {
     backgroundColor: '#EFEDEC',
     flex: 1,
-    alignItems: 'center',
     marginRight: 10,
   },
 });

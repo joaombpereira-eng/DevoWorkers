@@ -51,47 +51,49 @@ export default function ProjectDetailsScreen() {
           onPress={navigation.goBack}
         />
       </View>
-      <ScrollView>
-        <View style={styles.logoContainer}>
-          <Image source={{uri: project.logo}} style={styles.logo} />
-        </View>
-        <View>
-          <View style={styles.nameContainer}>
-            <Text style={styles.name}>{project.name}</Text>
+      <View style={styles.bodyContainer}>
+        <ScrollView>
+          <View style={styles.logoContainer}>
+            <Image source={{uri: project.logo}} style={styles.logo} />
           </View>
-          <View style={styles.infoContainer}>
-            <Text style={styles.info}>Project Information</Text>
-          </View>
-          <View style={styles.workContainer}>
-            <View style={styles.infoWorkContainer}>
-              <Text style={styles.infoWork}>Workforce</Text>
+          <View>
+            <View style={styles.nameContainer}>
+              <Text style={styles.name}>{project.name}</Text>
             </View>
-            {project.workForce.map(item => (
-              <TouchableOpacity
-                onPress={() => {
-                  dispatch(setUser(item));
-                  navigation.navigate('UserDetails', {userId: item.id});
-                }}
-                key={item.id}
-                style={styles.valueContainer}>
-                <Text style={styles.value}>{item.name}</Text>
-              </TouchableOpacity>
-            ))}
+            <View style={styles.infoContainer}>
+              <Text style={styles.info}>Project Information</Text>
+            </View>
+            <View style={styles.workContainer}>
+              <View style={styles.infoWorkContainer}>
+                <Text style={styles.infoWork}>Workforce</Text>
+              </View>
+              {project.workForce.map(item => (
+                <TouchableOpacity
+                  onPress={() => {
+                    dispatch(setUser(item));
+                    navigation.navigate('UserDetails', {userId: item.id});
+                  }}
+                  key={item.id}
+                  style={styles.valueContainer}>
+                  <Text style={styles.value}>{item.name}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+            <InfoForm info="Status" value={project.status.name} />
+            <View style={styles.dateContainer}>
+              <InfoForm
+                info="Start at"
+                value={project.startingDate.toLocaleDateString('en-GB')}
+              />
+              <InfoForm
+                info="End at"
+                value={project.endDate.toLocaleDateString('en-GB')}
+              />
+            </View>
+            <InfoForm info="Budget" value={`${project.budget.toString()}€`} />
           </View>
-          <InfoForm info="Status" value={project.status.name} />
-          <View style={styles.dateContainer}>
-            <InfoForm
-              info="Start at"
-              value={project.startingDate.toLocaleDateString('en-GB')}
-            />
-            <InfoForm
-              info="End at"
-              value={project.endDate.toLocaleDateString('en-GB')}
-            />
-          </View>
-          <InfoForm info="Budget" value={`${project.budget.toString()}€`} />
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
     </View>
   );
 }
@@ -102,6 +104,10 @@ const styles = StyleSheet.create({
     marginTop: 25,
     marginBottom: 10,
     backgroundColor: '#ffe7c2',
+  },
+  bodyContainer: {
+    justifyContent: 'center',
+    marginRight: 15,
   },
   exitButton: {
     alignItems: 'flex-end',

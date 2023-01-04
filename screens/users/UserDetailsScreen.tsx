@@ -66,55 +66,57 @@ export default function UserDetailsScreen() {
           onPress={navigation.goBack}
         />
       </View>
-      <ScrollView>
-        <View style={styles.avatar}>
-          <Image source={{uri: user.avatar}} style={styles.image} />
-        </View>
-        <View>
-          <View style={styles.nameContainer}>
-            <Text style={styles.name}>{user.name}</Text>
+      <View style={styles.bodyContainer}>
+        <ScrollView>
+          <View style={styles.avatar}>
+            <Image source={{uri: user.avatar}} style={styles.image} />
           </View>
-          <View style={styles.infoContainer}>
-            <Text style={styles.info}>Personal Information</Text>
-          </View>
-          <InfoForm info="Email" value={user.email} />
-          <InfoForm
-            info="Birthday"
-            value={user.birthday.toLocaleDateString('en-GB')}
-          />
-          <View style={[styles.infoContainer, {marginTop: 20}]}>
-            <Text style={styles.info}>DevoWorker Information</Text>
-          </View>
-          <InfoForm info="Role" value={user.role.name} />
-          <View style={styles.workContainer}>
-            <View style={styles.infoWorkContainer}>
-              <Text style={styles.infoWork}>
-                {moreThanOneProject ? 'Projects' : 'Project'}
-              </Text>
+          <View>
+            <View style={styles.nameContainer}>
+              <Text style={styles.name}>{user.name}</Text>
             </View>
-            {projectFilter.map(item => (
-              <TouchableOpacity
-                onPress={() => {
-                  dispatch(setProject(item));
-                  navigation.navigate('ProjectDetails', {
-                    projectId: item.projectId,
-                  });
-                }}
-                key={item.projectId}
-                style={styles.valueContainer}>
-                <Text style={styles.value}>{item.name}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-          {userLogged.role.name === 'SysAdmin' && (
-            <View style={styles.buttonContainer}>
-              <Button deleteStyle={styles.deleteButton} onPress={onDelete}>
-                Delete
-              </Button>
+            <View style={styles.infoContainer}>
+              <Text style={styles.info}>Personal Information</Text>
             </View>
-          )}
-        </View>
-      </ScrollView>
+            <InfoForm info="Email" value={user.email} />
+            <InfoForm
+              info="Birthday"
+              value={user.birthday.toLocaleDateString('en-GB')}
+            />
+            <View style={[styles.infoContainer, {marginTop: 20}]}>
+              <Text style={styles.info}>DevoWorker Information</Text>
+            </View>
+            <InfoForm info="Role" value={user.role.name} />
+            <View style={styles.workContainer}>
+              <View style={styles.infoWorkContainer}>
+                <Text style={styles.infoWork}>
+                  {moreThanOneProject ? 'Projects' : 'Project'}
+                </Text>
+              </View>
+              {projectFilter.map(item => (
+                <TouchableOpacity
+                  onPress={() => {
+                    dispatch(setProject(item));
+                    navigation.navigate('ProjectDetails', {
+                      projectId: item.projectId,
+                    });
+                  }}
+                  key={item.projectId}
+                  style={styles.valueContainer}>
+                  <Text style={styles.value}>{item.name}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+            {userLogged.role.name === 'SysAdmin' && (
+              <View style={styles.buttonContainer}>
+                <Button deleteStyle={styles.deleteButton} onPress={onDelete}>
+                  Delete
+                </Button>
+              </View>
+            )}
+          </View>
+        </ScrollView>
+      </View>
     </View>
   );
 }
@@ -125,6 +127,10 @@ const styles = StyleSheet.create({
     marginTop: 25,
     marginBottom: 10,
     backgroundColor: '#ffe7c2',
+  },
+  bodyContainer: {
+    justifyContent: 'center',
+    marginRight: 15,
   },
   exitButton: {
     alignItems: 'flex-end',
