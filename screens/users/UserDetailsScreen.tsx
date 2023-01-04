@@ -107,13 +107,14 @@ export default function UserDetailsScreen() {
                 </TouchableOpacity>
               ))}
             </View>
-            {userLogged.role.name === 'SysAdmin' && (
-              <View style={styles.buttonContainer}>
-                <Button deleteStyle={styles.deleteButton} onPress={onDelete}>
-                  Delete
-                </Button>
-              </View>
-            )}
+            {userLogged.role.name === 'SysAdmin' &&
+              userLogged.name !== user.name && (
+                <View style={styles.buttonContainer}>
+                  <Button deleteStyle={styles.deleteButton} onPress={onDelete}>
+                    Delete
+                  </Button>
+                </View>
+              )}
           </View>
         </ScrollView>
       </View>
@@ -137,7 +138,7 @@ const styles = StyleSheet.create({
   exitButton: {
     alignItems: 'flex-end',
     padding: 14,
-    paddingRight: 20,
+    paddingRight: 30,
   },
   avatar: {
     justifyContent: 'center',

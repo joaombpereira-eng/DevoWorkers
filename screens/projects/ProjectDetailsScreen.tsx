@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   exitButton: {
     alignItems: 'flex-end',
     padding: 14,
-    paddingRight: 20,
+    paddingRight: 30,
   },
   logoContainer: {
     justifyContent: 'center',
