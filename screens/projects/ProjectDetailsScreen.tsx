@@ -56,7 +56,7 @@ export default function ProjectDetailsScreen() {
               <TouchableOpacity
                 onPress={() => {
                   dispatch(setUser(item));
-                  navigation.navigate('UserDetails');
+                  navigation.navigate('UserDetails', {userId: item.id});
                 }}
                 key={item.id}
                 style={styles.valueContainer}>

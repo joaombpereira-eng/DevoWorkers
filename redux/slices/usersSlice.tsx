@@ -51,5 +51,7 @@ const usersSlice = createSlice({
 export const {addUser, removeUser} = usersSlice.actions;
 
 export const selectUsers = (state: RootState) => state.users.users;
+export const selectUserById = (state: RootState, id: number) =>
+  state.users.users.filter(item => item.id === id);
 
 export default usersSlice.reducer;

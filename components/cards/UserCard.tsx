@@ -34,7 +34,7 @@ export default function UserCard({
     dispatch(
       setUser({id, name, email, role, password, birthday, avatar, project}),
     );
-    navigation.navigate('UserDetails');
+    navigation.navigate('UserDetails', {userId: id});
   }
 
   return (

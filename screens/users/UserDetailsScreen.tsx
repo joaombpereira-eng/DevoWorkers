@@ -6,29 +6,41 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
+import {
+  CompositeNavigationProp,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {TabStackParamList} from '../../navigator/TabNavigator';
 import {RootStackParamList} from '../../navigator/RootNavigator';
 import {useDispatch, useSelector} from 'react-redux';
-import {selectUser} from '../../redux/slices/userSlice';
 import {setProject} from '../../redux/slices/projectSlice';
 import InfoForm from '../../components/forms/InfoForm';
 import IconButton from '../../components/buttons/IconButton';
 import Button from '../../components/buttons/Button';
 import {ProjectData, projects} from '../../data/projects';
-import {users} from '../../data/users';
-import {removeUser} from '../../redux/slices/usersSlice';
+import {removeUser, selectUserById} from '../../redux/slices/usersSlice';
+import {RootState} from '../../redux/store/store';
 
 type UserDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
   NativeStackNavigationProp<RootStackParamList, 'UserDetails'>
 >;
 
+type UserDetailsScreenRouteProp = RouteProp<RootStackParamList, 'UserDetails'>;
+
 export default function UserDetailsScreen() {
   const navigation = useNavigation<UserDetailsScreenNavigationProp>();
-  const user = useSelector(selectUser);
+  const {
+    params: {userId},
+  } = useRoute<UserDetailsScreenRouteProp>();
+  const userRoute = useSelector((state: RootState) =>
+    selectUserById(state, userId),
+  );
+  const user = userRoute[0];
   const dispatch = useDispatch();
 
   const moreThanOneProject: boolean = user.project.length > 1;

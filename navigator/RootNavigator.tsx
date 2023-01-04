@@ -8,8 +8,8 @@ import ProjectDetailsScreen from '../screens/projects/ProjectDetailsScreen';
 
 export type RootStackParamList = {
   Login: undefined;
-  Tab: {role: string};
-  UserDetails: undefined;
+  Tab: undefined;
+  UserDetails: {userId: number};
   ProjectDetails: undefined;
   AddNewUser: undefined;
 };
