@@ -39,23 +39,25 @@ export default function ProjectsScreen() {
 
   function date() {
     if (!nameSort) {
-      const dateSort = filteredData.sort((a, b) => {
+      let dateSorted = [...filteredData];
+      dateSorted = dateSorted.sort((a, b) => {
         if (dateAscending) {
           return new Date(a.startingDate) > new Date(b.startingDate) ? 1 : -1;
         } else {
           return new Date(a.startingDate) < new Date(b.startingDate) ? 1 : -1;
         }
       });
-      return dateSort;
+      return dateSorted;
     } else {
-      const nameSort = filteredData.sort((a, b) => {
+      let nameSorted = [...filteredData];
+      nameSorted = nameSorted.sort((a, b) => {
         if (nameAscending) {
           return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
         } else {
           return a.name.toLowerCase() < b.name.toLowerCase() ? 1 : -1;
         }
       });
-      return nameSort;
+      return nameSorted;
     }
   }
 
