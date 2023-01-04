@@ -37,10 +37,10 @@ export default function UserDetailsScreen() {
   const {
     params: {userId},
   } = useRoute<UserDetailsScreenRouteProp>();
-  const userRoute = useSelector((state: RootState) =>
+  const userFromRoute = useSelector((state: RootState) =>
     selectUserById(state, userId),
   );
-  const user = userRoute[0];
+  const user = userFromRoute[0];
   const dispatch = useDispatch();
 
   const moreThanOneProject: boolean = user.project.length > 1;

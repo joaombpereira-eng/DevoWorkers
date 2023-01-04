@@ -6,7 +6,6 @@ import AuthForm from '../components/forms/AuthForm';
 import Button from '../components/buttons/Button';
 import {useState} from 'react';
 import {users} from '../data/users';
-import {useDispatch} from 'react-redux';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -28,7 +27,7 @@ export default function LoginScreen() {
       const role = user[0].role;
       console.log('ROLE LOGIN');
       console.log(role.name);
-      navigation.navigate('Tab', {role: role.name});
+      navigation.navigate('Tab');
     } else {
       Alert.alert('Login failed', 'Your email or password is incorrect.');
     }

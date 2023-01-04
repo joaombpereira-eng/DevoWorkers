@@ -36,10 +36,10 @@ export default function ProjectDetailsScreen() {
     params: {projectId},
   } = useRoute<ProjectScreenRouteProp>();
   const dispatch = useDispatch();
-  const projectRoute = useSelector((state: RootState) =>
+  const projectFromRoute = useSelector((state: RootState) =>
     selectProjectById(state, projectId),
   );
-  const project = projectRoute[0];
+  const project = projectFromRoute[0];
 
   return (
     <View style={styles.container}>
