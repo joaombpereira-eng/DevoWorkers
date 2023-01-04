@@ -19,8 +19,8 @@ import {RootStackParamList} from '../../navigator/RootNavigator';
 import InfoForm from '../../components/forms/InfoForm';
 import {useDispatch, useSelector} from 'react-redux';
 import IconButton from '../../components/buttons/IconButton';
-import {setUser} from '../../redux/slices/userSlice';
-import {selectProjectById} from '../../redux/slices/projectsListSlice';
+import {setUser} from '../../redux/slices/users/userSlice';
+import {selectProjectById} from '../../redux/slices/projects/projectsListSlice';
 import {RootState} from '../../redux/store/store';
 
 type ProjectDetailsScreenNavigationProp = CompositeNavigationProp<

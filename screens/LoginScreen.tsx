@@ -7,7 +7,7 @@ import Button from '../components/buttons/Button';
 import {useState} from 'react';
 import {users} from '../data/users';
 import {useDispatch} from 'react-redux';
-import {setUserLogged} from '../redux/slices/loginSlice';
+import {setUserLogged} from '../redux/slices/login/loginSlice';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,

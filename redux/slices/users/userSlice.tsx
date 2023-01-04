@@ -1,7 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {roles} from '../../data/roles';
-import {UserData} from '../../data/users';
-import {RootState} from '../store/store';
+import {roles} from '../../../data/roles';
+import {UserData} from '../../../data/users';
+import {RootState} from '../../store/store';
 
 const initialState: UserData = {
   id: 0,

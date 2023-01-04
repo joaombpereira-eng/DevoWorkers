@@ -1,7 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {ProjectData} from '../../data/projects';
-import {status} from '../../data/status';
-import {RootState} from '../store/store';
+import {ProjectData} from '../../../data/projects';
+import {status} from '../../../data/status';
+import {RootState} from '../../store/store';
 
 const initialState: ProjectData = {
   projectId: '',

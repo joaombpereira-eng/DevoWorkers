@@ -1,7 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {Role} from '../../data/roles';
-import {users} from '../../data/users';
-import {RootState} from '../store/store';
+import {Role} from '../../../data/roles';
+import {users} from '../../../data/users';
+import {RootState} from '../../store/store';
 
 export type UserData = {
   id: number;

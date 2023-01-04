@@ -1,9 +1,9 @@
 import {configureStore} from '@reduxjs/toolkit';
-import userReducer from '../slices/userSlice';
-import usersListReducer from '../slices/usersListSlice';
-import projectReducer from '../slices/projectSlice';
-import projectsListReducer from '../slices/projectsListSlice';
-import loginReducer from '../slices/loginSlice';
+import userReducer from '../slices/users/userSlice';
+import usersListReducer from '../slices/users/usersListSlice';
+import projectReducer from '../slices/projects/projectSlice';
+import projectsListReducer from '../slices/projects/projectsListSlice';
+import loginReducer from '../slices/login/loginSlice';
 import logger from 'redux-logger';
 
 export const store = configureStore({

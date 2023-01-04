@@ -17,14 +17,17 @@ import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {TabStackParamList} from '../../navigator/TabNavigator';
 import {RootStackParamList} from '../../navigator/RootNavigator';
 import {useDispatch, useSelector} from 'react-redux';
-import {setProject} from '../../redux/slices/projectSlice';
+import {setProject} from '../../redux/slices/projects/projectSlice';
 import InfoForm from '../../components/forms/InfoForm';
 import IconButton from '../../components/buttons/IconButton';
 import Button from '../../components/buttons/Button';
 import {ProjectData, projects} from '../../data/projects';
-import {removeUser, selectUserById} from '../../redux/slices/usersListSlice';
+import {
+  removeUser,
+  selectUserById,
+} from '../../redux/slices/users/usersListSlice';
 import {RootState} from '../../redux/store/store';
-import {selectUserLogged} from '../../redux/slices/loginSlice';
+import {selectUserLogged} from '../../redux/slices/login/loginSlice';
 
 type UserDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,

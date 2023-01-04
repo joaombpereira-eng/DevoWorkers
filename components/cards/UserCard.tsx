@@ -1,7 +1,7 @@
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {UsersScreenNavigationProps} from '../../screens/users/UsersScreen';
-import {setUser} from '../../redux/slices/userSlice';
+import {setUser} from '../../redux/slices/users/userSlice';
 import {useDispatch} from 'react-redux';
 import {Role} from '../../data/roles';
 import {ProjectData} from '../../data/projects';
