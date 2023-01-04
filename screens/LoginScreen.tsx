@@ -7,7 +7,7 @@ import Button from '../components/buttons/Button';
 import {useState} from 'react';
 import {users} from '../data/users';
 import {useDispatch} from 'react-redux';
-import { setUserLogged } from '../redux/slices/loginSlice';
+import {setUserLogged} from '../redux/slices/loginSlice';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -23,15 +23,18 @@ export default function LoginScreen() {
   const validEmail: boolean = emailInput.includes('@');
   const validPassword: boolean = passwordInput.length > 6;
 
+  function cleanInputs() {
+    setEmailInput('');
+    setPasswordInput('');
+  }
+
   function loginHandler() {
     const user = users.filter(item => item.email === emailInput);
-    dispatch(setUserLogged(user[0]))
 
     if (user[0]?.password === passwordInput && validEmail && validPassword) {
-      const role = user[0].role;
-      console.log('ROLE LOGIN');
-      console.log(role.name);
+      dispatch(setUserLogged(user[0]));
       navigation.navigate('Tab');
+      cleanInputs();
     } else {
       Alert.alert('Login failed', 'Your email or password is incorrect.');
     }
