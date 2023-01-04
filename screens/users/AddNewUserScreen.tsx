@@ -26,8 +26,8 @@ import {users} from '../../data/users';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch, useSelector} from 'react-redux';
-import {addUser} from '../../redux/slices/usersSlice';
-import {selectProjects} from '../../redux/slices/projectsSlice';
+import {addUser} from '../../redux/slices/usersListSlice';
+import {selectProjects} from '../../redux/slices/projectsListSlice';
 
 type AddNewUserScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,

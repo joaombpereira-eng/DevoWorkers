@@ -11,7 +11,7 @@ import {useEffect, useState} from 'react';
 import {ProjectData} from '../../data/projects';
 import {status} from '../../data/status';
 import {useSelector} from 'react-redux';
-import {selectProjects} from '../../redux/slices/projectsSlice';
+import {selectProjects} from '../../redux/slices/projectsListSlice';
 
 export type ProjectsScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList, 'Projects'>,

@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 import {ProjectData} from '../../data/projects';
 import {status} from '../../data/status';
 import {RootState} from '../store/store';
@@ -18,7 +18,7 @@ const projectSlice = createSlice({
   name: 'project',
   initialState,
   reducers: {
-    setProject: (state, action: PayloadAction<ProjectData>) => {
+    setProject: (state, action) => {
       state.name = action.payload.name;
       state.workForce = action.payload.workForce;
       state.status = action.payload.status;

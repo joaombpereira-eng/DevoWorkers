@@ -1,6 +1,6 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 import {projects} from '../../data/projects';
-import {Status, status} from '../../data/status';
+import {Status} from '../../data/status';
 import {UserData} from '../../data/users';
 import {RootState} from '../store/store';
 
@@ -23,7 +23,7 @@ const initialState: ProjectState = {
   projects: projects,
 };
 
-const projectsSlice = createSlice({
+const projectsListSlice = createSlice({
   name: 'projects',
   initialState,
   reducers: {
@@ -33,10 +33,10 @@ const projectsSlice = createSlice({
   },
 });
 
-export const {setProject} = projectsSlice.actions;
+export const {setProject} = projectsListSlice.actions;
 
-export const selectProjects = (state: RootState) => state.projects.projects;
+export const selectProjects = (state: RootState) => state.projectsList.projects;
 export const selectProjectById = (state: RootState, id: string) =>
-  state.projects.projects.filter(item => item.projectId === id);
+  state.projectsList.projects.filter(item => item.projectId === id);
 
-export default projectsSlice.reducer;
+export default projectsListSlice.reducer;

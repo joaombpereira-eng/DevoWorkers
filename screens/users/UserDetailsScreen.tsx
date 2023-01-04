@@ -22,7 +22,7 @@ import InfoForm from '../../components/forms/InfoForm';
 import IconButton from '../../components/buttons/IconButton';
 import Button from '../../components/buttons/Button';
 import {ProjectData, projects} from '../../data/projects';
-import {removeUser, selectUserById} from '../../redux/slices/usersSlice';
+import {removeUser, selectUserById} from '../../redux/slices/usersListSlice';
 import {RootState} from '../../redux/store/store';
 import {selectUserLogged} from '../../redux/slices/loginSlice';
 

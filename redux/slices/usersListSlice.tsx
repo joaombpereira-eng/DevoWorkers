@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 import {Role} from '../../data/roles';
 import {users} from '../../data/users';
 import {RootState} from '../store/store';
@@ -22,7 +22,7 @@ const initialState: UserState = {
   users: users,
 };
 
-const usersSlice = createSlice({
+const usersListSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
@@ -48,10 +48,10 @@ const usersSlice = createSlice({
   },
 });
 
-export const {addUser, removeUser} = usersSlice.actions;
+export const {addUser, removeUser} = usersListSlice.actions;
 
-export const selectUsers = (state: RootState) => state.users.users;
+export const selectUsers = (state: RootState) => state.usersList.users;
 export const selectUserById = (state: RootState, id: number) =>
-  state.users.users.filter(item => item.id === id);
+  state.usersList.users.filter(item => item.id === id);
 
-export default usersSlice.reducer;
+export default usersListSlice.reducer;

@@ -15,7 +15,7 @@ import UserCard from '../../components/cards/UserCard';
 import Input from '../../components/forms/Input';
 import IconButton from '../../components/buttons/IconButton';
 import {useSelector} from 'react-redux';
-import {selectUsers} from '../../redux/slices/usersSlice';
+import {selectUsers} from '../../redux/slices/usersListSlice';
 import {selectUserLogged} from '../../redux/slices/loginSlice';
 
 export type UsersScreenNavigationProps = CompositeNavigationProp<

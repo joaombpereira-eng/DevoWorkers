@@ -1,17 +1,17 @@
 import {configureStore} from '@reduxjs/toolkit';
 import userReducer from '../slices/userSlice';
-import usersReducer from '../slices/usersSlice';
+import usersListReducer from '../slices/usersListSlice';
 import projectReducer from '../slices/projectSlice';
-import projectsReducer from '../slices/projectsSlice';
+import projectsListReducer from '../slices/projectsListSlice';
 import loginReducer from '../slices/loginSlice';
 import logger from 'redux-logger';
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
-    users: usersReducer,
+    usersList: usersListReducer,
     project: projectReducer,
-    projects: projectsReducer,
+    projectsList: projectsListReducer,
     login: loginReducer,
   },
   middleware: getDefaultMiddleware =>
