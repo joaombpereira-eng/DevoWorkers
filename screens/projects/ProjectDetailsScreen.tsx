@@ -6,7 +6,12 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
+import {
+  CompositeNavigationProp,
+  useNavigation,
+  RouteProp,
+  useRoute,
+} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {TabStackParamList} from '../../navigator/TabNavigator';
@@ -14,18 +19,27 @@ import {RootStackParamList} from '../../navigator/RootNavigator';
 import InfoForm from '../../components/forms/InfoForm';
 import {useDispatch, useSelector} from 'react-redux';
 import IconButton from '../../components/buttons/IconButton';
-import {selectProject} from '../../redux/slices/projectSlice';
 import {setUser} from '../../redux/slices/userSlice';
+import {selectProjectById} from '../../redux/slices/projectsSlice';
+import {RootState} from '../../redux/store/store';
 
 type ProjectDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
   NativeStackNavigationProp<RootStackParamList, 'ProjectDetails'>
 >;
 
+type ProjectScreenRouteProp = RouteProp<RootStackParamList, 'ProjectDetails'>;
+
 export default function ProjectDetailsScreen() {
   const navigation = useNavigation<ProjectDetailsScreenNavigationProp>();
+  const {
+    params: {projectId},
+  } = useRoute<ProjectScreenRouteProp>();
   const dispatch = useDispatch();
-  const project = useSelector(selectProject);
+  const projectRoute = useSelector((state: RootState) =>
+    selectProjectById(state, projectId),
+  );
+  const project = projectRoute[0];
 
   return (
     <View style={styles.container}>

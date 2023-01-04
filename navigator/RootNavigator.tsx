@@ -10,7 +10,7 @@ export type RootStackParamList = {
   Login: undefined;
   Tab: undefined;
   UserDetails: {userId: number};
-  ProjectDetails: undefined;
+  ProjectDetails: {projectId: string};
   AddNewUser: undefined;
 };
 

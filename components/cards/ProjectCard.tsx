@@ -43,7 +43,7 @@ export default function ProjectCard({
         logo,
       }),
     );
-    navigation.navigate('ProjectDetails');
+    navigation.navigate('ProjectDetails', {projectId: projectId});
   }
 
   return (
