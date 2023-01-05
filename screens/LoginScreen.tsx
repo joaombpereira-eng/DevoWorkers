@@ -8,6 +8,8 @@ import {useState} from 'react';
 import {users} from '../data/users';
 import {useDispatch} from 'react-redux';
 import {setUserLogged} from '../redux/slices/login/loginSlice';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -28,11 +30,30 @@ export default function LoginScreen() {
     setPasswordInput('');
   }
 
+  async function login(email: string, password: string) {
+    try {
+      const res = await axios.post(
+        'https://dvt-proj-academy-ct2-api.azurewebsites.net/api/User/Login',
+        {
+          email: email,
+          password: password,
+        },
+      );
+      AsyncStorage.setItem('AccessToken', JSON.stringify(res.data.data));
+      axios.defaults.headers.common[
+        'Authorization'
+      ] = `bearer ${res.data.data}`;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   function loginHandler() {
     const user = users.filter(item => item.email === emailInput);
 
     if (user[0]?.password === passwordInput && validEmail && validPassword) {
       dispatch(setUserLogged(user[0]));
+      login(user[0].email, user[0].password);
       navigation.navigate('Tab');
       cleanInputs();
     } else {

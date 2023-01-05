@@ -1,8 +1,9 @@
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import {useEffect} from 'react';
-import {StatusBar, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {RootStackParamList} from '../navigator/RootNavigator';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type SplashScreenNavigationProps = NativeStackNavigationProp<
   RootStackParamList,
@@ -12,9 +13,18 @@ type SplashScreenNavigationProps = NativeStackNavigationProp<
 export default function SplashScreen() {
   const navigation = useNavigation<SplashScreenNavigationProps>();
 
+  async function handleToken() {
+    const token = await AsyncStorage.getItem('AccessToken');
+    if (token) {
+      navigation.navigate('Tab');
+    } else {
+      navigation.navigate('Login');
+    }
+  }
+
   useEffect(() => {
     setTimeout(() => {
-      navigation.navigate('Login');
+      handleToken();
     }, 2500);
   }, []);
 

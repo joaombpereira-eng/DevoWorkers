@@ -17,13 +17,13 @@ import IconButton from '../../components/buttons/IconButton';
 import {useSelector} from 'react-redux';
 import {selectUsers} from '../../redux/slices/users/usersListSlice';
 import {selectUserLogged} from '../../redux/slices/login/loginSlice';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type UsersScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList, 'Users'>,
   NativeStackNavigationProp<RootStackParamList, 'Tab'>
 >;
-
-type UsersScreenRouteProp = RouteProp<RootStackParamList, 'Tab'>;
 
 export default function UsersScreen() {
   const [filteredData, setFilteredData] = useState<UserData[]>([]);
@@ -51,6 +51,16 @@ export default function UsersScreen() {
     }
   }
 
+  async function logout() {
+    try {
+      delete axios.defaults.headers.common['Authorization'];
+      AsyncStorage.removeItem('AccessToken');
+      navigation.navigate('Login');
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -70,9 +80,7 @@ export default function UsersScreen() {
             <IconButton
               name="sign-out"
               color="black"
-              onPress={() => {
-                navigation.navigate('Login');
-              }}
+              onPress={logout}
               size={25}
             />
           </View>
