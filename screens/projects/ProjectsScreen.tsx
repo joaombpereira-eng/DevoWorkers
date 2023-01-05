@@ -182,7 +182,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingTop: 10,
-    marginRight: 10,
     flexDirection: 'row',
   },
   title: {
@@ -193,7 +192,6 @@ const styles = StyleSheet.create({
   bodyContainer: {
     backgroundColor: '#EFEDEC',
     flex: 1,
-    marginRight: 10,
   },
   sortContainer: {
     flexDirection: 'row',
@@ -205,7 +203,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginBottom: 20,
-    marginRight: 10,
   },
   filter: {
     color: 'black',

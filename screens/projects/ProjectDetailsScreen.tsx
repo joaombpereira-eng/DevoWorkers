@@ -107,14 +107,13 @@ const styles = StyleSheet.create({
   },
   bodyContainer: {
     justifyContent: 'center',
-    marginRight: 15,
     paddingBottom: 30,
     marginBottom: 30,
   },
   exitButton: {
     alignItems: 'flex-end',
     padding: 14,
-    paddingRight: 30,
+    paddingRight: 20,
   },
   logoContainer: {
     justifyContent: 'center',

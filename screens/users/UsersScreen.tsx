@@ -105,7 +105,6 @@ const styles = StyleSheet.create({
   },
   iconsContainer: {
     flexDirection: 'row',
-    marginRight: 10,
   },
   logoutContainer: {
     marginLeft: 20,
@@ -118,6 +117,5 @@ const styles = StyleSheet.create({
   bodyContainer: {
     backgroundColor: '#EFEDEC',
     flex: 1,
-    marginRight: 10,
   },
 });
