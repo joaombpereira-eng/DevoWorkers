@@ -10,6 +10,7 @@ import {useDispatch} from 'react-redux';
 import {setUserLogged} from '../redux/slices/login/loginSlice';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {BASE_URL} from '../util/constants';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -32,19 +33,17 @@ export default function LoginScreen() {
 
   async function login(email: string, password: string) {
     try {
-      const res = await axios.post(
-        'https://dvt-proj-academy-ct2-api.azurewebsites.net/api/User/Login',
-        {
-          email: email,
-          password: password,
-        },
-      );
+      const res = await axios.post(`${BASE_URL}/user/login`, {
+        email: email,
+        password: password,
+      });
       AsyncStorage.setItem('AccessToken', JSON.stringify(res.data.data));
       axios.defaults.headers.common[
         'Authorization'
       ] = `bearer ${res.data.data}`;
+      navigation.navigate('Tab');
     } catch (e) {
-      console.log(e);
+      Alert.alert('Ops! There was a problem!', `Message: ${e}`);
     }
   }
 
@@ -52,9 +51,8 @@ export default function LoginScreen() {
     const user = users.filter(item => item.email === emailInput);
 
     if (user[0]?.password === passwordInput && validEmail && validPassword) {
-      dispatch(setUserLogged(user[0]));
       login(user[0].email, user[0].password);
-      navigation.navigate('Tab');
+      dispatch(setUserLogged(user[0]));
       cleanInputs();
     } else {
       Alert.alert('Login failed', 'Your email or password is incorrect.');
