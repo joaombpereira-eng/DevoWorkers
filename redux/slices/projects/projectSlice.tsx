@@ -7,7 +7,7 @@ const initialState: ProjectData = {
   projectId: '',
   name: '',
   workForce: [],
-  status: status[0],
+  status: '',
   logo: '',
   startingDate: new Date(),
   endDate: new Date(),

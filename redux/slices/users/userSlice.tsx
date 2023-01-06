@@ -4,7 +4,7 @@ import {UserData} from '../../../data/users';
 import {RootState} from '../../store/store';
 
 const initialState: UserData = {
-  id: 0,
+  userId: 0,
   name: '',
   email: '',
   password: '',
@@ -19,7 +19,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      state.id = action.payload.id;
+      state.userId = action.payload.userId;
       state.name = action.payload.name;
       state.email = action.payload.email;
       state.birthday = action.payload.birthday;

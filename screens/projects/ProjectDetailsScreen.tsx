@@ -22,6 +22,11 @@ import IconButton from '../../components/buttons/IconButton';
 import {setUser} from '../../redux/slices/users/userSlice';
 import {selectProjectById} from '../../redux/slices/projects/projectsListSlice';
 import {RootState} from '../../redux/store/store';
+import {useEffect, useState} from 'react';
+import {ProjectData} from '../../data/projects';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {BASE_URL} from '../../util/constants';
+import axios from 'axios';
 
 type ProjectDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -31,15 +36,31 @@ type ProjectDetailsScreenNavigationProp = CompositeNavigationProp<
 type ProjectScreenRouteProp = RouteProp<RootStackParamList, 'ProjectDetails'>;
 
 export default function ProjectDetailsScreen() {
+  const [project, setProject] = useState<ProjectData>();
   const navigation = useNavigation<ProjectDetailsScreenNavigationProp>();
   const {
     params: {projectId},
   } = useRoute<ProjectScreenRouteProp>();
   const dispatch = useDispatch();
-  const projectFromRoute = useSelector((state: RootState) =>
-    selectProjectById(state, projectId),
-  );
-  const project = projectFromRoute[0];
+
+  async function getProjectById(id: string) {
+    try {
+      const token = await AsyncStorage.getItem('AccessToken');
+      const res = await axios.get(`${BASE_URL}/project/${id}`, {
+        headers: {
+          Authorization: 'bearer ' + token,
+        },
+      });
+      setProject(res.data);
+    } catch (e) {
+      console.log('error');
+      console.log(e);
+    }
+  }
+
+  useEffect(() => {
+    getProjectById(projectId);
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -53,12 +74,12 @@ export default function ProjectDetailsScreen() {
       </View>
       <View style={styles.bodyContainer}>
         <ScrollView>
-          <View style={styles.logoContainer}>
-            <Image source={{uri: project.logo}} style={styles.logo} />
-          </View>
+          {/* <View style={styles.logoContainer}>
+            <Image source={{uri: project?.logo}} style={styles.logo} />
+          </View> */}
           <View>
             <View style={styles.nameContainer}>
-              <Text style={styles.name}>{project.name}</Text>
+              <Text style={styles.name}>{project?.name}</Text>
             </View>
             <View style={styles.infoContainer}>
               <Text style={styles.info}>Project Information</Text>
@@ -67,7 +88,7 @@ export default function ProjectDetailsScreen() {
               <View style={styles.infoWorkContainer}>
                 <Text style={styles.infoWork}>Workforce</Text>
               </View>
-              {project.workForce.map(item => (
+              {/* {project?.workForce.map(item => (
                 <TouchableOpacity
                   onPress={() => {
                     dispatch(setUser(item));
@@ -77,20 +98,20 @@ export default function ProjectDetailsScreen() {
                   style={styles.valueContainer}>
                   <Text style={styles.value}>{item.name}</Text>
                 </TouchableOpacity>
-              ))}
+              ))} */}
             </View>
-            <InfoForm info="Status" value={project.status.name} />
+            <InfoForm info="Status" value={project?.status} />
             <View style={styles.dateContainer}>
-              <InfoForm
+              {/* <InfoForm
                 info="Start at"
-                value={project.startingDate.toLocaleDateString('en-GB')}
+                value={project?.startingDate.toLocaleDateString('en-GB')}
               />
               <InfoForm
                 info="End at"
-                value={project.endDate.toLocaleDateString('en-GB')}
-              />
+                value={project?.endDate.toLocaleDateString('en-GB')}
+              /> */}
             </View>
-            <InfoForm info="Budget" value={`${project.budget.toString()}€`} />
+            <InfoForm info="Budget" value={`${project?.budget.toString()}€`} />
           </View>
         </ScrollView>
       </View>

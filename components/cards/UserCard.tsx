@@ -5,9 +5,12 @@ import {setUser} from '../../redux/slices/users/userSlice';
 import {useDispatch} from 'react-redux';
 import {Role} from '../../data/roles';
 import {ProjectData} from '../../data/projects';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import {BASE_URL} from '../../util/constants';
 
 type Props = {
-  id: number;
+  userId: number;
   name: string;
   email: string;
   role: string;
@@ -18,7 +21,7 @@ type Props = {
 };
 
 export default function UserCard({
-  id,
+  userId,
   name,
   email,
   role,
@@ -32,9 +35,11 @@ export default function UserCard({
 
   function onPress() {
     dispatch(
-      setUser({id, name, email, role, password, birthday, avatar, project}),
+      setUser({userId, name, email, role, password, birthday, avatar, project}),
     );
-    navigation.navigate('UserDetails', {userId: id});
+    console.log('userId Card');
+    console.log(userId);
+    navigation.navigate('UserDetails', {userId: userId});
   }
 
   return (

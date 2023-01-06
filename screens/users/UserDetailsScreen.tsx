@@ -21,18 +21,14 @@ import {setProject} from '../../redux/slices/projects/projectSlice';
 import InfoForm from '../../components/forms/InfoForm';
 import IconButton from '../../components/buttons/IconButton';
 import Button from '../../components/buttons/Button';
-import {ProjectData, projects} from '../../data/projects';
-import {
-  removeUser,
-  selectUserById,
-} from '../../redux/slices/users/usersListSlice';
-import {RootState} from '../../redux/store/store';
+import {projects} from '../../data/projects';
+import {removeUser} from '../../redux/slices/users/usersListSlice';
 import {selectUserLogged} from '../../redux/slices/login/loginSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {BASE_URL} from '../../util/constants';
-import {setUser} from '../../redux/slices/users/userSlice';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
+import {UserData} from '../../data/users';
 
 type UserDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -42,31 +38,23 @@ type UserDetailsScreenNavigationProp = CompositeNavigationProp<
 type UserDetailsScreenRouteProp = RouteProp<RootStackParamList, 'UserDetails'>;
 
 export default function UserDetailsScreen() {
+  const [user, setUser] = useState<UserData>();
   const navigation = useNavigation<UserDetailsScreenNavigationProp>();
   const {
     params: {userId},
   } = useRoute<UserDetailsScreenRouteProp>();
-  const userFromRoute = useSelector((state: RootState) =>
-    selectUserById(state, userId),
-  );
-  const user = userFromRoute[0];
   const dispatch = useDispatch();
   const userLogged = useSelector(selectUserLogged);
 
   async function getUserById(id: number) {
     try {
       const token = await AsyncStorage.getItem('AccessToken');
-      await axios
-        .get(`${BASE_URL}/user/${id}`, {
-          headers: {
-            Authorization: 'bearer ' + token,
-          },
-        })
-        .then(res => {
-          console.log('user');
-          console.log(res.data);
-          dispatch(setUser(res.data));
-        });
+      const res = await axios.get(`${BASE_URL}/user/${id}`, {
+        headers: {
+          Authorization: 'bearer ' + token,
+        },
+      });
+      setUser(res.data);
     } catch (e) {
       console.log('error');
       console.log(e);
@@ -75,7 +63,7 @@ export default function UserDetailsScreen() {
 
   useEffect(() => {
     getUserById(userId);
-  }, [dispatch]);
+  }, []);
 
   //const moreThanOneProject: boolean = user.project.length > 1;
 
@@ -100,17 +88,17 @@ export default function UserDetailsScreen() {
       </View>
       <View style={styles.bodyContainer}>
         <ScrollView>
-          <View style={styles.avatar}>
+          {/* <View style={styles.avatar}>
             <Image source={{uri: user.avatar}} style={styles.image} />
-          </View>
+          </View> */}
           <View>
             <View style={styles.nameContainer}>
-              <Text style={styles.name}>{user.name}</Text>
+              <Text style={styles.name}>{user?.name}</Text>
             </View>
             <View style={styles.infoContainer}>
               <Text style={styles.info}>Personal Information</Text>
             </View>
-            <InfoForm info="Email" value={user.email} />
+            <InfoForm info="Email" value={user?.email} />
             {/* <InfoForm
               info="Birthday"
               value={user.birthday.toLocaleDateString('en-GB')}
@@ -118,7 +106,7 @@ export default function UserDetailsScreen() {
             <View style={[styles.infoContainer, {marginTop: 20}]}>
               <Text style={styles.info}>DevoWorker Information</Text>
             </View>
-            <InfoForm info="Role" value={user.role} />
+            <InfoForm info="Role" value={user?.role} />
             <View style={styles.workContainer}>
               <View style={styles.infoWorkContainer}>
                 <Text style={styles.infoWork}>
@@ -145,7 +133,7 @@ export default function UserDetailsScreen() {
               )}
             </View>
             {userLogged.role === 'SysAdmin' &&
-              userLogged.name !== user.name && (
+              userLogged.name !== user?.name && (
                 <View style={styles.buttonContainer}>
                   <Button deleteStyle={styles.deleteButton} onPress={onDelete}>
                     Delete

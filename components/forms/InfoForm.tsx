@@ -2,7 +2,7 @@ import {View, Text, StyleSheet} from 'react-native';
 
 type Props = {
   info: string;
-  value: string;
+  value?: string;
 };
 
 export default function InfoForm({info, value}: Props) {

@@ -5,7 +5,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {TabStackParamList} from '../../navigator/TabNavigator';
 import {RootStackParamList} from '../../navigator/RootNavigator';
 import {UserData} from '../../data/users';
-import {useEffect, useState} from 'react';
+import {useEffect, useLayoutEffect, useState} from 'react';
 import {Dispatch} from 'redux';
 import UserCard from '../../components/cards/UserCard';
 import Input from '../../components/forms/Input';
@@ -37,15 +37,12 @@ export default function UsersScreen() {
   async function fetchUsers() {
     try {
       const token = await AsyncStorage.getItem('AccessToken');
-      await axios
-        .get(`${BASE_URL}/user`, {
-          headers: {
-            Authorization: 'bearer ' + token,
-          },
-        })
-        .then(res => {
-          dispatch(setUsers(res.data));
-        });
+      const res = await axios.get(`${BASE_URL}/user`, {
+        headers: {
+          Authorization: 'bearer ' + token,
+        },
+      });
+      setFilteredData(res.data);
     } catch (e) {
       console.log('error');
       console.log(e);
@@ -54,8 +51,8 @@ export default function UsersScreen() {
 
   useEffect(() => {
     fetchUsers();
-    setFilteredData(users);
-  }, [users, dispatch]);
+    dispatch(setUsers(filteredData));
+  }, []);
 
   function searchFilter(text: string) {
     if (text) {
@@ -112,7 +109,7 @@ export default function UsersScreen() {
         <FlatList
           data={filteredData}
           renderItem={({item}) => <UserCard {...item} />}
-          keyExtractor={item => (item.id + Math.random()).toString()}
+          //keyExtractor={item => (item.id + Math.random()).toString()}
         />
       </View>
     </View>

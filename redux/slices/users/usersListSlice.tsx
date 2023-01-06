@@ -3,7 +3,7 @@ import {Role} from '../../../data/roles';
 import {RootState} from '../../store/store';
 
 export type UserData = {
-  id: number;
+  userId: number;
   name: string;
   email: string;
   password: string;

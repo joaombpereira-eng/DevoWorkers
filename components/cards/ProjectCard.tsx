@@ -60,9 +60,9 @@ export default function ProjectCard({
               <Text style={styles.status}>{status}</Text>
             </View>
           </View>
-          <View style={styles.logoContainer}>
+          {/* <View style={styles.logoContainer}>
             <Image source={{uri: logo}} style={styles.logo} />
-          </View>
+          </View> */}
         </View>
       </TouchableOpacity>
     </View>

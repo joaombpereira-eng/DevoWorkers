@@ -8,7 +8,7 @@ export type ProjectData = {
   projectId: string;
   name: string;
   workForce: UserData[];
-  status: Status;
+  status: string;
   logo: string;
   startingDate: Date;
   endDate: Date;

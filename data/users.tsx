@@ -1,7 +1,7 @@
 import {Role, roles} from './roles';
 
 export type UserData = {
-  id: number;
+  userId: number;
   name: string;
   email: string;
   password: string;
@@ -13,7 +13,7 @@ export type UserData = {
 
 export const users: UserData[] = [
   {
-    id: 0,
+    userId: 0,
     name: 'João Pereira',
     email: 'joao@devoteam.com',
     password: '1234567',
@@ -23,7 +23,7 @@ export const users: UserData[] = [
     project: ['0', '2'],
   },
   {
-    id: 1,
+    userId: 1,
     name: 'Miguel Barbosa',
     email: 'miguel@devoteam.com',
     password: '12345678',
@@ -33,7 +33,7 @@ export const users: UserData[] = [
     project: ['3', '4'],
   },
   {
-    id: 2,
+    userId: 2,
     name: 'Demetria Fitzpatrick',
     email: 'lobortis.risus@google.couk',
     password: 'DMG28VNM1UF',
@@ -43,7 +43,7 @@ export const users: UserData[] = [
     project: ['1', '2'],
   },
   {
-    id: 3,
+    userId: 3,
     name: 'Ulric House',
     email: 'eget.massa.suspendisse@google.com',
     password: 'GLV31LGD1EO',
@@ -53,7 +53,7 @@ export const users: UserData[] = [
     project: ['4', '2'],
   },
   {
-    id: 4,
+    userId: 4,
     name: 'Baxter Durham',
     email: 'sodales.mauris@yahoo.couk',
     password: 'BLS24PSG8RU',
@@ -63,7 +63,7 @@ export const users: UserData[] = [
     project: ['0', '3'],
   },
   {
-    id: 5,
+    userId: 5,
     name: 'Steel Pruitt',
     email: 'enim.suspendisse@hotmail.couk',
     password: 'DYU99WRW4ND',

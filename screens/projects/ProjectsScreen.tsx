@@ -7,7 +7,7 @@ import {RootStackParamList} from '../../navigator/RootNavigator';
 import Input from '../../components/forms/Input';
 import IconButton from '../../components/buttons/IconButton';
 import ProjectCard from '../../components/cards/ProjectCard';
-import {useEffect, useState} from 'react';
+import {useEffect, useLayoutEffect, useState} from 'react';
 import {ProjectData} from '../../data/projects';
 import {status} from '../../data/status';
 import {useDispatch, useSelector} from 'react-redux';
@@ -31,7 +31,6 @@ export default function ProjectsScreen() {
   const [nameAscending, setNameAscending] = useState<boolean>(true);
   const [nameSort, setNameSort] = useState<boolean>(true);
   const {projects, loading, error} = useSelector(selectProjects);
-  const dispatch = useDispatch();
 
   async function fetchProjects() {
     try {
@@ -43,11 +42,12 @@ export default function ProjectsScreen() {
           },
         })
         .then(res => {
-          console.log(res);
-          dispatch(setProjects(res.data));
+          console.log('response project');
+          console.log(res.data);
+          setFilteredData(res.data);
         });
     } catch (e) {
-      console.log('error');
+      console.log('error project');
       console.log(e);
     }
   }
@@ -57,9 +57,9 @@ export default function ProjectsScreen() {
     setFilteredData(projects);
   }, [projects]);
 
-  function onPressHandler(type: number) {
+  function onPressHandler(type: string) {
     const newData = projects.filter(item => {
-      return item.status.id === type;
+      return item.status === type;
     });
     setFilteredData(newData);
   }
@@ -88,9 +88,9 @@ export default function ProjectsScreen() {
     }
   }
 
-  function lengthDataFiltered(type: number) {
+  function lengthDataFiltered(type: string) {
     const dataFiltered = projects.filter(project => {
-      return project.status.id === type;
+      return project.status === type;
     });
     return dataFiltered.length;
   }
@@ -170,19 +170,19 @@ export default function ProjectsScreen() {
           }}>
           <Text style={styles.filter}>All ({projects.length})</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => onPressHandler(status[0].id)}>
+        <TouchableOpacity onPress={() => onPressHandler('ToStart')}>
           <Text style={styles.filter}>
-            To Start ({lengthDataFiltered(status[0].id)})
+            To Start ({lengthDataFiltered('ToStart')})
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => onPressHandler(status[1].id)}>
+        <TouchableOpacity onPress={() => onPressHandler('Active')}>
           <Text style={styles.filter}>
-            Active ({lengthDataFiltered(status[1].id)})
+            Active ({lengthDataFiltered('Active')})
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => onPressHandler(status[2].id)}>
+        <TouchableOpacity onPress={() => onPressHandler('Finished')}>
           <Text style={styles.filter}>
-            Finished ({lengthDataFiltered(status[2].id)})
+            Finished ({lengthDataFiltered('Finished')})
           </Text>
         </TouchableOpacity>
       </View>
