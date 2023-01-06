@@ -1,5 +1,4 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {roles} from '../../../data/roles';
 import {UserData} from '../../../data/users';
 import {RootState} from '../../store/store';
 

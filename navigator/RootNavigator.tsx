@@ -1,7 +1,6 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from '../screens/LoginScreen';
 import TabNavigator from './TabNavigator';
-import {StatusBar} from 'react-native';
 import UserDetailsScreen from '../screens/users/UserDetailsScreen';
 import AddNewUserScreen from '../screens/users/AddNewUserScreen';
 import ProjectDetailsScreen from '../screens/projects/ProjectDetailsScreen';

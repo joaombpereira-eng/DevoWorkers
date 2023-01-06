@@ -7,14 +7,10 @@ import {RootStackParamList} from '../../navigator/RootNavigator';
 import Input from '../../components/forms/Input';
 import IconButton from '../../components/buttons/IconButton';
 import ProjectCard from '../../components/cards/ProjectCard';
-import {useEffect, useLayoutEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {ProjectData} from '../../data/projects';
-import {status} from '../../data/status';
-import {useDispatch, useSelector} from 'react-redux';
-import {
-  selectProjects,
-  setProjects,
-} from '../../redux/slices/projects/projectsListSlice';
+import {useSelector} from 'react-redux';
+import {selectProjects} from '../../redux/slices/projects/projectsListSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../util/constants';
 import axios from 'axios';

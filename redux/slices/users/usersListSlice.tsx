@@ -1,16 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
+import {UserData} from '../../../data/users';
 import {RootState} from '../../store/store';
-
-export type UserData = {
-  userId: number;
-  name: string;
-  email: string;
-  password: string;
-  role: string;
-  birthDate: Date;
-  avatar: string;
-  projects: string[];
-};
 
 type UserState = {
   users: UserData[];

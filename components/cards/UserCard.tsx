@@ -3,7 +3,6 @@ import {useNavigation} from '@react-navigation/native';
 import {UsersScreenNavigationProps} from '../../screens/users/UsersScreen';
 import {setUser} from '../../redux/slices/users/userSlice';
 import {useDispatch} from 'react-redux';
-import moment from 'moment';
 
 type Props = {
   userId: number;

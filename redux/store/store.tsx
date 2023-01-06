@@ -4,7 +4,6 @@ import usersListReducer from '../slices/users/usersListSlice';
 import projectReducer from '../slices/projects/projectSlice';
 import projectsListReducer from '../slices/projects/projectsListSlice';
 import loginReducer from '../slices/login/loginSlice';
-import logger from 'redux-logger';
 
 export const store = configureStore({
   reducer: {

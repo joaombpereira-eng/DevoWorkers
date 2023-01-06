@@ -4,14 +4,14 @@ import {UserData} from '../../../data/users';
 import {RootState} from '../../store/store';
 
 const initialState: UserData = {
-  id: 0,
+  userId: 0,
   name: '',
   email: '',
   password: '',
   role: '',
-  birthday: new Date(),
+  birthDate: new Date(),
   avatar: '',
-  project: [],
+  projects: [],
 };
 
 const loginSlice = createSlice({
@@ -19,13 +19,13 @@ const loginSlice = createSlice({
   initialState,
   reducers: {
     setUserLogged: (state, action: PayloadAction<UserData>) => {
-      state.id = action.payload.id;
+      state.userId = action.payload.userId;
       state.name = action.payload.name;
       state.email = action.payload.email;
-      state.birthday = action.payload.birthday;
+      state.birthDate = action.payload.birthDate;
       state.role = action.payload.role;
       state.avatar = action.payload.avatar;
-      state.project = action.payload.project;
+      state.projects = action.payload.projects;
     },
   },
 });

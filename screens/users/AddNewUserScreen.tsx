@@ -28,6 +28,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch, useSelector} from 'react-redux';
 import {addUser} from '../../redux/slices/users/usersListSlice';
 import {selectProjects} from '../../redux/slices/projects/projectsListSlice';
+import {formattedDate} from '../../util/formattedDate';
 
 type AddNewUserScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -37,10 +38,10 @@ type AddNewUserScreenNavigationProp = CompositeNavigationProp<
 export default function AddNewUserScreen() {
   const [role, setRole] = useState<Role>(roles[0]);
   const projects = useSelector(selectProjects);
-  const [project, setProject] = useState<ProjectData>(projects[0]);
+  const [project, setProject] = useState<ProjectData>();
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
-  const [birthday, setBirthday] = useState<Date>(new Date());
+  const [birthDate, setBirthDate] = useState<Date>(new Date());
   const [imagePicked, setImagePicked] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
   const navigation = useNavigation<AddNewUserScreenNavigationProp>();
@@ -54,7 +55,7 @@ export default function AddNewUserScreen() {
     const projectSaved = projects.filter(item => item.name === project.name);
     const roleSaved = roles.indexOf(role);
 
-    const validBirthday: boolean = birthday < new Date();
+    const validBirthday: boolean = birthDate < new Date();
     const validEmail: boolean = email.includes('@');
     const validName: boolean = name.trim().length > 1;
 
@@ -85,14 +86,14 @@ export default function AddNewUserScreen() {
 
     dispatch(
       addUser({
-        id: users.length,
+        userId: users.length,
         name: name,
         email: email,
         role: roles[roleSaved],
-        project: [projectSaved[0].projectId],
+        projects: [projectSaved[0].projectId],
         password: '',
         avatar: imagePicked,
-        birthday: new Date(birthday),
+        birthDate: new Date(birthDate),
       }),
     );
 
@@ -242,12 +243,12 @@ export default function AddNewUserScreen() {
           />
           <DateForm
             info="Birthday"
-            value={birthday.toLocaleDateString('en-GB')}
+            value={formattedDate(birthDate)}
             open={open}
-            date={birthday}
+            date={birthDate}
             onConfirm={date => {
               setOpen(false);
-              setBirthday(date);
+              setBirthDate(date);
             }}
             onCancel={() => {
               setOpen(false);
