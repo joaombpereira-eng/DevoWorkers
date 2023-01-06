@@ -44,9 +44,9 @@ export default function UsersScreen() {
     }
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     fetchUsers();
-    dispatch(setUsers(filteredData));
+    //dispatch(setUsers(filteredData));
   }, []);
 
   function searchFilter(text: string) {
@@ -79,16 +79,16 @@ export default function UsersScreen() {
       <View style={styles.headerContainer}>
         <Text style={styles.title}>Users</Text>
         <View style={styles.iconsContainer}>
-          {userLogged.role === 'SysAdmin' && (
-            <IconButton
-              name="user-plus"
-              color="black"
-              onPress={() => {
-                navigation.navigate('AddNewUser');
-              }}
-              size={25}
-            />
-          )}
+          {/*  {userLogged.role === 'SysAdmin' && ( */}
+          <IconButton
+            name="user-plus"
+            color="black"
+            onPress={() => {
+              navigation.navigate('AddNewUser');
+            }}
+            size={25}
+          />
+          {/* )} */}
           <View style={styles.logoutContainer}>
             <IconButton
               name="sign-out"

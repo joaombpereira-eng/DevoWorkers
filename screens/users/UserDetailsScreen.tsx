@@ -143,14 +143,14 @@ export default function UserDetailsScreen() {
                 </TouchableOpacity>
               ))}
             </View>
-            {userLogged.role === 'SysAdmin' &&
-              userLogged.name !== user?.name && (
-                <View style={styles.buttonContainer}>
-                  <Button deleteStyle={styles.deleteButton} onPress={onDelete}>
-                    Delete
-                  </Button>
-                </View>
-              )}
+            {/* {userLogged.role === 'SysAdmin' &&
+              userLogged.name !== user?.name && ( */}
+            <View style={styles.buttonContainer}>
+              <Button deleteStyle={styles.deleteButton} onPress={onDelete}>
+                Delete
+              </Button>
+            </View>
+            {/* )} */}
           </View>
         </ScrollView>
       </View>

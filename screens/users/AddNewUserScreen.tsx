@@ -9,7 +9,7 @@ import {
   PermissionsAndroid,
   Platform,
 } from 'react-native';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import IconButton from '../../components/buttons/IconButton';
 import InputForm from '../../components/forms/InputForm';
 import DateForm from '../../components/forms/DateForm';
@@ -22,13 +22,15 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../navigator/RootNavigator';
 import {ProjectData} from '../../data/projects';
 import {Role, roles} from '../../data/roles';
-import {users} from '../../data/users';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch, useSelector} from 'react-redux';
 import {addUser} from '../../redux/slices/users/usersListSlice';
-import {selectProjects} from '../../redux/slices/projects/projectsListSlice';
 import {formattedDate} from '../../util/formattedDate';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {BASE_URL} from '../../util/constants';
+import {UserData} from '../../data/users';
 
 type AddNewUserScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -37,13 +39,14 @@ type AddNewUserScreenNavigationProp = CompositeNavigationProp<
 
 export default function AddNewUserScreen() {
   const [role, setRole] = useState<Role>(roles[0]);
-  const projects = useSelector(selectProjects);
+  const [projects, setProjects] = useState<ProjectData[]>([]);
   const [project, setProject] = useState<ProjectData>();
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [birthDate, setBirthDate] = useState<Date>(new Date());
   const [imagePicked, setImagePicked] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
+  const [newUser, setNewUser] = useState<UserData>();
   const navigation = useNavigation<AddNewUserScreenNavigationProp>();
   const dispatch = useDispatch();
 
@@ -51,8 +54,65 @@ export default function AddNewUserScreen() {
     navigation.goBack();
   }
 
+  async function addNewUser() {
+    try {
+      const token = await AsyncStorage.getItem('AccessToken');
+      console.log('role');
+      console.log(role.name);
+      console.log('birthdate');
+      console.log(birthDate.toISOString());
+      await axios
+        .post(
+          `${BASE_URL}/user`,
+          {
+            name: name,
+            email: email,
+            password: '12345678',
+            role: role.name,
+            birthDate: birthDate.toISOString(),
+            avatar: '',
+          },
+          {
+            headers: {
+              Authorization: 'bearer ' + token,
+            },
+          },
+        )
+        .then(res => {
+          setNewUser(res.data);
+          console.log('res.data');
+          console.log(res.data);
+        });
+    } catch (e) {
+      console.log('error add user');
+      console.log(e);
+    }
+  }
+
+  async function fetchProjects() {
+    try {
+      const token = await AsyncStorage.getItem('AccessToken');
+      await axios
+        .get(`${BASE_URL}/project`, {
+          headers: {
+            Authorization: 'bearer ' + token,
+          },
+        })
+        .then(res => {
+          setProjects(res.data);
+        });
+    } catch (e) {
+      console.log('error project');
+      console.log(e);
+    }
+  }
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
   function saveHandler() {
-    const projectSaved = projects.filter(item => item.name === project.name);
+    const projectSaved = projects.filter(item => item.name === project?.name);
     const roleSaved = roles.indexOf(role);
 
     const validBirthday: boolean = birthDate < new Date();
@@ -74,26 +134,20 @@ export default function AddNewUserScreen() {
       return;
     }
 
-    if (!imagePicked) {
+    /* if (!imagePicked) {
       Alert.alert('Pick an Image!');
       return;
-    }
+    } */
 
     if (!name || !project || !role) {
       Alert.alert('Fill the Boxes!');
       return;
     }
 
+    addNewUser();
     dispatch(
       addUser({
-        userId: users.length,
-        name: name,
-        email: email,
-        role: roles[roleSaved],
-        projects: [projectSaved[0].projectId],
-        password: '',
-        avatar: imagePicked,
-        birthDate: new Date(birthDate),
+        newUser,
       }),
     );
 
@@ -278,7 +332,7 @@ export default function AddNewUserScreen() {
           <Dropdown
             style={styles.dropdown}
             data={projects}
-            value={project.name}
+            value={project?.name}
             onChange={item => setProject(item)}
             labelField="name"
             valueField="projectId"

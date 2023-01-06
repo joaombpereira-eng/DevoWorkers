@@ -10,7 +10,7 @@ export const roles: Role[] = [
   },
   {
     id: 1,
-    name: 'Project Manager',
+    name: 'ProjectManager',
   },
   {
     id: 2,
