@@ -19,6 +19,9 @@ export default function LoginScreen() {
   const [emailInput, setEmailInput] = useState<string>('');
   const [passwordInput, setPasswordInput] = useState<string>('');
 
+  const validEmail: boolean = emailInput.includes('@');
+  const validPassword: boolean = passwordInput.length > 6;
+
   function cleanInputs() {
     setEmailInput('');
     setPasswordInput('');
@@ -36,13 +39,17 @@ export default function LoginScreen() {
       ] = `bearer ${res.data.data}`;
       navigation.navigate('Tab');
     } catch (e) {
-      Alert.alert('Login failed', 'Your email or password is incorrect.');
+      Alert.alert('Ops! There was a problem!', `Message: ${e}`);
     }
   }
 
   function loginHandler() {
-    login(emailInput, passwordInput);
-    cleanInputs();
+    if (validEmail && validPassword) {
+      login(emailInput, passwordInput);
+      cleanInputs();
+    } else {
+      Alert.alert('Login failed', 'Your email or password is incorrect.');
+    }
   }
 
   return (
