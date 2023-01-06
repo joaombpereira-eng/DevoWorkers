@@ -20,14 +20,12 @@ import InfoForm from '../../components/forms/InfoForm';
 import {useDispatch, useSelector} from 'react-redux';
 import IconButton from '../../components/buttons/IconButton';
 import {setUser} from '../../redux/slices/users/userSlice';
-import {selectProjectById} from '../../redux/slices/projects/projectsListSlice';
-import {RootState} from '../../redux/store/store';
 import {useEffect, useState} from 'react';
 import {ProjectData} from '../../data/projects';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../util/constants';
 import axios from 'axios';
-import {users} from '../../data/users';
+import {UserData} from '../../data/users';
 
 type ProjectDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -38,6 +36,7 @@ type ProjectScreenRouteProp = RouteProp<RootStackParamList, 'ProjectDetails'>;
 
 export default function ProjectDetailsScreen() {
   const [project, setProject] = useState<ProjectData>();
+  const [users, setUsers] = useState<UserData[]>([]);
   const navigation = useNavigation<ProjectDetailsScreenNavigationProp>();
   const {
     params: {projectId},
@@ -59,11 +58,27 @@ export default function ProjectDetailsScreen() {
     }
   }
 
+  async function fetchUsers() {
+    try {
+      const token = await AsyncStorage.getItem('AccessToken');
+      const res = await axios.get(`${BASE_URL}/user`, {
+        headers: {
+          Authorization: 'bearer ' + token,
+        },
+      });
+      setUsers(res.data);
+    } catch (e) {
+      console.log('error');
+      console.log(e);
+    }
+  }
+
   useEffect(() => {
     getProjectById(projectId);
+    fetchUsers();
   }, []);
 
-  const workforceFilter = users.filter(item => {
+  const workforceFilter = users?.filter(item => {
     if (project?.workforce.includes(item.userId)) {
       return true;
     }

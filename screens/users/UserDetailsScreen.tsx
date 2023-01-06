@@ -28,7 +28,7 @@ import axios from 'axios';
 import {BASE_URL} from '../../util/constants';
 import {useEffect, useState} from 'react';
 import {UserData} from '../../data/users';
-import {projects} from '../../data/projects';
+import {ProjectData} from '../../data/projects';
 
 type UserDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -39,6 +39,7 @@ type UserDetailsScreenRouteProp = RouteProp<RootStackParamList, 'UserDetails'>;
 
 export default function UserDetailsScreen() {
   const [user, setUser] = useState<UserData>();
+  const [projects, setProjects] = useState<ProjectData[]>([]);
   const navigation = useNavigation<UserDetailsScreenNavigationProp>();
   const {
     params: {userId},
@@ -61,8 +62,27 @@ export default function UserDetailsScreen() {
     }
   }
 
+  async function fetchProjects() {
+    try {
+      const token = await AsyncStorage.getItem('AccessToken');
+      await axios
+        .get(`${BASE_URL}/project`, {
+          headers: {
+            Authorization: 'bearer ' + token,
+          },
+        })
+        .then(res => {
+          setProjects(res.data);
+        });
+    } catch (e) {
+      console.log('error project');
+      console.log(e);
+    }
+  }
+
   useEffect(() => {
     getUserById(userId);
+    fetchProjects();
   }, []);
 
   const projectsFilter = projects.filter(item => {

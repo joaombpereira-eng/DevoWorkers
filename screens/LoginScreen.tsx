@@ -5,9 +5,6 @@ import {useNavigation} from '@react-navigation/native';
 import AuthForm from '../components/forms/AuthForm';
 import Button from '../components/buttons/Button';
 import {useState} from 'react';
-import {users} from '../data/users';
-import {useDispatch} from 'react-redux';
-import {setUserLogged} from '../redux/slices/login/loginSlice';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../util/constants';
@@ -21,10 +18,6 @@ export default function LoginScreen() {
   const navigation = useNavigation<LoginScreenNavigationProp>();
   const [emailInput, setEmailInput] = useState<string>('');
   const [passwordInput, setPasswordInput] = useState<string>('');
-  const dispatch = useDispatch();
-
-  const validEmail: boolean = emailInput.includes('@');
-  const validPassword: boolean = passwordInput.length > 6;
 
   function cleanInputs() {
     setEmailInput('');
@@ -43,20 +36,13 @@ export default function LoginScreen() {
       ] = `bearer ${res.data.data}`;
       navigation.navigate('Tab');
     } catch (e) {
-      Alert.alert('Ops! There was a problem!', `Message: ${e}`);
+      Alert.alert('Login failed', 'Your email or password is incorrect.');
     }
   }
 
   function loginHandler() {
-    const user = users.filter(item => item.email === emailInput);
-
-    if (user[0]?.password === passwordInput && validEmail && validPassword) {
-      login(user[0].email, user[0].password);
-      dispatch(setUserLogged(user[0]));
-      cleanInputs();
-    } else {
-      Alert.alert('Login failed', 'Your email or password is incorrect.');
-    }
+    login(emailInput, passwordInput);
+    cleanInputs();
   }
 
   return (
