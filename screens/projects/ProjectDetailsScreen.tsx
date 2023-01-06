@@ -27,6 +27,7 @@ import {ProjectData} from '../../data/projects';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../util/constants';
 import axios from 'axios';
+import {users} from '../../data/users';
 
 type ProjectDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -62,6 +63,12 @@ export default function ProjectDetailsScreen() {
     getProjectById(projectId);
   }, []);
 
+  const workforceFilter = users.filter(item => {
+    if (project?.workforce.includes(item.userId)) {
+      return true;
+    }
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.exitButton}>
@@ -88,17 +95,17 @@ export default function ProjectDetailsScreen() {
               <View style={styles.infoWorkContainer}>
                 <Text style={styles.infoWork}>Workforce</Text>
               </View>
-              {/* {project?.workForce.map(item => (
+              {workforceFilter.map(item => (
                 <TouchableOpacity
                   onPress={() => {
                     dispatch(setUser(item));
-                    navigation.navigate('UserDetails', {userId: item.id});
+                    navigation.navigate('UserDetails', {userId: item.userId});
                   }}
-                  key={item.id}
+                  key={item.userId}
                   style={styles.valueContainer}>
                   <Text style={styles.value}>{item.name}</Text>
                 </TouchableOpacity>
-              ))} */}
+              ))}
             </View>
             <InfoForm info="Status" value={project?.status} />
             <View style={styles.dateContainer}>
