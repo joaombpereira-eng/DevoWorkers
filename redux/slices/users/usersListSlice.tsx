@@ -1,5 +1,4 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {Role} from '../../../data/roles';
 import {RootState} from '../../store/store';
 
 export type UserData = {
@@ -8,7 +7,7 @@ export type UserData = {
   email: string;
   password: string;
   role: string;
-  birthday: Date;
+  birthDate: Date;
   avatar: string;
   projects: string[];
 };

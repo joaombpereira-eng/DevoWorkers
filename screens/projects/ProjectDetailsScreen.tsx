@@ -26,6 +26,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../util/constants';
 import axios from 'axios';
 import {UserData} from '../../data/users';
+import {formattedDate} from '../../util/formattedDate';
 
 type ProjectDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -124,14 +125,11 @@ export default function ProjectDetailsScreen() {
             </View>
             <InfoForm info="Status" value={project?.status} />
             <View style={styles.dateContainer}>
-              {/* <InfoForm
-                info="Start at"
-                value={project?.startingDate.toLocaleDateString('en-GB')}
-              />
               <InfoForm
-                info="End at"
-                value={project?.endDate.toLocaleDateString('en-GB')}
-              /> */}
+                info="Start at"
+                value={formattedDate(project?.startDate)}
+              />
+              <InfoForm info="End at" value={formattedDate(project?.endDate)} />
             </View>
             <InfoForm info="Budget" value={`${project?.budget.toString()}€`} />
           </View>

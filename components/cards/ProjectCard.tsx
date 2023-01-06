@@ -3,6 +3,7 @@ import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {ProjectsScreenNavigationProps} from '../../screens/projects/ProjectsScreen';
 import {setProject} from '../../redux/slices/projects/projectSlice';
+import {formattedDate} from '../../util/formattedDate';
 
 type Props = {
   projectId: string;
@@ -51,9 +52,7 @@ export default function ProjectCard({
           <View>
             <View style={styles.infoContainer}>
               <Text style={styles.name}>{name}</Text>
-              {/* <Text style={styles.startDate}>
-                {startingDate.toLocaleDateString('en-GB')}
-              </Text> */}
+              <Text style={styles.startDate}>{formattedDate(startDate)}</Text>
             </View>
             <View style={styles.statusContainer}>
               <Text style={styles.status}>{status}</Text>

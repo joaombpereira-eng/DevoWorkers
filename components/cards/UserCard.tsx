@@ -3,6 +3,7 @@ import {useNavigation} from '@react-navigation/native';
 import {UsersScreenNavigationProps} from '../../screens/users/UsersScreen';
 import {setUser} from '../../redux/slices/users/userSlice';
 import {useDispatch} from 'react-redux';
+import moment from 'moment';
 
 type Props = {
   userId: number;
@@ -10,7 +11,7 @@ type Props = {
   email: string;
   role: string;
   password: string;
-  birthday: Date;
+  birthDate: Date;
   avatar: string;
   projects: string[];
 };
@@ -21,7 +22,7 @@ export default function UserCard({
   email,
   role,
   password,
-  birthday,
+  birthDate,
   avatar,
   projects,
 }: Props) {
@@ -30,7 +31,16 @@ export default function UserCard({
 
   function onPress() {
     dispatch(
-      setUser({userId, name, email, role, password, birthday, avatar, projects}),
+      setUser({
+        userId,
+        name,
+        email,
+        role,
+        password,
+        birthDate,
+        avatar,
+        projects,
+      }),
     );
     navigation.navigate('UserDetails', {userId: userId});
   }

@@ -67,9 +67,9 @@ export default function ProjectsScreen() {
       let dateSorted = [...filteredData];
       dateSorted = dateSorted.sort((a, b) => {
         if (dateAscending) {
-          return new Date(a.startDate) > new Date(b.startDate) ? 1 : -1;
+          return a.startDate > b.startDate ? 1 : -1;
         } else {
-          return new Date(a.startDate) < new Date(b.startDate) ? 1 : -1;
+          return a.startDate < b.startDate ? 1 : -1;
         }
       });
       return dateSorted;

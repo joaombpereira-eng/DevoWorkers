@@ -9,7 +9,7 @@ const initialState: UserData = {
   email: '',
   password: '',
   role: '',
-  birthday: new Date(),
+  birthDate: new Date(),
   avatar: '',
   projects: [],
 };
@@ -22,7 +22,7 @@ const userSlice = createSlice({
       state.userId = action.payload.userId;
       state.name = action.payload.name;
       state.email = action.payload.email;
-      state.birthday = action.payload.birthday;
+      state.birthDate = action.payload.birthday;
       state.role = action.payload.role;
       state.avatar = action.payload.avatar;
       state.projects = action.payload.project;

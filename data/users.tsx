@@ -6,7 +6,7 @@ export type UserData = {
   email: string;
   password: string;
   role: string;
-  birthday: Date;
+  birthDate: Date;
   avatar: string;
   projects: string[];
 };

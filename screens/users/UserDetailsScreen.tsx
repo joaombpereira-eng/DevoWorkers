@@ -29,6 +29,7 @@ import {BASE_URL} from '../../util/constants';
 import {useEffect, useState} from 'react';
 import {UserData} from '../../data/users';
 import {ProjectData} from '../../data/projects';
+import {formattedDate} from '../../util/formattedDate';
 
 type UserDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -119,10 +120,7 @@ export default function UserDetailsScreen() {
               <Text style={styles.info}>Personal Information</Text>
             </View>
             <InfoForm info="Email" value={user?.email} />
-            {/* <InfoForm
-              info="Birthday"
-              value={user.birthday.toLocaleDateString('en-GB')}
-            /> */}
+            <InfoForm info="Birthday" value={formattedDate(user?.birthDate)} />
             <View style={[styles.infoContainer, {marginTop: 20}]}>
               <Text style={styles.info}>DevoWorker Information</Text>
             </View>

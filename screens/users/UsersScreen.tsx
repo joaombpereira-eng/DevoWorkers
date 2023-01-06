@@ -6,16 +6,11 @@ import {TabStackParamList} from '../../navigator/TabNavigator';
 import {RootStackParamList} from '../../navigator/RootNavigator';
 import {UserData} from '../../data/users';
 import {useEffect, useLayoutEffect, useState} from 'react';
-import {Dispatch} from 'redux';
 import UserCard from '../../components/cards/UserCard';
 import Input from '../../components/forms/Input';
 import IconButton from '../../components/buttons/IconButton';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  selectUsers,
-  setError,
-  setUsers,
-} from '../../redux/slices/users/usersListSlice';
+import {selectUsers, setUsers} from '../../redux/slices/users/usersListSlice';
 import {selectUserLogged} from '../../redux/slices/login/loginSlice';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -109,7 +104,7 @@ export default function UsersScreen() {
         <FlatList
           data={filteredData}
           renderItem={({item}) => <UserCard {...item} />}
-          //keyExtractor={item => (item.id + Math.random()).toString()}
+          keyExtractor={item => (item.userId + Math.random()).toString()}
         />
       </View>
     </View>
