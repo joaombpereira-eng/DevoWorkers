@@ -10,8 +10,14 @@ import ProjectCard from '../../components/cards/ProjectCard';
 import {useEffect, useState} from 'react';
 import {ProjectData} from '../../data/projects';
 import {status} from '../../data/status';
-import {useSelector} from 'react-redux';
-import {selectProjects} from '../../redux/slices/projects/projectsListSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  selectProjects,
+  setProjects,
+} from '../../redux/slices/projects/projectsListSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {BASE_URL} from '../../util/constants';
+import axios from 'axios';
 
 export type ProjectsScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList, 'Projects'>,
@@ -24,9 +30,30 @@ export default function ProjectsScreen() {
   const [dateAscending, setDateAscending] = useState<boolean>(false);
   const [nameAscending, setNameAscending] = useState<boolean>(true);
   const [nameSort, setNameSort] = useState<boolean>(true);
-  const projects = useSelector(selectProjects);
+  const {projects, loading, error} = useSelector(selectProjects);
+  const dispatch = useDispatch();
+
+  async function fetchProjects() {
+    try {
+      const token = await AsyncStorage.getItem('AccessToken');
+      await axios
+        .get(`${BASE_URL}/project`, {
+          headers: {
+            Authorization: 'bearer ' + token,
+          },
+        })
+        .then(res => {
+          console.log(res);
+          dispatch(setProjects(res.data));
+        });
+    } catch (e) {
+      console.log('error');
+      console.log(e);
+    }
+  }
 
   useEffect(() => {
+    fetchProjects();
     setFilteredData(projects);
   }, [projects]);
 

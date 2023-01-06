@@ -1,24 +1,25 @@
-import {View, Text, StyleSheet, FlatList} from 'react-native';
+import {View, Text, StyleSheet, FlatList, Alert} from 'react-native';
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
-import {
-  CompositeNavigationProp,
-  useNavigation,
-  useRoute,
-  RouteProp,
-} from '@react-navigation/native';
+import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {TabStackParamList} from '../../navigator/TabNavigator';
 import {RootStackParamList} from '../../navigator/RootNavigator';
 import {UserData} from '../../data/users';
 import {useEffect, useState} from 'react';
+import {Dispatch} from 'redux';
 import UserCard from '../../components/cards/UserCard';
 import Input from '../../components/forms/Input';
 import IconButton from '../../components/buttons/IconButton';
-import {useSelector} from 'react-redux';
-import {selectUsers} from '../../redux/slices/users/usersListSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  selectUsers,
+  setError,
+  setUsers,
+} from '../../redux/slices/users/usersListSlice';
 import {selectUserLogged} from '../../redux/slices/login/loginSlice';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {BASE_URL} from '../../util/constants';
 
 export type UsersScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList, 'Users'>,
@@ -28,13 +29,33 @@ export type UsersScreenNavigationProps = CompositeNavigationProp<
 export default function UsersScreen() {
   const [filteredData, setFilteredData] = useState<UserData[]>([]);
   const [search, setSearch] = useState<string>('');
-  const users = useSelector(selectUsers);
+  const dispatch = useDispatch();
+  const {users, loading, error} = useSelector(selectUsers);
   const navigation = useNavigation<UsersScreenNavigationProps>();
   const userLogged = useSelector(selectUserLogged);
 
+  async function fetchUsers() {
+    try {
+      const token = await AsyncStorage.getItem('AccessToken');
+      await axios
+        .get(`${BASE_URL}/user`, {
+          headers: {
+            Authorization: 'bearer ' + token,
+          },
+        })
+        .then(res => {
+          dispatch(setUsers(res.data));
+        });
+    } catch (e) {
+      console.log('error');
+      console.log(e);
+    }
+  }
+
   useEffect(() => {
+    fetchUsers();
     setFilteredData(users);
-  }, [users]);
+  }, [users, dispatch]);
 
   function searchFilter(text: string) {
     if (text) {
@@ -66,7 +87,7 @@ export default function UsersScreen() {
       <View style={styles.headerContainer}>
         <Text style={styles.title}>Users</Text>
         <View style={styles.iconsContainer}>
-          {userLogged.role.name === 'SysAdmin' && (
+          {userLogged.role === 'SysAdmin' && (
             <IconButton
               name="user-plus"
               color="black"

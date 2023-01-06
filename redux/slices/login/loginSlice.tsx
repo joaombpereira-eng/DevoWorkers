@@ -8,7 +8,7 @@ const initialState: UserData = {
   name: '',
   email: '',
   password: '',
-  role: roles[0],
+  role: '',
   birthday: new Date(),
   avatar: '',
   project: [],

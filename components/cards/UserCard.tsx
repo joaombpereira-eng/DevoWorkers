@@ -10,7 +10,7 @@ type Props = {
   id: number;
   name: string;
   email: string;
-  role: Role;
+  role: string;
   password: string;
   birthday: Date;
   avatar: string;
@@ -48,17 +48,17 @@ export default function UserCard({
             </View>
             <View>
               <View style={styles.roleContainer}>
-                <Text style={styles.role}>{role.name}</Text>
+                <Text style={styles.role}>{role}</Text>
               </View>
             </View>
           </View>
-          <View style={styles.avatarContainer}>
+          {/* <View style={styles.avatarContainer}>
             <Image
               source={{uri: avatar}}
               style={styles.avatar}
               resizeMode="contain"
             />
-          </View>
+          </View> */}
         </View>
       </TouchableOpacity>
     </View>

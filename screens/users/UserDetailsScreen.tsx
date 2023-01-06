@@ -28,6 +28,11 @@ import {
 } from '../../redux/slices/users/usersListSlice';
 import {RootState} from '../../redux/store/store';
 import {selectUserLogged} from '../../redux/slices/login/loginSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import {BASE_URL} from '../../util/constants';
+import {setUser} from '../../redux/slices/users/userSlice';
+import {useEffect} from 'react';
 
 type UserDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -48,11 +53,35 @@ export default function UserDetailsScreen() {
   const dispatch = useDispatch();
   const userLogged = useSelector(selectUserLogged);
 
-  const moreThanOneProject: boolean = user.project.length > 1;
+  async function getUserById(id: number) {
+    try {
+      const token = await AsyncStorage.getItem('AccessToken');
+      await axios
+        .get(`${BASE_URL}/user/${id}`, {
+          headers: {
+            Authorization: 'bearer ' + token,
+          },
+        })
+        .then(res => {
+          console.log('user');
+          console.log(res.data);
+          dispatch(setUser(res.data));
+        });
+    } catch (e) {
+      console.log('error');
+      console.log(e);
+    }
+  }
 
-  const projectFilter: ProjectData[] = projects.filter(item =>
+  useEffect(() => {
+    getUserById(userId);
+  }, [dispatch]);
+
+  //const moreThanOneProject: boolean = user.project.length > 1;
+
+  /* const projectFilter: ProjectData[] = projects.filter(item =>
     user.project.includes(item.projectId),
-  );
+  ); */
 
   function onDelete() {
     dispatch(removeUser(user));
@@ -82,35 +111,40 @@ export default function UserDetailsScreen() {
               <Text style={styles.info}>Personal Information</Text>
             </View>
             <InfoForm info="Email" value={user.email} />
-            <InfoForm
+            {/* <InfoForm
               info="Birthday"
               value={user.birthday.toLocaleDateString('en-GB')}
-            />
+            /> */}
             <View style={[styles.infoContainer, {marginTop: 20}]}>
               <Text style={styles.info}>DevoWorker Information</Text>
             </View>
-            <InfoForm info="Role" value={user.role.name} />
+            <InfoForm info="Role" value={user.role} />
             <View style={styles.workContainer}>
               <View style={styles.infoWorkContainer}>
                 <Text style={styles.infoWork}>
-                  {moreThanOneProject ? 'Projects' : 'Project'}
+                  {/*  {moreThanOneProject ? 'Projects' : 'Project'} */}
+                  Projects
                 </Text>
               </View>
-              {projectFilter.map(item => (
-                <TouchableOpacity
-                  onPress={() => {
-                    dispatch(setProject(item));
-                    navigation.navigate('ProjectDetails', {
-                      projectId: item.projectId,
-                    });
-                  }}
-                  key={item.projectId}
-                  style={styles.valueContainer}>
-                  <Text style={styles.value}>{item.name}</Text>
-                </TouchableOpacity>
-              ))}
+              {projects.map(
+                (
+                  item, // change project to projectsFilter in the future
+                ) => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      dispatch(setProject(item));
+                      navigation.navigate('ProjectDetails', {
+                        projectId: item.projectId,
+                      });
+                    }}
+                    key={item.projectId}
+                    style={styles.valueContainer}>
+                    <Text style={styles.value}>{item.name}</Text>
+                  </TouchableOpacity>
+                ),
+              )}
             </View>
-            {userLogged.role.name === 'SysAdmin' &&
+            {userLogged.role === 'SysAdmin' &&
               userLogged.name !== user.name && (
                 <View style={styles.buttonContainer}>
                   <Button deleteStyle={styles.deleteButton} onPress={onDelete}>

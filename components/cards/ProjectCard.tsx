@@ -4,13 +4,12 @@ import {useNavigation} from '@react-navigation/native';
 import {ProjectsScreenNavigationProps} from '../../screens/projects/ProjectsScreen';
 import {setProject} from '../../redux/slices/projects/projectSlice';
 import {UserData} from '../../data/users';
-import {Status} from '../../data/status';
 
 type Props = {
   projectId: string;
   name: string;
   workForce: UserData[];
-  status: Status;
+  status: string;
   logo: string;
   startingDate: Date;
   endDate: Date;
@@ -53,12 +52,12 @@ export default function ProjectCard({
           <View>
             <View style={styles.infoContainer}>
               <Text style={styles.name}>{name}</Text>
-              <Text style={styles.startDate}>
+              {/* <Text style={styles.startDate}>
                 {startingDate.toLocaleDateString('en-GB')}
-              </Text>
+              </Text> */}
             </View>
             <View style={styles.statusContainer}>
-              <Text style={styles.status}>{status.name}</Text>
+              <Text style={styles.status}>{status}</Text>
             </View>
           </View>
           <View style={styles.logoContainer}>
