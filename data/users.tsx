@@ -8,7 +8,7 @@ export type UserData = {
   role: string;
   birthday: Date;
   avatar: string;
-  project: string[];
+  projects: string[];
 };
 
 export const users: UserData[] = [
@@ -20,7 +20,7 @@ export const users: UserData[] = [
     role: 'roles[0]',
     birthday: new Date('1995-07-28'),
     avatar: 'https://picsum.photos/seed/picsum/200/300',
-    project: ['0', '2'],
+    projects: ['0', '2'],
   },
   {
     userId: 1,
@@ -30,7 +30,7 @@ export const users: UserData[] = [
     role: 'roles[1]',
     birthday: new Date('1979-11-30'),
     avatar: 'https://picsum.photos/seed/picsum1/200/300',
-    project: ['3', '4'],
+    projects: ['3', '4'],
   },
   {
     userId: 2,
@@ -40,7 +40,7 @@ export const users: UserData[] = [
     role: 'roles[2]',
     birthday: new Date('2000-01-16'),
     avatar: 'https://picsum.photos/seed/picsum2/200/300',
-    project: ['1', '2'],
+    projects: ['1', '2'],
   },
   {
     userId: 3,
@@ -50,7 +50,7 @@ export const users: UserData[] = [
     role: 'roles[3]',
     birthday: new Date('1998-02-01'),
     avatar: 'https://picsum.photos/seed/picsum3/200/300',
-    project: ['4', '2'],
+    projects: ['4', '2'],
   },
   {
     userId: 4,
@@ -60,7 +60,7 @@ export const users: UserData[] = [
     role: 'roles[4]',
     birthday: new Date('1992-09-06'),
     avatar: 'https://picsum.photos/seed/picsum4/200/300',
-    project: ['0', '3'],
+    projects: ['0', '3'],
   },
   {
     userId: 5,
@@ -70,6 +70,6 @@ export const users: UserData[] = [
     role: 'roles[2]',
     birthday: new Date('1987-01-16'),
     avatar: 'https://picsum.photos/seed/picsum5/200/300',
-    project: ['1'],
+    projects: ['1'],
   },
 ];

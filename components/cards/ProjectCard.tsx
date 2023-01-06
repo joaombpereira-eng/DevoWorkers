@@ -3,25 +3,24 @@ import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {ProjectsScreenNavigationProps} from '../../screens/projects/ProjectsScreen';
 import {setProject} from '../../redux/slices/projects/projectSlice';
-import {UserData} from '../../data/users';
 
 type Props = {
   projectId: string;
   name: string;
-  workForce: UserData[];
+  workforce: number[];
   status: string;
   logo: string;
-  startingDate: Date;
+  startDate: Date;
   endDate: Date;
   budget: number;
 };
 
 export default function ProjectCard({
   name,
-  startingDate,
+  startDate,
   status,
   projectId,
-  workForce,
+  workforce,
   endDate,
   budget,
   logo,
@@ -33,10 +32,10 @@ export default function ProjectCard({
     dispatch(
       setProject({
         name,
-        startingDate,
+        startDate,
         status,
         projectId,
-        workForce,
+        workforce,
         endDate,
         budget,
         logo,

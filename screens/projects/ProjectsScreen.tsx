@@ -42,8 +42,6 @@ export default function ProjectsScreen() {
           },
         })
         .then(res => {
-          console.log('response project');
-          console.log(res.data);
           setFilteredData(res.data);
         });
     } catch (e) {
@@ -69,9 +67,9 @@ export default function ProjectsScreen() {
       let dateSorted = [...filteredData];
       dateSorted = dateSorted.sort((a, b) => {
         if (dateAscending) {
-          return new Date(a.startingDate) > new Date(b.startingDate) ? 1 : -1;
+          return new Date(a.startDate) > new Date(b.startDate) ? 1 : -1;
         } else {
-          return new Date(a.startingDate) < new Date(b.startingDate) ? 1 : -1;
+          return new Date(a.startDate) < new Date(b.startDate) ? 1 : -1;
         }
       });
       return dateSorted;

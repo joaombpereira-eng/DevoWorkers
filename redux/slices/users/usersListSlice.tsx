@@ -10,7 +10,7 @@ export type UserData = {
   role: string;
   birthday: Date;
   avatar: string;
-  project: string[];
+  projects: string[];
 };
 
 type UserState = {
@@ -34,7 +34,7 @@ const usersListSlice = createSlice({
     },
     removeUser: (state, action) => {
       const index = state.users.findIndex(
-        item => item.id === action.payload.id,
+        item => item.userId === action.payload.userId,
       );
 
       let newUsers = [...state.users];
@@ -67,6 +67,6 @@ export const {addUser, removeUser, setError, setLoading, setUsers} =
 
 export const selectUsers = (state: RootState) => state.usersList;
 export const selectUserById = (state: RootState, id: number) =>
-  state.usersList.users.filter(item => item.id === id);
+  state.usersList.users.filter(item => item.userId === id);
 
 export default usersListSlice.reducer;

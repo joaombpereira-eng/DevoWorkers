@@ -1,16 +1,14 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {projects} from '../../../data/projects';
-import {Status} from '../../../data/status';
 import {UserData} from '../../../data/users';
 import {RootState} from '../../store/store';
 
 export type ProjectData = {
   projectId: string;
   name: string;
-  workForce: UserData[];
+  workforce: number[];
   status: string;
   logo: string;
-  startingDate: Date;
+  startDate: Date;
   endDate: Date;
   budget: number;
 };

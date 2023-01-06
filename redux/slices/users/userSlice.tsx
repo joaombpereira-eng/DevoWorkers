@@ -11,7 +11,7 @@ const initialState: UserData = {
   role: '',
   birthday: new Date(),
   avatar: '',
-  project: [],
+  projects: [],
 };
 
 const userSlice = createSlice({
@@ -25,7 +25,7 @@ const userSlice = createSlice({
       state.birthday = action.payload.birthday;
       state.role = action.payload.role;
       state.avatar = action.payload.avatar;
-      state.project = action.payload.project;
+      state.projects = action.payload.project;
     },
   },
 });

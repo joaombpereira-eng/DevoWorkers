@@ -3,11 +3,6 @@ import {useNavigation} from '@react-navigation/native';
 import {UsersScreenNavigationProps} from '../../screens/users/UsersScreen';
 import {setUser} from '../../redux/slices/users/userSlice';
 import {useDispatch} from 'react-redux';
-import {Role} from '../../data/roles';
-import {ProjectData} from '../../data/projects';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-import {BASE_URL} from '../../util/constants';
 
 type Props = {
   userId: number;
@@ -17,7 +12,7 @@ type Props = {
   password: string;
   birthday: Date;
   avatar: string;
-  project: string[];
+  projects: string[];
 };
 
 export default function UserCard({
@@ -28,17 +23,15 @@ export default function UserCard({
   password,
   birthday,
   avatar,
-  project,
+  projects,
 }: Props) {
   const navigation = useNavigation<UsersScreenNavigationProps>();
   const dispatch = useDispatch();
 
   function onPress() {
     dispatch(
-      setUser({userId, name, email, role, password, birthday, avatar, project}),
+      setUser({userId, name, email, role, password, birthday, avatar, projects}),
     );
-    console.log('userId Card');
-    console.log(userId);
     navigation.navigate('UserDetails', {userId: userId});
   }
 

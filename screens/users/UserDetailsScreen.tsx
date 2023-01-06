@@ -21,7 +21,6 @@ import {setProject} from '../../redux/slices/projects/projectSlice';
 import InfoForm from '../../components/forms/InfoForm';
 import IconButton from '../../components/buttons/IconButton';
 import Button from '../../components/buttons/Button';
-import {projects} from '../../data/projects';
 import {removeUser} from '../../redux/slices/users/usersListSlice';
 import {selectUserLogged} from '../../redux/slices/login/loginSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -29,6 +28,7 @@ import axios from 'axios';
 import {BASE_URL} from '../../util/constants';
 import {useEffect, useState} from 'react';
 import {UserData} from '../../data/users';
+import {projects} from '../../data/projects';
 
 type UserDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -65,11 +65,11 @@ export default function UserDetailsScreen() {
     getUserById(userId);
   }, []);
 
-  //const moreThanOneProject: boolean = user.project.length > 1;
-
-  /* const projectFilter: ProjectData[] = projects.filter(item =>
-    user.project.includes(item.projectId),
-  ); */
+  const projectsFilter = projects.filter(item => {
+    if (user?.projects.includes(item.projectId)) {
+      return true;
+    }
+  });
 
   function onDelete() {
     dispatch(removeUser(user));
@@ -109,28 +109,21 @@ export default function UserDetailsScreen() {
             <InfoForm info="Role" value={user?.role} />
             <View style={styles.workContainer}>
               <View style={styles.infoWorkContainer}>
-                <Text style={styles.infoWork}>
-                  {/*  {moreThanOneProject ? 'Projects' : 'Project'} */}
-                  Projects
-                </Text>
+                <Text style={styles.infoWork}>Projects</Text>
               </View>
-              {projects.map(
-                (
-                  item, // change project to projectsFilter in the future
-                ) => (
-                  <TouchableOpacity
-                    onPress={() => {
-                      dispatch(setProject(item));
-                      navigation.navigate('ProjectDetails', {
-                        projectId: item.projectId,
-                      });
-                    }}
-                    key={item.projectId}
-                    style={styles.valueContainer}>
-                    <Text style={styles.value}>{item.name}</Text>
-                  </TouchableOpacity>
-                ),
-              )}
+              {projectsFilter.map(item => (
+                <TouchableOpacity
+                  onPress={() => {
+                    dispatch(setProject(item));
+                    navigation.navigate('ProjectDetails', {
+                      projectId: item.projectId,
+                    });
+                  }}
+                  key={item.projectId}
+                  style={styles.valueContainer}>
+                  <Text style={styles.value}>{item.name}</Text>
+                </TouchableOpacity>
+              ))}
             </View>
             {userLogged.role === 'SysAdmin' &&
               userLogged.name !== user?.name && (

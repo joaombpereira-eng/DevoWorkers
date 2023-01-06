@@ -6,10 +6,10 @@ import {RootState} from '../../store/store';
 const initialState: ProjectData = {
   projectId: '',
   name: '',
-  workForce: [],
+  workforce: [],
   status: '',
   logo: '',
-  startingDate: new Date(),
+  startDate: new Date(),
   endDate: new Date(),
   budget: 0,
 };
@@ -20,10 +20,10 @@ const projectSlice = createSlice({
   reducers: {
     setProject: (state, action) => {
       state.name = action.payload.name;
-      state.workForce = action.payload.workForce;
+      state.workforce = action.payload.workForce;
       state.status = action.payload.status;
       state.logo = action.payload.logo;
-      state.startingDate = action.payload.startingDate;
+      state.startDate = action.payload.startingDate;
       state.endDate = action.payload.endDate;
       state.budget = action.payload.budget;
     },
