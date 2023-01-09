@@ -8,6 +8,8 @@ import {useState} from 'react';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../util/constants';
+import {useDispatch} from 'react-redux';
+import {setUserLogged} from '../redux/slices/login/loginSlice';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -18,6 +20,7 @@ export default function LoginScreen() {
   const navigation = useNavigation<LoginScreenNavigationProp>();
   const [emailInput, setEmailInput] = useState<string>('');
   const [passwordInput, setPasswordInput] = useState<string>('');
+  const dispatch = useDispatch();
 
   const validEmail: boolean = emailInput.includes('@');
   const validPassword: boolean = passwordInput.length > 6;
@@ -46,6 +49,7 @@ export default function LoginScreen() {
   function loginHandler() {
     if (validEmail && validPassword) {
       login(emailInput, passwordInput);
+      dispatch(setUserLogged({email: emailInput}));
       cleanInputs();
     } else {
       Alert.alert('Login failed', 'Your email or password is incorrect.');

@@ -26,8 +26,8 @@ export default function UsersScreen() {
   const [search, setSearch] = useState<string>('');
   const dispatch = useDispatch();
   const {users, loading, error} = useSelector(selectUsers);
+  const {email} = useSelector(selectUserLogged);
   const navigation = useNavigation<UsersScreenNavigationProps>();
-  const userLogged = useSelector(selectUserLogged);
 
   async function fetchUsers() {
     try {
@@ -46,7 +46,7 @@ export default function UsersScreen() {
 
   useLayoutEffect(() => {
     fetchUsers();
-    //dispatch(setUsers(filteredData));
+    dispatch(setUsers(filteredData));
   }, []);
 
   function searchFilter(text: string) {

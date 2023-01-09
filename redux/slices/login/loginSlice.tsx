@@ -1,31 +1,21 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {roles} from '../../../data/roles';
 import {UserData} from '../../../data/users';
 import {RootState} from '../../store/store';
 
-const initialState: UserData = {
-  userId: 0,
-  name: '',
+type LoginState = {
+  email: string;
+};
+
+const initialState: LoginState = {
   email: '',
-  password: '',
-  role: '',
-  birthDate: new Date(),
-  avatar: '',
-  projects: [],
 };
 
 const loginSlice = createSlice({
   name: 'login',
   initialState,
   reducers: {
-    setUserLogged: (state, action: PayloadAction<UserData>) => {
-      state.userId = action.payload.userId;
-      state.name = action.payload.name;
+    setUserLogged: (state, action) => {
       state.email = action.payload.email;
-      state.birthDate = action.payload.birthDate;
-      state.role = action.payload.role;
-      state.avatar = action.payload.avatar;
-      state.projects = action.payload.projects;
     },
   },
 });
