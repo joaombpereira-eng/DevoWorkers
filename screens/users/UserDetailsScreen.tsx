@@ -31,6 +31,7 @@ import {UserData} from '../../data/users';
 import {formattedDate} from '../../util/formattedDate';
 import {selectProjects} from '../../redux/slices/projects/projectsListSlice';
 import LoadingOverlay from '../../components/LoadingOverlay';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 type UserDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -109,13 +110,21 @@ export default function UserDetailsScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.exitButton}>
-        <IconButton
-          name="close"
-          color="black"
-          size={25}
-          onPress={navigation.goBack}
-        />
+      <View style={styles.iconsContainer}>
+        <View style={styles.editIcon}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('EditUser', {user: user})}>
+            <Icon name="edit" color="black" size={25} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.exitIcon}>
+          <IconButton
+            name="close"
+            color="black"
+            size={25}
+            onPress={navigation.goBack}
+          />
+        </View>
       </View>
       <View style={styles.bodyContainer}>
         <ScrollView>
@@ -183,10 +192,18 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
     marginBottom: 30,
   },
-  exitButton: {
-    alignItems: 'flex-end',
+  iconsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
     padding: 14,
     paddingRight: 20,
+  },
+  exitIcon: {
+    paddingLeft: 15,
+  },
+  editIcon: {
+    paddingTop: 4,
   },
   avatar: {
     justifyContent: 'center',

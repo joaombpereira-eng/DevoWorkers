@@ -20,11 +20,10 @@ import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {TabStackParamList} from '../../navigator/TabNavigator';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../navigator/RootNavigator';
-import {ProjectData} from '../../data/projects';
 import {Role, roles} from '../../data/roles';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {addUser} from '../../redux/slices/users/usersListSlice';
 import {formattedDate} from '../../util/formattedDate';
 import axios from 'axios';
@@ -65,7 +64,6 @@ export default function AddNewUserScreen() {
             role: role.name,
             birthDate: birthDate.toISOString(),
             avatar: imagePicked ? imagePicked : COMMON_AVATAR_BASE64,
-            //projects: projectSaved,
           },
           {
             headers: {
@@ -85,10 +83,6 @@ export default function AddNewUserScreen() {
   useEffect(() => {}, []);
 
   function saveHandler() {
-    /*     const projectSaved = projects
-      .filter(item => item.projectId === project?.projectId)
-      .map(item => item.name); */
-
     const validBirthday: boolean = birthDate < new Date();
     const validEmail: boolean = email.includes('@');
     const validName: boolean = name.trim().length > 1;
