@@ -57,10 +57,6 @@ export default function AddNewUserScreen() {
   async function addNewUser() {
     try {
       const token = await AsyncStorage.getItem('AccessToken');
-      console.log('role');
-      console.log(role.name);
-      console.log('birthdate');
-      console.log(birthDate.toISOString());
       await axios
         .post(
           `${BASE_URL}/user`,
@@ -71,6 +67,7 @@ export default function AddNewUserScreen() {
             role: role.name,
             birthDate: birthDate.toISOString(),
             avatar: '',
+            //projects: projectSaved,
           },
           {
             headers: {
@@ -80,8 +77,6 @@ export default function AddNewUserScreen() {
         )
         .then(res => {
           setNewUser(res.data);
-          console.log('res.data');
-          console.log(res.data);
         });
     } catch (e) {
       console.log('error add user');
@@ -112,8 +107,9 @@ export default function AddNewUserScreen() {
   }, []);
 
   function saveHandler() {
-    const projectSaved = projects.filter(item => item.name === project?.name);
-    const roleSaved = roles.indexOf(role);
+    const projectSaved = projects
+      .filter(item => item.projectId === project?.projectId)
+      .map(item => item.name);
 
     const validBirthday: boolean = birthDate < new Date();
     const validEmail: boolean = email.includes('@');
@@ -150,6 +146,8 @@ export default function AddNewUserScreen() {
         newUser,
       }),
     );
+    console.log('newUser');
+    console.log(newUser);
 
     navigation.navigate('Users');
   }
@@ -332,7 +330,7 @@ export default function AddNewUserScreen() {
           <Dropdown
             style={styles.dropdown}
             data={projects}
-            value={project?.name}
+            value={project?.projectId}
             onChange={item => setProject(item)}
             labelField="name"
             valueField="projectId"

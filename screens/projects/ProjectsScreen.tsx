@@ -9,8 +9,11 @@ import IconButton from '../../components/buttons/IconButton';
 import ProjectCard from '../../components/cards/ProjectCard';
 import {useEffect, useState} from 'react';
 import {ProjectData} from '../../data/projects';
-import {useSelector} from 'react-redux';
-import {selectProjects} from '../../redux/slices/projects/projectsListSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  selectProjects,
+  setProjects,
+} from '../../redux/slices/projects/projectsListSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../util/constants';
 import axios from 'axios';
@@ -26,6 +29,7 @@ export default function ProjectsScreen() {
   const [dateAscending, setDateAscending] = useState<boolean>(false);
   const [nameAscending, setNameAscending] = useState<boolean>(true);
   const [nameSort, setNameSort] = useState<boolean>(true);
+  const dispatch = useDispatch();
   const {projects, loading, error} = useSelector(selectProjects);
 
   async function fetchProjects() {
@@ -48,7 +52,7 @@ export default function ProjectsScreen() {
 
   useEffect(() => {
     fetchProjects();
-    setFilteredData(projects);
+    dispatch(setProjects(filteredData));
   }, [projects]);
 
   function onPressHandler(type: string) {

@@ -28,8 +28,8 @@ import axios from 'axios';
 import {BASE_URL} from '../../util/constants';
 import {useEffect, useState} from 'react';
 import {UserData} from '../../data/users';
-import {ProjectData} from '../../data/projects';
 import {formattedDate} from '../../util/formattedDate';
+import {selectProjects} from '../../redux/slices/projects/projectsListSlice';
 
 type UserDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -40,13 +40,13 @@ type UserDetailsScreenRouteProp = RouteProp<RootStackParamList, 'UserDetails'>;
 
 export default function UserDetailsScreen() {
   const [user, setUser] = useState<UserData>();
-  const [projects, setProjects] = useState<ProjectData[]>([]);
   const navigation = useNavigation<UserDetailsScreenNavigationProp>();
   const {
     params: {userId},
   } = useRoute<UserDetailsScreenRouteProp>();
   const dispatch = useDispatch();
   const userLogged = useSelector(selectUserLogged);
+  const {projects, loading, error} = useSelector(selectProjects);
 
   async function getUserById(id: number) {
     try {
@@ -58,32 +58,13 @@ export default function UserDetailsScreen() {
       });
       setUser(res.data);
     } catch (e) {
-      console.log('error');
-      console.log(e);
-    }
-  }
-
-  async function fetchProjects() {
-    try {
-      const token = await AsyncStorage.getItem('AccessToken');
-      await axios
-        .get(`${BASE_URL}/project`, {
-          headers: {
-            Authorization: 'bearer ' + token,
-          },
-        })
-        .then(res => {
-          setProjects(res.data);
-        });
-    } catch (e) {
-      console.log('error project');
+      console.log('error get user');
       console.log(e);
     }
   }
 
   useEffect(() => {
     getUserById(userId);
-    fetchProjects();
   }, []);
 
   const projectsFilter = projects.filter(item => {
