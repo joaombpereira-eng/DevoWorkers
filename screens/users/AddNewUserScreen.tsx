@@ -119,8 +119,6 @@ export default function AddNewUserScreen() {
         newUser,
       }),
     );
-    console.log('newUser');
-    console.log(newUser);
 
     navigation.navigate('Users');
   }

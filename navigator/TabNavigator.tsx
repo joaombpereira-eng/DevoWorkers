@@ -19,7 +19,7 @@ export default function TabNavigator() {
           if (route.name === 'Users') {
             return (
               <Icon
-                name="user"
+                name="users"
                 size={30}
                 color={focused ? '#f4cd8e' : '#EFEDEC'}
               />
