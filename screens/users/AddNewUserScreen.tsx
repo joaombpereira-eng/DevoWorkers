@@ -39,8 +39,6 @@ type AddNewUserScreenNavigationProp = CompositeNavigationProp<
 
 export default function AddNewUserScreen() {
   const [role, setRole] = useState<Role>(roles[0]);
-  const [projects, setProjects] = useState<ProjectData[]>([]);
-  const [project, setProject] = useState<ProjectData>();
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [birthDate, setBirthDate] = useState<Date>(new Date());
@@ -66,7 +64,7 @@ export default function AddNewUserScreen() {
             password: '12345678',
             role: role.name,
             birthDate: birthDate.toISOString(),
-            avatar: '',
+            avatar: imagePicked,
             //projects: projectSaved,
           },
           {
@@ -84,27 +82,7 @@ export default function AddNewUserScreen() {
     }
   }
 
-  async function fetchProjects() {
-    try {
-      const token = await AsyncStorage.getItem('AccessToken');
-      await axios
-        .get(`${BASE_URL}/project`, {
-          headers: {
-            Authorization: 'bearer ' + token,
-          },
-        })
-        .then(res => {
-          setProjects(res.data);
-        });
-    } catch (e) {
-      console.log('error project');
-      console.log(e);
-    }
-  }
-
-  useEffect(() => {
-    fetchProjects();
-  }, []);
+  useEffect(() => {}, []);
 
   function saveHandler() {
     /*     const projectSaved = projects
@@ -130,12 +108,12 @@ export default function AddNewUserScreen() {
       return;
     }
 
-    /* if (!imagePicked) {
+    if (!imagePicked) {
       Alert.alert('Pick an Image!');
       return;
-    } */
+    }
 
-    if (!name || !project || !role) {
+    if (!name || !role) {
       Alert.alert('Fill the Boxes!');
       return;
     }
@@ -199,10 +177,11 @@ export default function AddNewUserScreen() {
       let result = await launchImageLibrary({
         mediaType: 'photo',
         quality: 1,
+        includeBase64: true,
       });
 
       if (!result.didCancel) {
-        setImagePicked(result.assets[0].uri);
+        setImagePicked(result.assets[0].base64);
       }
     }
   }
@@ -215,12 +194,11 @@ export default function AddNewUserScreen() {
       let result = await launchCamera({
         mediaType: 'photo',
         quality: 1,
+        includeBase64: true,
       });
 
-      console.log(result);
-
       if (!result.didCancel) {
-        setImagePicked(result.assets[0].uri);
+        setImagePicked(result.assets[0].base64);
       }
     }
   }
@@ -250,7 +228,7 @@ export default function AddNewUserScreen() {
 
   let imageOrIcon = imagePicked ? (
     <Image
-      source={{uri: imagePicked}}
+      source={{uri: `data:image/png;base64,${imagePicked}`}}
       style={styles.image}
       resizeMode="contain"
     />

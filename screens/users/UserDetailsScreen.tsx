@@ -57,8 +57,6 @@ export default function UserDetailsScreen() {
         },
       });
       setUser(res.data);
-      console.log('res.data get user');
-      console.log(res.data);
     } catch (e) {
       console.log('error get user');
       console.log(e);
@@ -73,8 +71,6 @@ export default function UserDetailsScreen() {
           Authorization: 'bearer ' + token,
         },
       });
-      console.log('res.data delete user');
-      console.log(res.data);
     } catch (e) {
       console.log('error delete user');
       console.log(e);
@@ -92,6 +88,8 @@ export default function UserDetailsScreen() {
   });
 
   function onDelete() {
+    console.log('user?.userId');
+    console.log(user?.userId);
     deleteUser(user?.userId);
     dispatch(removeUser(user));
     navigation.navigate('Users');
@@ -109,9 +107,12 @@ export default function UserDetailsScreen() {
       </View>
       <View style={styles.bodyContainer}>
         <ScrollView>
-          {/* <View style={styles.avatar}>
-            <Image source={{uri: user.avatar}} style={styles.image} />
-          </View> */}
+          <View style={styles.avatar}>
+            <Image
+              source={{uri: `data:image/png;base64,${user?.avatar}`}}
+              style={styles.image}
+            />
+          </View>
           <View>
             <View style={styles.nameContainer}>
               <Text style={styles.name}>{user?.name}</Text>

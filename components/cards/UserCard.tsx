@@ -59,13 +59,13 @@ export default function UserCard({
               </View>
             </View>
           </View>
-          {/* <View style={styles.avatarContainer}>
+          <View style={styles.avatarContainer}>
             <Image
-              source={{uri: avatar}}
+              source={{uri: `data:image/png;base64,${avatar}`}}
               style={styles.avatar}
               resizeMode="contain"
             />
-          </View> */}
+          </View>
         </View>
       </TouchableOpacity>
     </View>

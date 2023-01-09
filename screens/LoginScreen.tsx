@@ -37,6 +37,7 @@ export default function LoginScreen() {
         password: password,
       });
       AsyncStorage.setItem('AccessToken', res.data.data);
+      AsyncStorage.setItem('MyUserEmail', email);
       axios.defaults.headers.common[
         'Authorization'
       ] = `bearer ${res.data.data}`;

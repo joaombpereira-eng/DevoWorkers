@@ -28,6 +28,7 @@ export default function UsersScreen() {
   const {users, loading, error} = useSelector(selectUsers);
   const {email} = useSelector(selectUserLogged);
   const navigation = useNavigation<UsersScreenNavigationProps>();
+  let myUser: UserData;
 
   async function fetchUsers() {
     try {
@@ -44,9 +45,15 @@ export default function UsersScreen() {
     }
   }
 
+  function getMyUser() {
+    const myUserArray = users.filter(user => user.email === email);
+    myUser = myUserArray[0];
+  }
+
   useLayoutEffect(() => {
     fetchUsers();
     dispatch(setUsers(filteredData));
+    getMyUser();
   }, []);
 
   function searchFilter(text: string) {
@@ -79,7 +86,7 @@ export default function UsersScreen() {
       <View style={styles.headerContainer}>
         <Text style={styles.title}>Users</Text>
         <View style={styles.iconsContainer}>
-          {/*  {userLogged.role === 'SysAdmin' && ( */}
+          {/* {myUser.role === 'SysAdmin' && ( */}
           <IconButton
             name="user-plus"
             color="black"
