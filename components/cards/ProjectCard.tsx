@@ -58,9 +58,12 @@ export default function ProjectCard({
               <Text style={styles.status}>{status}</Text>
             </View>
           </View>
-          {/* <View style={styles.logoContainer}>
-            <Image source={{uri: logo}} style={styles.logo} />
-          </View> */}
+          <View style={styles.logoContainer}>
+            <Image
+              source={{uri: `data:image/png;base64,${logo}`}}
+              style={styles.logo}
+            />
+          </View>
         </View>
       </TouchableOpacity>
     </View>

@@ -84,9 +84,12 @@ export default function ProjectDetailsScreen() {
       </View>
       <View style={styles.bodyContainer}>
         <ScrollView>
-          {/* <View style={styles.logoContainer}>
-            <Image source={{uri: project?.logo}} style={styles.logo} />
-          </View> */}
+          <View style={styles.logoContainer}>
+            <Image
+              source={{uri: `data:image/png;base64,${project?.logo}`}}
+              style={styles.logo}
+            />
+          </View>
           <View>
             <View style={styles.nameContainer}>
               <Text style={styles.name}>{project?.name}</Text>
