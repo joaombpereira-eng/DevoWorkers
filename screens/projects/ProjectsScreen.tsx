@@ -43,6 +43,8 @@ export default function ProjectsScreen() {
         })
         .then(res => {
           setFilteredData(res.data);
+          console.log('res.data');
+          console.log(res.data);
         });
     } catch (e) {
       console.log('error project');
@@ -53,6 +55,8 @@ export default function ProjectsScreen() {
   useEffect(() => {
     fetchProjects();
     dispatch(setProjects(filteredData));
+    console.log('filteredData');
+    console.log(filteredData);
   }, [projects]);
 
   function onPressHandler(type: string) {

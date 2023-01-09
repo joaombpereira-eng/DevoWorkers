@@ -73,6 +73,11 @@ export default function UserDetailsScreen() {
     }
   });
 
+  console.log(projectsFilter);
+  console.log('projectsFilter');
+  console.log('projects');
+  console.log(projects);
+
   function onDelete() {
     dispatch(removeUser(user));
     navigation.navigate('Users');

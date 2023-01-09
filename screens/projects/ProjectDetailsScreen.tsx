@@ -27,6 +27,7 @@ import {BASE_URL} from '../../util/constants';
 import axios from 'axios';
 import {UserData} from '../../data/users';
 import {formattedDate} from '../../util/formattedDate';
+import {selectUsers} from '../../redux/slices/users/usersListSlice';
 
 type ProjectDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -37,12 +38,14 @@ type ProjectScreenRouteProp = RouteProp<RootStackParamList, 'ProjectDetails'>;
 
 export default function ProjectDetailsScreen() {
   const [project, setProject] = useState<ProjectData>();
-  const [users, setUsers] = useState<UserData[]>([]);
   const navigation = useNavigation<ProjectDetailsScreenNavigationProp>();
   const {
     params: {projectId},
   } = useRoute<ProjectScreenRouteProp>();
   const dispatch = useDispatch();
+  const {users, loading, error} = useSelector(selectUsers);
+  console.log('users');
+  console.log(users);
 
   async function getProjectById(id: string) {
     try {
@@ -59,24 +62,8 @@ export default function ProjectDetailsScreen() {
     }
   }
 
-  async function fetchUsers() {
-    try {
-      const token = await AsyncStorage.getItem('AccessToken');
-      const res = await axios.get(`${BASE_URL}/user`, {
-        headers: {
-          Authorization: 'bearer ' + token,
-        },
-      });
-      setUsers(res.data);
-    } catch (e) {
-      console.log('error');
-      console.log(e);
-    }
-  }
-
   useEffect(() => {
     getProjectById(projectId);
-    fetchUsers();
   }, []);
 
   const workforceFilter = users?.filter(item => {

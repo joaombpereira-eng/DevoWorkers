@@ -25,6 +25,8 @@ const projectsListSlice = createSlice({
       state.loading = false;
       state.error = false;
       state.projects = action.payload;
+      console.log('state.projects');
+      console.log(state.projects);
     },
     setError: state => {
       state.error = true;

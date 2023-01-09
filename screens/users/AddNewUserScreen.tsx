@@ -107,9 +107,9 @@ export default function AddNewUserScreen() {
   }, []);
 
   function saveHandler() {
-    const projectSaved = projects
+    /*     const projectSaved = projects
       .filter(item => item.projectId === project?.projectId)
-      .map(item => item.name);
+      .map(item => item.name); */
 
     const validBirthday: boolean = birthDate < new Date();
     const validEmail: boolean = email.includes('@');
@@ -324,7 +324,7 @@ export default function AddNewUserScreen() {
             placeholderStyle={styles.placeholder}
             selectedTextStyle={styles.selectedText}
           />
-          <View style={styles.projectInfoContainer}>
+          {/* <View style={styles.projectInfoContainer}>
             <Text style={styles.projectInfo}>Project</Text>
           </View>
           <Dropdown
@@ -337,7 +337,7 @@ export default function AddNewUserScreen() {
             placeholder="Select Project"
             placeholderStyle={styles.placeholder}
             selectedTextStyle={styles.selectedText}
-          />
+          /> */}
           <View style={styles.buttonContainer}>
             <Button onPress={saveHandler}>Save</Button>
           </View>
