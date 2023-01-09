@@ -30,6 +30,7 @@ import {useEffect, useState} from 'react';
 import {UserData} from '../../data/users';
 import {formattedDate} from '../../util/formattedDate';
 import {selectProjects} from '../../redux/slices/projects/projectsListSlice';
+import LoadingOverlay from '../../components/LoadingOverlay';
 
 type UserDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -39,6 +40,7 @@ type UserDetailsScreenNavigationProp = CompositeNavigationProp<
 type UserDetailsScreenRouteProp = RouteProp<RootStackParamList, 'UserDetails'>;
 
 export default function UserDetailsScreen() {
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [user, setUser] = useState<UserData>();
   const navigation = useNavigation<UserDetailsScreenNavigationProp>();
   const {
@@ -49,6 +51,7 @@ export default function UserDetailsScreen() {
   const {projects, loading, error} = useSelector(selectProjects);
 
   async function getUserById(id: number) {
+    setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
       const res = await axios.get(`${BASE_URL}/user/${id}`, {
@@ -57,13 +60,16 @@ export default function UserDetailsScreen() {
         },
       });
       setUser(res.data);
+      setIsSubmitting(false);
     } catch (e) {
       console.log('error get user');
       console.log(e);
+      setIsSubmitting(false);
     }
   }
 
   async function deleteUser(id?: number) {
+    setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
       const res = await axios.delete(`${BASE_URL}/user/${id}`, {
@@ -71,9 +77,11 @@ export default function UserDetailsScreen() {
           Authorization: 'bearer ' + token,
         },
       });
+      setIsSubmitting(false);
     } catch (e) {
       console.log('error delete user');
       console.log(e);
+      setIsSubmitting(false);
     }
   }
 
@@ -93,6 +101,10 @@ export default function UserDetailsScreen() {
     deleteUser(user?.userId);
     dispatch(removeUser(user));
     navigation.navigate('Users');
+  }
+
+  if (isSubmitting) {
+    return <LoadingOverlay />;
   }
 
   return (

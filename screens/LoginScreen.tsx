@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../util/constants';
 import {useDispatch} from 'react-redux';
 import {setUserLogged} from '../redux/slices/login/loginSlice';
+import LoadingOverlay from '../components/LoadingOverlay';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -20,6 +21,7 @@ export default function LoginScreen() {
   const navigation = useNavigation<LoginScreenNavigationProp>();
   const [emailInput, setEmailInput] = useState<string>('');
   const [passwordInput, setPasswordInput] = useState<string>('');
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const dispatch = useDispatch();
 
   const validEmail: boolean = emailInput.includes('@');
@@ -31,19 +33,20 @@ export default function LoginScreen() {
   }
 
   async function login(email: string, password: string) {
+    setIsSubmitting(true);
     try {
       const res = await axios.post(`${BASE_URL}/user/login`, {
         email: email,
         password: password,
       });
       AsyncStorage.setItem('AccessToken', res.data.data);
-      AsyncStorage.setItem('MyUserEmail', email);
       axios.defaults.headers.common[
         'Authorization'
       ] = `bearer ${res.data.data}`;
       navigation.navigate('Tab');
     } catch (e) {
       Alert.alert('Ops! There was a problem!', `Message: ${e}`);
+      setIsSubmitting(false);
     }
   }
 
@@ -55,6 +58,10 @@ export default function LoginScreen() {
     } else {
       Alert.alert('Login failed', 'Your email or password is incorrect.');
     }
+  }
+
+  if (isSubmitting) {
+    return <LoadingOverlay />;
   }
 
   return (

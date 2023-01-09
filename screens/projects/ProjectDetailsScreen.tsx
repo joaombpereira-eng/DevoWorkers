@@ -28,6 +28,7 @@ import axios from 'axios';
 import {UserData} from '../../data/users';
 import {formattedDate} from '../../util/formattedDate';
 import {selectUsers} from '../../redux/slices/users/usersListSlice';
+import LoadingOverlay from '../../components/LoadingOverlay';
 
 type ProjectDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -37,6 +38,7 @@ type ProjectDetailsScreenNavigationProp = CompositeNavigationProp<
 type ProjectScreenRouteProp = RouteProp<RootStackParamList, 'ProjectDetails'>;
 
 export default function ProjectDetailsScreen() {
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [project, setProject] = useState<ProjectData>();
   const navigation = useNavigation<ProjectDetailsScreenNavigationProp>();
   const {
@@ -48,6 +50,7 @@ export default function ProjectDetailsScreen() {
   console.log(users);
 
   async function getProjectById(id: string) {
+    setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
       const res = await axios.get(`${BASE_URL}/project/${id}`, {
@@ -56,9 +59,11 @@ export default function ProjectDetailsScreen() {
         },
       });
       setProject(res.data);
+      setIsSubmitting(false);
     } catch (e) {
       console.log('error');
       console.log(e);
+      setIsSubmitting(false);
     }
   }
 
@@ -71,6 +76,10 @@ export default function ProjectDetailsScreen() {
       return true;
     }
   });
+
+  if (isSubmitting) {
+    return <LoadingOverlay />;
+  }
 
   return (
     <View style={styles.container}>

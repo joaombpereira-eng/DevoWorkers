@@ -17,6 +17,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../util/constants';
 import axios from 'axios';
+import LoadingOverlay from '../../components/LoadingOverlay';
 
 export type ProjectsScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList, 'Projects'>,
@@ -24,6 +25,7 @@ export type ProjectsScreenNavigationProps = CompositeNavigationProp<
 >;
 
 export default function ProjectsScreen() {
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [filteredData, setFilteredData] = useState<ProjectData[]>([]);
   const [search, setSearch] = useState<string>('');
   const [dateAscending, setDateAscending] = useState<boolean>(false);
@@ -33,6 +35,7 @@ export default function ProjectsScreen() {
   const {projects, loading, error} = useSelector(selectProjects);
 
   async function fetchProjects() {
+    setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
       await axios
@@ -43,12 +46,14 @@ export default function ProjectsScreen() {
         })
         .then(res => {
           setFilteredData(res.data);
+          setIsSubmitting(false);
           console.log('res.data');
           console.log(res.data);
         });
     } catch (e) {
       console.log('error project');
       console.log(e);
+      setIsSubmitting(false);
     }
   }
 
@@ -110,6 +115,10 @@ export default function ProjectsScreen() {
       setFilteredData(projects);
       setSearch(text);
     }
+  }
+
+  if (isSubmitting) {
+    return <LoadingOverlay />;
   }
 
   return (

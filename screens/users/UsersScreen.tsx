@@ -15,6 +15,7 @@ import {selectUserLogged} from '../../redux/slices/login/loginSlice';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../util/constants';
+import LoadingOverlay from '../../components/LoadingOverlay';
 
 export type UsersScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList, 'Users'>,
@@ -22,6 +23,7 @@ export type UsersScreenNavigationProps = CompositeNavigationProp<
 >;
 
 export default function UsersScreen() {
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [filteredData, setFilteredData] = useState<UserData[]>([]);
   const [search, setSearch] = useState<string>('');
   const dispatch = useDispatch();
@@ -31,6 +33,7 @@ export default function UsersScreen() {
   let myUser: UserData;
 
   async function fetchUsers() {
+    setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
       const res = await axios.get(`${BASE_URL}/user`, {
@@ -39,9 +42,11 @@ export default function UsersScreen() {
         },
       });
       setFilteredData(res.data);
+      setIsSubmitting(false);
     } catch (e) {
       console.log('error');
       console.log(e);
+      setIsSubmitting(false);
     }
   }
 
@@ -78,7 +83,12 @@ export default function UsersScreen() {
       navigation.navigate('Login');
     } catch (e) {
       console.log(e);
+      setIsSubmitting(false);
     }
+  }
+
+  if (isSubmitting) {
+    return <LoadingOverlay />;
   }
 
   return (
