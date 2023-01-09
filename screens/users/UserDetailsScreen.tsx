@@ -57,8 +57,26 @@ export default function UserDetailsScreen() {
         },
       });
       setUser(res.data);
+      console.log('res.data get user');
+      console.log(res.data);
     } catch (e) {
       console.log('error get user');
+      console.log(e);
+    }
+  }
+
+  async function deleteUser(id?: number) {
+    try {
+      const token = await AsyncStorage.getItem('AccessToken');
+      const res = await axios.delete(`${BASE_URL}/user/${id}`, {
+        headers: {
+          Authorization: 'bearer ' + token,
+        },
+      });
+      console.log('res.data delete user');
+      console.log(res.data);
+    } catch (e) {
+      console.log('error delete user');
       console.log(e);
     }
   }
@@ -73,12 +91,8 @@ export default function UserDetailsScreen() {
     }
   });
 
-  console.log(projectsFilter);
-  console.log('projectsFilter');
-  console.log('projects');
-  console.log(projects);
-
   function onDelete() {
+    deleteUser(user?.userId);
     dispatch(removeUser(user));
     navigation.navigate('Users');
   }
