@@ -251,12 +251,14 @@ export default function AddNewUserScreen() {
             text={email}
             onChangeText={setEmail}
             isBirthday={false}
+            defaultValue=""
           />
           <InputForm
             info="Name"
             text={name}
             onChangeText={setName}
             isBirthday={false}
+            defaultValue=""
           />
           <DateForm
             info="Birthday"

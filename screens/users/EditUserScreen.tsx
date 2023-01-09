@@ -32,6 +32,7 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../util/constants';
+import InputForm from '../../components/forms/InputForm';
 
 type EditUserScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -45,12 +46,24 @@ export default function EditUser() {
   const {
     params: {user},
   } = useRoute<EditUserScreenRouteProps>();
-  const [rolePicked, setRolePicked] = useState<Role>(roles[0]);
+  const [open, setOpen] = useState<boolean>(false);
+  const [rolePicked, setRolePicked] = useState<string | undefined>(user?.role);
   const [imagePicked, setImagePicked] = useState<string>('');
   const [projectsPicked, setProjectsPicked] = useState<ProjectData[]>([]);
   const {projects, loading, error} = useSelector(selectProjects);
   console.log('projects');
   console.log(projects);
+
+  function validRole(rolePicked?: string) {
+    if (rolePicked) {
+      const roleName = roles.filter(role => role.name === rolePicked);
+      if (roleName.length > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
 
   async function updateUser() {
     try {
@@ -61,6 +74,7 @@ export default function EditUser() {
           {
             userId: user?.userId,
             avatar: imagePicked ? imagePicked : user?.avatar,
+            role: rolePicked ? rolePicked : user?.role,
           },
           {
             headers: {
@@ -76,9 +90,15 @@ export default function EditUser() {
   }
 
   function updateUserHandler() {
-    console.log('User Updated');
-    updateUser();
-    navigation.navigate('UserDetails', {userId: user?.userId});
+    if (validRole(rolePicked)) {
+      updateUser();
+      navigation.navigate('UserDetails', {userId: user?.userId});
+    } else {
+      Alert.alert(
+        'Wrong Role!',
+        'Insert one of the following Roles: SysAdmin, ProjectManager, Developer, QA or Designer',
+      );
+    }
   }
 
   async function requestCameraPermission() {
@@ -211,7 +231,13 @@ export default function EditUser() {
             <View style={[styles.infoContainer, {marginTop: 20}]}>
               <Text style={styles.info}>DevoWorker Information</Text>
             </View>
-            <InfoForm info="Role" value={user?.role} />
+            <InputForm
+              info="Role"
+              text={rolePicked}
+              onChangeText={setRolePicked}
+              isBirthday={false}
+              defaultValue={user?.role}
+            />
             <View style={styles.workContainer}>
               <View style={styles.infoWorkContainer}>
                 <Text style={styles.infoWork}>Projects</Text>

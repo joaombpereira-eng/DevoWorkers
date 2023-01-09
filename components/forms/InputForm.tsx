@@ -2,9 +2,10 @@ import {View, Text, StyleSheet, TextInput} from 'react-native';
 
 type Props = {
   info: string;
-  text: string;
+  text?: string;
   onChangeText: (text: string) => void;
   isBirthday: boolean;
+  defaultValue?: string;
 };
 
 export default function InputForm({
@@ -12,6 +13,7 @@ export default function InputForm({
   text,
   onChangeText,
   isBirthday,
+  defaultValue,
 }: Props) {
   return (
     <View style={styles.container}>
@@ -24,6 +26,7 @@ export default function InputForm({
           placeholder={isBirthday ? 'DD/MM/YYYY' : ''}
           value={text}
           onChangeText={onChangeText}
+          defaultValue={defaultValue}
         />
       </View>
     </View>
