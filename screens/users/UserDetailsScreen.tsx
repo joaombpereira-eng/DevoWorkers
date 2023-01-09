@@ -51,7 +51,7 @@ export default function UserDetailsScreen() {
   const userLogged = useSelector(selectUserLogged);
   const {projects, loading, error} = useSelector(selectProjects);
 
-  async function getUserById(id: number) {
+  async function getUserById(id?: number) {
     setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');

@@ -350,7 +350,7 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     height: 60,
-    borderRadius: 8,
+    borderRadius: 10,
     paddingHorizontal: 8,
     backgroundColor: 'white',
     marginHorizontal: 20,

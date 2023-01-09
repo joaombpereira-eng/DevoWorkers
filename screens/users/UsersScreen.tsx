@@ -48,6 +48,7 @@ export default function UsersScreen() {
       console.log(e);
       setIsSubmitting(false);
     }
+    dispatch(setUsers(filteredData));
   }
 
   function getMyUser() {
@@ -57,7 +58,6 @@ export default function UsersScreen() {
 
   useLayoutEffect(() => {
     fetchUsers();
-    dispatch(setUsers(filteredData));
     getMyUser();
   }, []);
 

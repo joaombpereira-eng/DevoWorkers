@@ -44,8 +44,8 @@ const usersListSlice = createSlice({
       state.loading = false;
       state.error = false;
       state.users = action.payload;
-      console.log('state.users');
-      console.log(state.users);
+      /*       console.log('state.users');
+      console.log(state.users); */
     },
     setError: state => {
       state.error = true;

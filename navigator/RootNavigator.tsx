@@ -12,7 +12,7 @@ export type RootStackParamList = {
   Splash: undefined;
   Login: undefined;
   Tab: undefined;
-  UserDetails: {userId: number};
+  UserDetails: {userId: number | undefined};
   ProjectDetails: {projectId: string};
   AddNewUser: undefined;
   EditUser: {user: UserData | undefined};

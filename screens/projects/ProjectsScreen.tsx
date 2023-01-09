@@ -55,14 +55,14 @@ export default function ProjectsScreen() {
       console.log(e);
       setIsSubmitting(false);
     }
+    console.log('filteredData');
+    console.log(filteredData);
+    dispatch(setProjects(filteredData));
   }
 
   useEffect(() => {
     fetchProjects();
-    dispatch(setProjects(filteredData));
-    console.log('filteredData');
-    console.log(filteredData);
-  }, [projects]);
+  }, []);
 
   function onPressHandler(type: string) {
     const newData = projects.filter(item => {
