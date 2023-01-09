@@ -29,7 +29,7 @@ import {addUser} from '../../redux/slices/users/usersListSlice';
 import {formattedDate} from '../../util/formattedDate';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {BASE_URL} from '../../util/constants';
+import {BASE_URL, COMMON_AVATAR_BASE64} from '../../util/constants';
 import {UserData} from '../../data/users';
 
 type AddNewUserScreenNavigationProp = CompositeNavigationProp<
@@ -64,7 +64,7 @@ export default function AddNewUserScreen() {
             password: '12345678',
             role: role.name,
             birthDate: birthDate.toISOString(),
-            avatar: imagePicked,
+            avatar: imagePicked ? imagePicked : COMMON_AVATAR_BASE64,
             //projects: projectSaved,
           },
           {
@@ -105,11 +105,6 @@ export default function AddNewUserScreen() {
 
     if (!validBirthday) {
       Alert.alert('Invalid Date!');
-      return;
-    }
-
-    if (!imagePicked) {
-      Alert.alert('Pick an Image!');
       return;
     }
 
