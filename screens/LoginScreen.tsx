@@ -45,7 +45,7 @@ export default function LoginScreen() {
         'Authorization'
       ] = `bearer ${res.data.data}`;
       const decoded = res.data.data && jwt_decode(res.data.data);
-      dispatch(setUserLogged(decoded?.role));
+      dispatch(setUserLogged({role: decoded?.role, email: decoded?.email}));
       navigation.navigate('Tab');
     } catch (e) {
       Alert.alert('Ops! There was a problem!', `Message: ${e}`);

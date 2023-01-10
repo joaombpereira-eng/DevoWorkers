@@ -10,41 +10,76 @@ import InfoForm from '../../components/forms/InfoForm';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IconButton from '../../components/buttons/IconButton';
 import {formattedDate} from '../../util/formattedDate';
+import {useDispatch, useSelector} from 'react-redux';
+import {selectUserLogged} from '../../redux/slices/login/loginSlice';
+import {selectUsers} from '../../redux/slices/users/usersListSlice';
+import {useEffect} from 'react';
+import {setProject} from '../../redux/slices/projects/projectSlice';
+import {TabStackParamList} from '../../navigator/TabNavigator';
+import {RootStackParamList} from '../../navigator/RootNavigator';
+import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
+import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {selectProjects} from '../../redux/slices/projects/projectsListSlice';
+
+export type MyUserScreenNavigationProps = CompositeNavigationProp<
+  BottomTabNavigationProp<TabStackParamList, 'Users'>,
+  NativeStackNavigationProp<RootStackParamList, 'Tab'>
+>;
 
 export default function MyUserScreen() {
+  const myUserFromToken = useSelector(selectUserLogged);
+  const {users} = useSelector(selectUsers);
+  const {projects} = useSelector(selectProjects);
+  const dispatch = useDispatch();
+  const navigation = useNavigation<MyUserScreenNavigationProps>();
+
+  useEffect(() => {}, [myUserFromToken]);
+
+  const myUser = users.filter(user => user.email === myUserFromToken.email);
+  console.log('users');
+  console.log(users.map(item => item.name));
+  console.log('myUser');
+  console.log(myUser);
+
+  const projectsFilter = projects.filter(item => {
+    if (myUser[0]?.projects.includes(item.projectId)) {
+      return true;
+    }
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.iconsContainer}>
-        <View style={styles.editIcon}>
-          <TouchableOpacity onPress={() => {}}>
-            <Icon name="edit" color="black" size={25} />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.exitIcon}>
-          <IconButton name="close" color="black" size={25} onPress={() => {}} />
-        </View>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('EditUser', {user: myUser[0]})}>
+          <Icon name="edit" color="black" size={25} />
+        </TouchableOpacity>
       </View>
       <View style={styles.bodyContainer}>
         <ScrollView>
           <View style={styles.avatar}>
             <Image
-              source={{uri: `data:image/png;base64,${user?.avatar}`}}
+              source={{uri: `data:image/png;base64,${myUser[0]?.avatar}`}}
               style={styles.image}
             />
           </View>
           <View>
             <View style={styles.nameContainer}>
-              <Text style={styles.name}>{user?.name}</Text>
+              <Text style={styles.name}>{myUser[0]?.name}</Text>
             </View>
             <View style={styles.infoContainer}>
               <Text style={styles.info}>Personal Information</Text>
             </View>
-            <InfoForm info="Email" value={user?.email} />
-            <InfoForm info="Birthday" value={formattedDate(user?.birthDate)} />
+            <InfoForm info="Email" value={myUser[0]?.email} />
+            <InfoForm
+              info="Birthday"
+              value={formattedDate(myUser[0]?.birthDate)}
+            />
             <View style={[styles.infoContainer, {marginTop: 20}]}>
               <Text style={styles.info}>DevoWorker Information</Text>
             </View>
-            <InfoForm info="Role" value={user?.role} />
+            <InfoForm info="Role" value={myUser[0]?.role} />
             <View style={styles.workContainer}>
               <View style={styles.infoWorkContainer}>
                 <Text style={styles.infoWork}>Projects</Text>
@@ -73,8 +108,8 @@ export default function MyUserScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 25,
-    marginBottom: 10,
+    paddingTop: 25,
+    paddingBottom: 10,
     backgroundColor: '#ffe7c2',
   },
   bodyContainer: {
@@ -86,14 +121,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    padding: 14,
+    padding: 20,
     paddingRight: 20,
-  },
-  exitIcon: {
-    paddingLeft: 15,
-  },
-  editIcon: {
-    paddingTop: 4,
   },
   avatar: {
     justifyContent: 'center',

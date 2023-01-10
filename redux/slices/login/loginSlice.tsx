@@ -1,13 +1,14 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {UserData} from '../../../data/users';
 import {RootState} from '../../store/store';
 
 type LoginState = {
   role: string;
+  email: string;
 };
 
 const initialState: LoginState = {
   role: '',
+  email: '',
 };
 
 const loginSlice = createSlice({
@@ -15,7 +16,8 @@ const loginSlice = createSlice({
   initialState,
   reducers: {
     setUserLogged: (state, action) => {
-      state.role = action.payload;
+      state.email = action.payload.email;
+      state.role = action.payload.role;
     },
   },
 });
