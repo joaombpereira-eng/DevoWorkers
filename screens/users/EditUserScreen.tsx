@@ -46,17 +46,14 @@ type EditUserScreenRouteProps = RouteProp<RootStackParamList, 'EditUser'>;
 
 export default function EditUser() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [userUpdated, setUserUpdated] = useState<UserData[]>([]);
   const navigation = useNavigation<EditUserScreenNavigationProps>();
   const {
     params: {user},
   } = useRoute<EditUserScreenRouteProps>();
-  const [open, setOpen] = useState<boolean>(false);
   const [rolePicked, setRolePicked] = useState<string | undefined>(user?.role);
   const [imagePicked, setImagePicked] = useState<string>('');
-  const [projectsPicked, setProjectsPicked] = useState<ProjectData[]>([]);
+  const [projectPicked, setProjectPicked] = useState<string>('');
   const {projects, loading, error} = useSelector(selectProjects);
-  const dispatch = useDispatch();
 
   function validRole(rolePicked?: string) {
     if (rolePicked) {
@@ -72,6 +69,10 @@ export default function EditUser() {
   async function updateUser() {
     setIsSubmitting(true);
     try {
+      const projectAlreadyInUser = user?.projects.includes(projectPicked);
+      projectPicked &&
+        !projectAlreadyInUser &&
+        user?.projects.push(projectPicked);
       const token = await AsyncStorage.getItem('AccessToken');
       const res = await axios.put(
         `${BASE_URL}/user`,
@@ -79,6 +80,7 @@ export default function EditUser() {
           userId: user?.userId,
           avatar: imagePicked ? imagePicked : user?.avatar,
           role: rolePicked ? rolePicked : user?.role,
+          projects: user?.projects,
         },
         {
           headers: {
@@ -254,8 +256,8 @@ export default function EditUser() {
               <Dropdown
                 style={styles.dropdown}
                 data={projects}
-                value={projectsPicked}
-                onChange={item => setProjectsPicked(item.projectId)}
+                value={projectPicked}
+                onChange={item => setProjectPicked(item.projectId)}
                 labelField="name"
                 valueField="projectId"
                 placeholder="Select Project"

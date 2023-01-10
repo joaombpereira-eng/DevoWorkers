@@ -29,9 +29,7 @@ export default function UsersScreen() {
   const [search, setSearch] = useState<string>('');
   const dispatch = useDispatch();
   const {users, loading, error} = useSelector(selectUsers);
-  //const {email} = useSelector(selectUserLogged);
   const navigation = useNavigation<UsersScreenNavigationProps>();
-  let myUser: UserData;
 
   async function fetchUsers() {
     setIsSubmitting(true);
@@ -52,17 +50,12 @@ export default function UsersScreen() {
     }
   }
 
-  /*   function getMyUser() {
-    const myUserArray = users.filter(user => user.email === email);
-    myUser = myUserArray[0];
-  } */
-
   useEffect(() => {
     fetchUsers();
-    dispatch(setUsers(filteredData));
+    dispatch(setUsers(allUsers));
     console.log('users');
-    console.log(users.map(item => item.name));
-  }, [users]);
+    console.log(allUsers.map(item => item.name));
+  }, []);
 
   function searchFilter(text: string) {
     if (text) {
