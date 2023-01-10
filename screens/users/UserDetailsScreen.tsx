@@ -21,7 +21,11 @@ import {setProject} from '../../redux/slices/projects/projectSlice';
 import InfoForm from '../../components/forms/InfoForm';
 import IconButton from '../../components/buttons/IconButton';
 import Button from '../../components/buttons/Button';
-import {removeUser} from '../../redux/slices/users/usersListSlice';
+import {
+  removeUser,
+  selectUserById,
+  setUsers,
+} from '../../redux/slices/users/usersListSlice';
 import {selectUserLogged} from '../../redux/slices/login/loginSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -32,6 +36,7 @@ import {formattedDate} from '../../util/formattedDate';
 import {selectProjects} from '../../redux/slices/projects/projectsListSlice';
 import LoadingOverlay from '../../components/LoadingOverlay';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {RootState} from '../../redux/store/store';
 
 type UserDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -41,6 +46,7 @@ type UserDetailsScreenNavigationProp = CompositeNavigationProp<
 type UserDetailsScreenRouteProp = RouteProp<RootStackParamList, 'UserDetails'>;
 
 export default function UserDetailsScreen() {
+  const [allUsers, setAllUsers] = useState<UserData[]>([]);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [user, setUser] = useState<UserData>();
   const navigation = useNavigation<UserDetailsScreenNavigationProp>();
@@ -48,8 +54,26 @@ export default function UserDetailsScreen() {
     params: {userId},
   } = useRoute<UserDetailsScreenRouteProp>();
   const dispatch = useDispatch();
-  const userLogged = useSelector(selectUserLogged);
   const {projects, loading, error} = useSelector(selectProjects);
+
+  async function fetchUsers() {
+    setIsSubmitting(true);
+    try {
+      const token = await AsyncStorage.getItem('AccessToken');
+      const res = await axios.get(`${BASE_URL}/user`, {
+        headers: {
+          Authorization: 'bearer ' + token,
+        },
+      });
+      setAllUsers(res.data);
+      setIsSubmitting(false);
+    } catch (e) {
+      console.log('error');
+      console.log(e);
+      setIsSubmitting(false);
+    }
+    dispatch(setUsers(allUsers));
+  }
 
   async function getUserById(id?: number) {
     setIsSubmitting(true);
@@ -97,10 +121,9 @@ export default function UserDetailsScreen() {
   });
 
   function onDelete() {
-    console.log('user?.userId');
-    console.log(user?.userId);
     deleteUser(user?.userId);
-    dispatch(removeUser(user));
+    //dispatch(removeUser(user));
+    fetchUsers();
     navigation.navigate('Users');
   }
 

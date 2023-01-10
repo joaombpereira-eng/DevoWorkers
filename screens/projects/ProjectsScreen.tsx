@@ -55,13 +55,11 @@ export default function ProjectsScreen() {
       console.log(e);
       setIsSubmitting(false);
     }
-    console.log('filteredData');
-    console.log(filteredData);
-    dispatch(setProjects(filteredData));
   }
 
   useEffect(() => {
     fetchProjects();
+    dispatch(setProjects(filteredData));
   }, []);
 
   function onPressHandler(type: string) {
@@ -112,6 +110,8 @@ export default function ProjectsScreen() {
       setFilteredData(newData);
       setSearch(text);
     } else {
+      console.log('users');
+      console.log(projects.map(item => item.name));
       setFilteredData(projects);
       setSearch(text);
     }

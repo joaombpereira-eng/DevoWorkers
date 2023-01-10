@@ -26,13 +26,16 @@ import {Dropdown} from 'react-native-element-dropdown';
 import {Role, roles} from '../../data/roles';
 import {useEffect, useState} from 'react';
 import {ProjectData} from '../../data/projects';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {selectProjects} from '../../redux/slices/projects/projectsListSlice';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../util/constants';
 import InputForm from '../../components/forms/InputForm';
+import {UserData} from '../../data/users';
+import {setUsers} from '../../redux/slices/users/usersListSlice';
+import LoadingOverlay from '../../components/LoadingOverlay';
 
 type EditUserScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -42,6 +45,8 @@ type EditUserScreenNavigationProps = CompositeNavigationProp<
 type EditUserScreenRouteProps = RouteProp<RootStackParamList, 'EditUser'>;
 
 export default function EditUser() {
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [userUpdated, setUserUpdated] = useState<UserData[]>([]);
   const navigation = useNavigation<EditUserScreenNavigationProps>();
   const {
     params: {user},
@@ -51,8 +56,7 @@ export default function EditUser() {
   const [imagePicked, setImagePicked] = useState<string>('');
   const [projectsPicked, setProjectsPicked] = useState<ProjectData[]>([]);
   const {projects, loading, error} = useSelector(selectProjects);
-  console.log('projects');
-  console.log(projects);
+  const dispatch = useDispatch();
 
   function validRole(rolePicked?: string) {
     if (rolePicked) {
@@ -66,26 +70,27 @@ export default function EditUser() {
   }
 
   async function updateUser() {
+    setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
-      await axios
-        .put(
-          `${BASE_URL}/user`,
-          {
-            userId: user?.userId,
-            avatar: imagePicked ? imagePicked : user?.avatar,
-            role: rolePicked ? rolePicked : user?.role,
+      const res = await axios.put(
+        `${BASE_URL}/user`,
+        {
+          userId: user?.userId,
+          avatar: imagePicked ? imagePicked : user?.avatar,
+          role: rolePicked ? rolePicked : user?.role,
+        },
+        {
+          headers: {
+            Authorization: 'bearer ' + token,
           },
-          {
-            headers: {
-              Authorization: 'bearer ' + token,
-            },
-          },
-        )
-        .then(res => {});
+        },
+      );
+      setIsSubmitting(false);
     } catch (e) {
       console.log('error edit user');
       console.log(e);
+      setIsSubmitting(false);
     }
   }
 
@@ -209,6 +214,10 @@ export default function EditUser() {
       style={styles.image}
     />
   );
+
+  if (isSubmitting) {
+    return <LoadingOverlay />;
+  }
 
   return (
     <View style={styles.container}>

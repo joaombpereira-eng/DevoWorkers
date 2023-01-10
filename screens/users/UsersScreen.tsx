@@ -48,7 +48,6 @@ export default function UsersScreen() {
       console.log(e);
       setIsSubmitting(false);
     }
-    dispatch(setUsers(filteredData));
   }
 
   function getMyUser() {
@@ -56,10 +55,13 @@ export default function UsersScreen() {
     myUser = myUserArray[0];
   }
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     fetchUsers();
+    dispatch(setUsers(filteredData));
     getMyUser();
-  }, []);
+    console.log('users');
+    console.log(users.map(item => item.name));
+  }, [users]);
 
   function searchFilter(text: string) {
     if (text) {
@@ -71,6 +73,8 @@ export default function UsersScreen() {
       setFilteredData(newData);
       setSearch(text);
     } else {
+      console.log('users');
+      console.log(users.map(item => item.name));
       setFilteredData(users);
       setSearch(text);
     }

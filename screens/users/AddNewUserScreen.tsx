@@ -24,7 +24,7 @@ import {Role, roles} from '../../data/roles';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch} from 'react-redux';
-import {addUser} from '../../redux/slices/users/usersListSlice';
+import {addUser, setUsers} from '../../redux/slices/users/usersListSlice';
 import {formattedDate} from '../../util/formattedDate';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -37,6 +37,8 @@ type AddNewUserScreenNavigationProp = CompositeNavigationProp<
 >;
 
 export default function AddNewUserScreen() {
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [allUsers, setAllUsers] = useState<UserData[]>([]);
   const [role, setRole] = useState<Role>(roles[0]);
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -49,6 +51,25 @@ export default function AddNewUserScreen() {
 
   function onPress() {
     navigation.goBack();
+  }
+
+  async function fetchUsers() {
+    setIsSubmitting(true);
+    try {
+      const token = await AsyncStorage.getItem('AccessToken');
+      const res = await axios.get(`${BASE_URL}/user`, {
+        headers: {
+          Authorization: 'bearer ' + token,
+        },
+      });
+      setAllUsers(res.data);
+      setIsSubmitting(false);
+    } catch (e) {
+      console.log('error');
+      console.log(e);
+      setIsSubmitting(false);
+    }
+    dispatch(setUsers(allUsers));
   }
 
   async function addNewUser() {
@@ -79,8 +100,6 @@ export default function AddNewUserScreen() {
       console.log(e);
     }
   }
-
-  useEffect(() => {}, []);
 
   function saveHandler() {
     const validBirthday: boolean = birthDate < new Date();
@@ -113,7 +132,7 @@ export default function AddNewUserScreen() {
         newUser,
       }),
     );
-
+    fetchUsers();
     navigation.navigate('Users');
   }
 

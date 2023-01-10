@@ -25,7 +25,6 @@ import {ProjectData} from '../../data/projects';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../util/constants';
 import axios from 'axios';
-import {UserData} from '../../data/users';
 import {formattedDate} from '../../util/formattedDate';
 import {selectUsers} from '../../redux/slices/users/usersListSlice';
 import LoadingOverlay from '../../components/LoadingOverlay';
@@ -46,8 +45,8 @@ export default function ProjectDetailsScreen() {
   } = useRoute<ProjectScreenRouteProp>();
   const dispatch = useDispatch();
   const {users, loading, error} = useSelector(selectUsers);
-  console.log('users');
-  console.log(users);
+  console.log('users projects');
+  console.log(users.map(item => item.name));
 
   async function getProjectById(id: string) {
     setIsSubmitting(true);

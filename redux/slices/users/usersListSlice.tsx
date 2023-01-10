@@ -44,8 +44,6 @@ const usersListSlice = createSlice({
       state.loading = false;
       state.error = false;
       state.users = action.payload;
-      /*       console.log('state.users');
-      console.log(state.users); */
     },
     setError: state => {
       state.error = true;
@@ -57,7 +55,7 @@ export const {addUser, removeUser, setError, setLoading, setUsers} =
   usersListSlice.actions;
 
 export const selectUsers = (state: RootState) => state.usersList;
-export const selectUserById = (state: RootState, id: number) =>
+export const selectUserById = (state: RootState, id: number | undefined) =>
   state.usersList.users.filter(item => item.userId === id);
 
 export default usersListSlice.reducer;
