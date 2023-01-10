@@ -11,6 +11,7 @@ import {BASE_URL} from '../util/constants';
 import {useDispatch} from 'react-redux';
 import {setUserLogged} from '../redux/slices/login/loginSlice';
 import LoadingOverlay from '../components/LoadingOverlay';
+import jwt_decode from 'jwt-decode';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -43,6 +44,8 @@ export default function LoginScreen() {
       axios.defaults.headers.common[
         'Authorization'
       ] = `bearer ${res.data.data}`;
+      const decoded = res.data.data && jwt_decode(res.data.data);
+      dispatch(setUserLogged(decoded?.role));
       navigation.navigate('Tab');
     } catch (e) {
       Alert.alert('Ops! There was a problem!', `Message: ${e}`);

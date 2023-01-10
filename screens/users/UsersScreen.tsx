@@ -29,6 +29,7 @@ export default function UsersScreen() {
   const [search, setSearch] = useState<string>('');
   const dispatch = useDispatch();
   const {users, loading, error} = useSelector(selectUsers);
+  const myUser = useSelector(selectUserLogged);
   const navigation = useNavigation<UsersScreenNavigationProps>();
 
   async function fetchUsers() {
@@ -53,9 +54,9 @@ export default function UsersScreen() {
   useEffect(() => {
     fetchUsers();
     dispatch(setUsers(allUsers));
-    console.log('users');
-    console.log(allUsers.map(item => item.name));
-  }, []);
+    /*     console.log('users');
+    console.log(allUsers.map(item => item.name)); */
+  }, [myUser]);
 
   function searchFilter(text: string) {
     if (text) {
@@ -92,16 +93,16 @@ export default function UsersScreen() {
       <View style={styles.headerContainer}>
         <Text style={styles.title}>Users</Text>
         <View style={styles.iconsContainer}>
-          {/* {myUser.role === 'SysAdmin' && ( */}
-          <IconButton
-            name="user-plus"
-            color="black"
-            onPress={() => {
-              navigation.navigate('AddNewUser');
-            }}
-            size={25}
-          />
-          {/* )} */}
+          {myUser.role === 'SysAdmin' && (
+            <IconButton
+              name="user-plus"
+              color="black"
+              onPress={() => {
+                navigation.navigate('AddNewUser');
+              }}
+              size={25}
+            />
+          )}
           <View style={styles.logoutContainer}>
             <IconButton
               name="sign-out"

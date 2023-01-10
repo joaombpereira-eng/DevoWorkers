@@ -3,19 +3,19 @@ import {UserData} from '../../../data/users';
 import {RootState} from '../../store/store';
 
 type LoginState = {
-  email: string;
+  role: string;
 };
 
 const initialState: LoginState = {
-  email: '',
+  role: '',
 };
 
 const loginSlice = createSlice({
-  name: 'login',
+  name: 'role',
   initialState,
   reducers: {
     setUserLogged: (state, action) => {
-      state.email = action.payload.email;
+      state.role = action.payload;
     },
   },
 });

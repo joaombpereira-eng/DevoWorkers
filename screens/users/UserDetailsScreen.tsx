@@ -55,6 +55,7 @@ export default function UserDetailsScreen() {
   } = useRoute<UserDetailsScreenRouteProp>();
   const dispatch = useDispatch();
   const {projects, loading, error} = useSelector(selectProjects);
+  const myUser = useSelector(selectUserLogged);
 
   async function fetchUsers() {
     setIsSubmitting(true);
@@ -112,7 +113,7 @@ export default function UserDetailsScreen() {
 
   useEffect(() => {
     getUserById(userId);
-  }, [userId]);
+  }, [userId, myUser]);
 
   const projectsFilter = projects.filter(item => {
     if (user?.projects.includes(item.projectId)) {
@@ -134,12 +135,14 @@ export default function UserDetailsScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.iconsContainer}>
+      {myUser.role === 'SysAdmin' && (
         <View style={styles.editIcon}>
           <TouchableOpacity
             onPress={() => navigation.navigate('EditUser', {user: user})}>
             <Icon name="edit" color="black" size={25} />
           </TouchableOpacity>
         </View>
+        )}
         <View style={styles.exitIcon}>
           <IconButton
             name="close"
@@ -188,14 +191,13 @@ export default function UserDetailsScreen() {
                 </TouchableOpacity>
               ))}
             </View>
-            {/* {userLogged.role === 'SysAdmin' &&
-              userLogged.name !== user?.name && ( */}
-            <View style={styles.buttonContainer}>
-              <Button deleteStyle={styles.deleteButton} onPress={onDelete}>
-                Delete
-              </Button>
-            </View>
-            {/* )} */}
+            {myUser.role === 'SysAdmin' && (
+              <View style={styles.buttonContainer}>
+                <Button deleteStyle={styles.deleteButton} onPress={onDelete}>
+                  Delete
+                </Button>
+              </View>
+            )}
           </View>
         </ScrollView>
       </View>
