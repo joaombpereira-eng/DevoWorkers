@@ -112,7 +112,7 @@ export default function UserDetailsScreen() {
 
   useEffect(() => {
     getUserById(userId);
-  }, []);
+  }, [userId]);
 
   const projectsFilter = projects.filter(item => {
     if (user?.projects.includes(item.projectId)) {
@@ -122,8 +122,8 @@ export default function UserDetailsScreen() {
 
   function onDelete() {
     deleteUser(user?.userId);
-    //dispatch(removeUser(user));
     fetchUsers();
+    //dispatch(removeUser(user));
     navigation.navigate('Users');
   }
 

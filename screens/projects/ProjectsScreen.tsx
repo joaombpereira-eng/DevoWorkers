@@ -27,6 +27,7 @@ export type ProjectsScreenNavigationProps = CompositeNavigationProp<
 export default function ProjectsScreen() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [filteredData, setFilteredData] = useState<ProjectData[]>([]);
+  const [allProjects, setAllProjects] = useState<ProjectData[]>([]);
   const [search, setSearch] = useState<string>('');
   const [dateAscending, setDateAscending] = useState<boolean>(false);
   const [nameAscending, setNameAscending] = useState<boolean>(true);
@@ -47,6 +48,7 @@ export default function ProjectsScreen() {
         .then(res => {
           setFilteredData(res.data);
           setIsSubmitting(false);
+          setAllProjects(res.data);
           console.log('res.data');
           console.log(res.data);
         });
@@ -60,7 +62,7 @@ export default function ProjectsScreen() {
   useEffect(() => {
     fetchProjects();
     dispatch(setProjects(filteredData));
-  }, []);
+  }, [projects]);
 
   function onPressHandler(type: string) {
     const newData = projects.filter(item => {
@@ -110,9 +112,7 @@ export default function ProjectsScreen() {
       setFilteredData(newData);
       setSearch(text);
     } else {
-      console.log('users');
-      console.log(projects.map(item => item.name));
-      setFilteredData(projects);
+      setFilteredData(allProjects);
       setSearch(text);
     }
   }

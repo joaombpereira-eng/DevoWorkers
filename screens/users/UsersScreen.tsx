@@ -25,10 +25,11 @@ export type UsersScreenNavigationProps = CompositeNavigationProp<
 export default function UsersScreen() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [filteredData, setFilteredData] = useState<UserData[]>([]);
+  const [allUsers, setAllUsers] = useState<UserData[]>([]);
   const [search, setSearch] = useState<string>('');
   const dispatch = useDispatch();
   const {users, loading, error} = useSelector(selectUsers);
-  const {email} = useSelector(selectUserLogged);
+  //const {email} = useSelector(selectUserLogged);
   const navigation = useNavigation<UsersScreenNavigationProps>();
   let myUser: UserData;
 
@@ -42,6 +43,7 @@ export default function UsersScreen() {
         },
       });
       setFilteredData(res.data);
+      setAllUsers(res.data);
       setIsSubmitting(false);
     } catch (e) {
       console.log('error');
@@ -50,15 +52,14 @@ export default function UsersScreen() {
     }
   }
 
-  function getMyUser() {
+  /*   function getMyUser() {
     const myUserArray = users.filter(user => user.email === email);
     myUser = myUserArray[0];
-  }
+  } */
 
   useEffect(() => {
     fetchUsers();
     dispatch(setUsers(filteredData));
-    getMyUser();
     console.log('users');
     console.log(users.map(item => item.name));
   }, [users]);
@@ -73,9 +74,7 @@ export default function UsersScreen() {
       setFilteredData(newData);
       setSearch(text);
     } else {
-      console.log('users');
-      console.log(users.map(item => item.name));
-      setFilteredData(users);
+      setFilteredData(allUsers);
       setSearch(text);
     }
   }
