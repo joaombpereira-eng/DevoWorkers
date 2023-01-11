@@ -71,14 +71,13 @@ export default function UserDetailsScreen() {
           Authorization: 'bearer ' + token,
         },
       });
-      setAllUsers(res.data);
+      dispatch(setUsers(res.data));
       setIsSubmitting(false);
     } catch (e) {
       console.log('error');
       console.log(e);
       setIsSubmitting(false);
     }
-    dispatch(setUsers(allUsers));
   }
 
   async function getUserById(id?: number) {
@@ -118,9 +117,7 @@ export default function UserDetailsScreen() {
 
   useEffect(() => {
     getUserById(userId);
-    console.log('my user detail');
-    console.log(myUser);
-  }, [userId, myUser, userUpdated]);
+  }, [userId]);
 
   const projectsFilter = projects.filter(item => {
     if (user?.projects.includes(item.projectId)) {

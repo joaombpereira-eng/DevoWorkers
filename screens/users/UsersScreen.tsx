@@ -26,12 +26,13 @@ export type UsersScreenNavigationProps = CompositeNavigationProp<
 export default function UsersScreen() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [filteredData, setFilteredData] = useState<UserData[]>([]);
-  const [allUsers, setAllUsers] = useState<UserData[]>([]);
   const [search, setSearch] = useState<string>('');
   const dispatch = useDispatch();
   const {users, loading, error} = useSelector(selectUsers);
   const myUser = useSelector(selectUserLogged);
   const navigation = useNavigation<UsersScreenNavigationProps>();
+  console.log('users');
+  console.log(users.map(item => item.name));
 
   async function fetchUsers() {
     setIsSubmitting(true);
@@ -42,8 +43,6 @@ export default function UsersScreen() {
           Authorization: 'bearer ' + token,
         },
       });
-      setFilteredData(res.data);
-      setAllUsers(res.data);
       setIsSubmitting(false);
       dispatch(setUsers(res.data));
     } catch (e) {
@@ -81,7 +80,7 @@ export default function UsersScreen() {
 
   function searchFilter(text: string) {
     if (text) {
-      const newData = filteredData.filter(item => {
+      const newData = users.filter(item => {
         const itemData = item.name.toUpperCase();
         const textData = text.toUpperCase();
         return itemData.includes(textData);
@@ -89,7 +88,7 @@ export default function UsersScreen() {
       setFilteredData(newData);
       setSearch(text);
     } else {
-      setFilteredData(allUsers);
+      setFilteredData(users);
       setSearch(text);
     }
   }
@@ -139,7 +138,11 @@ export default function UsersScreen() {
       <Input isUserScreen onChangeText={searchFilter} text={search} />
       <View style={styles.bodyContainer}>
         <FlatList
-          data={filteredData ? filteredData : allUsers}
+          data={
+            filteredData !== users && filteredData.length !== 0
+              ? filteredData
+              : users
+          }
           renderItem={({item}) => <UserCard {...item} />}
           keyExtractor={item => (item.userId + Math.random()).toString()}
         />

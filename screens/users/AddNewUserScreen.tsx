@@ -54,25 +54,6 @@ export default function AddNewUserScreen() {
     navigation.goBack();
   }
 
-  async function fetchUsers() {
-    setIsSubmitting(true);
-    try {
-      const token = await AsyncStorage.getItem('AccessToken');
-      const res = await axios.get(`${BASE_URL}/user`, {
-        headers: {
-          Authorization: 'bearer ' + token,
-        },
-      });
-      setAllUsers(res.data);
-      setIsSubmitting(false);
-    } catch (e) {
-      console.log('error');
-      console.log(e);
-      setIsSubmitting(false);
-    }
-    dispatch(setUsers(allUsers));
-  }
-
   async function addNewUser() {
     setIsSubmitting(true);
     try {
@@ -95,8 +76,18 @@ export default function AddNewUserScreen() {
           },
         )
         .then(res => {
-          setNewUser(res.data);
           setIsSubmitting(false);
+          dispatch(
+            addUser({
+              name: name,
+              email: email,
+              password: '12345678',
+              role: role.name,
+              birthDate: birthDate.toISOString(),
+              avatar: imagePicked ? imagePicked : COMMON_AVATAR_BASE64,
+              projects: [],
+            }),
+          );
         });
     } catch (e) {
       console.log('error add user');
@@ -131,12 +122,6 @@ export default function AddNewUserScreen() {
     }
 
     addNewUser();
-    fetchUsers();
-    dispatch(
-      addUser({
-        newUser,
-      }),
-    );
     navigation.navigate('Users');
   }
 
@@ -318,20 +303,6 @@ export default function AddNewUserScreen() {
             placeholderStyle={styles.placeholder}
             selectedTextStyle={styles.selectedText}
           />
-          {/* <View style={styles.projectInfoContainer}>
-            <Text style={styles.projectInfo}>Project</Text>
-          </View>
-          <Dropdown
-            style={styles.dropdown}
-            data={projects}
-            value={project?.projectId}
-            onChange={item => setProject(item)}
-            labelField="name"
-            valueField="projectId"
-            placeholder="Select Project"
-            placeholderStyle={styles.placeholder}
-            selectedTextStyle={styles.selectedText}
-          /> */}
           <View style={styles.buttonContainer}>
             <Button onPress={saveHandler}>Save</Button>
           </View>

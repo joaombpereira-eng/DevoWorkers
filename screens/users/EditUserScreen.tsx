@@ -36,6 +36,7 @@ import InputForm from '../../components/forms/InputForm';
 import {UserData} from '../../data/users';
 import {setUser} from '../../redux/slices/users/userSlice';
 import LoadingOverlay from '../../components/LoadingOverlay';
+import {setUsers} from '../../redux/slices/users/usersListSlice';
 
 type EditUserScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -64,6 +65,24 @@ export default function EditUser() {
       } else {
         return false;
       }
+    }
+  }
+
+  async function fetchUsers() {
+    setIsSubmitting(true);
+    try {
+      const token = await AsyncStorage.getItem('AccessToken');
+      const res = await axios.get(`${BASE_URL}/user`, {
+        headers: {
+          Authorization: 'bearer ' + token,
+        },
+      });
+      dispatch(setUsers(res.data));
+      setIsSubmitting(false);
+    } catch (e) {
+      console.log('error');
+      console.log(e);
+      setIsSubmitting(false);
     }
   }
 
@@ -102,6 +121,7 @@ export default function EditUser() {
     if (validRole(rolePicked)) {
       updateUser();
       getUserById(user?.userId);
+      fetchUsers();
       navigation.navigate('UserDetails', {userId: user?.userId});
     } else {
       Alert.alert(

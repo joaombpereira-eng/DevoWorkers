@@ -39,9 +39,6 @@ export default function MyUserScreen() {
 
   const myUser = users.filter(user => user.email === myUserFromToken.email);
 
-  console.log('my user');
-  console.log(myUser);
-
   const projectsFilter = projects.filter(item => {
     if (myUser[0]?.projects.includes(item.projectId)) {
       return true;
