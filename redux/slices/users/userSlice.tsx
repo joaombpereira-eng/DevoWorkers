@@ -17,14 +17,14 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUser: (state, action) => {
+    setUser: (state, action?) => {
       state.userId = action.payload.userId;
       state.name = action.payload.name;
       state.email = action.payload.email;
-      state.birthDate = action.payload.birthday;
       state.role = action.payload.role;
+      state.birthDate = action.payload.birthDate;
       state.avatar = action.payload.avatar;
-      state.projects = action.payload.project;
+      state.projects = action.payload.projects;
     },
   },
 });

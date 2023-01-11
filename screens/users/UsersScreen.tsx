@@ -88,12 +88,14 @@ export default function UsersScreen() {
     return <LoadingOverlay />;
   }
 
+  const sysAdminRole = myUser.role === 'SysAdmin';
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.title}>Users</Text>
         <View style={styles.iconsContainer}>
-          {myUser.role === 'SysAdmin' && (
+          {sysAdminRole && (
             <IconButton
               name="user-plus"
               color="black"

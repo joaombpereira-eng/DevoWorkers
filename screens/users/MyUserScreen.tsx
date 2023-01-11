@@ -34,13 +34,7 @@ export default function MyUserScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation<MyUserScreenNavigationProps>();
 
-  useEffect(() => {}, [myUserFromToken]);
-
   const myUser = users.filter(user => user.email === myUserFromToken.email);
-  console.log('users');
-  console.log(users.map(item => item.name));
-  console.log('myUser');
-  console.log(myUser);
 
   const projectsFilter = projects.filter(item => {
     if (myUser[0]?.projects.includes(item.projectId)) {

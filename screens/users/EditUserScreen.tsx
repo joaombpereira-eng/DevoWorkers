@@ -34,7 +34,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../util/constants';
 import InputForm from '../../components/forms/InputForm';
 import {UserData} from '../../data/users';
-import {setUsers} from '../../redux/slices/users/usersListSlice';
+import {setUser} from '../../redux/slices/users/userSlice';
 import LoadingOverlay from '../../components/LoadingOverlay';
 
 type EditUserScreenNavigationProps = CompositeNavigationProp<
@@ -54,6 +54,7 @@ export default function EditUser() {
   const [imagePicked, setImagePicked] = useState<string>('');
   const [projectPicked, setProjectPicked] = useState<string>('');
   const {projects, loading, error} = useSelector(selectProjects);
+  const dispatch = useDispatch();
 
   function validRole(rolePicked?: string) {
     if (rolePicked) {
@@ -99,12 +100,41 @@ export default function EditUser() {
   function updateUserHandler() {
     if (validRole(rolePicked)) {
       updateUser();
+      dispatch(
+        setUser({
+          userId: user?.userId,
+          name: user?.name,
+          email: user?.email,
+          role: rolePicked ? rolePicked : user?.role,
+          birthDate: user?.birthDate,
+          avatar: imagePicked ? imagePicked : user?.avatar,
+          projects: user?.projects,
+        }),
+      );
+      getUserById(user?.userId);
       navigation.navigate('UserDetails', {userId: user?.userId});
     } else {
       Alert.alert(
         'Wrong Role!',
         'Insert one of the following Roles: SysAdmin, ProjectManager, Developer, QA or Designer',
       );
+    }
+  }
+
+  async function getUserById(id?: number) {
+    setIsSubmitting(true);
+    try {
+      const token = await AsyncStorage.getItem('AccessToken');
+      const res = await axios.get(`${BASE_URL}/user/${id}`, {
+        headers: {
+          Authorization: 'bearer ' + token,
+        },
+      });
+      setIsSubmitting(false);
+    } catch (e) {
+      console.log('error get user');
+      console.log(e);
+      setIsSubmitting(false);
     }
   }
 
