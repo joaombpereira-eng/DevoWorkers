@@ -44,6 +44,7 @@ export default function UsersScreen() {
       setFilteredData(res.data);
       setAllUsers(res.data);
       setIsSubmitting(false);
+      dispatch(setUsers(res.data));
     } catch (e) {
       console.log('error fetching users');
       console.log(e);
@@ -53,12 +54,7 @@ export default function UsersScreen() {
 
   useEffect(() => {
     fetchUsers();
-    dispatch(setUsers(allUsers));
-    console.log('my user list users')
-    console.log(myUser)
-    /*     console.log('users');
-    console.log(allUsers.map(item => item.name)); */
-  }, [myUser, users]);
+  }, [myUser]);
 
   function searchFilter(text: string) {
     if (text) {

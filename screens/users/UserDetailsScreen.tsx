@@ -37,7 +37,7 @@ import {selectProjects} from '../../redux/slices/projects/projectsListSlice';
 import LoadingOverlay from '../../components/LoadingOverlay';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {RootState} from '../../redux/store/store';
-import {selectUser} from '../../redux/slices/users/userSlice';
+import {selectUser, setUser} from '../../redux/slices/users/userSlice';
 
 type UserDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -58,6 +58,9 @@ export default function UserDetailsScreen() {
   const {projects, loading, error} = useSelector(selectProjects);
   const userUpdated = useSelector(selectUser);
   const myUser = useSelector(selectUserLogged);
+
+  console.log('userUpdated');
+  console.log(userUpdated.name);
 
   async function fetchUsers() {
     setIsSubmitting(true);

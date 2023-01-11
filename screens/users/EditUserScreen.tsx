@@ -89,6 +89,7 @@ export default function EditUser() {
           },
         },
       );
+      dispatch(setUser(res.data));
       setIsSubmitting(false);
     } catch (e) {
       console.log('error edit user');
@@ -100,17 +101,6 @@ export default function EditUser() {
   function updateUserHandler() {
     if (validRole(rolePicked)) {
       updateUser();
-      dispatch(
-        setUser({
-          userId: user?.userId,
-          name: user?.name,
-          email: user?.email,
-          role: rolePicked ? rolePicked : user?.role,
-          birthDate: user?.birthDate,
-          avatar: imagePicked ? imagePicked : user?.avatar,
-          projects: user?.projects,
-        }),
-      );
       getUserById(user?.userId);
       navigation.navigate('UserDetails', {userId: user?.userId});
     } else {
