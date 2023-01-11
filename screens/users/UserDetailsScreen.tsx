@@ -132,9 +132,6 @@ export default function UserDetailsScreen() {
     return <LoadingOverlay />;
   }
 
-  console.log('projectsFilter');
-  console.log(projectsFilter);
-
   const projectsSection =
     projectsFilter.length !== 0 ? (
       projectsFilter.map(item => (
@@ -156,10 +153,12 @@ export default function UserDetailsScreen() {
       </View>
     );
 
+  const sysAdminRole = myUser.role === 'SysAdmin';
+
   return (
     <View style={styles.container}>
       <View style={styles.iconsContainer}>
-        {myUser.role === 'SysAdmin' && (
+        {sysAdminRole && (
           <View style={styles.editIcon}>
             <TouchableOpacity
               onPress={() => navigation.navigate('EditUser', {user: user})}>
@@ -203,7 +202,7 @@ export default function UserDetailsScreen() {
               </View>
               {projectsSection}
             </View>
-            {myUser.role === 'SysAdmin' && (
+            {sysAdminRole && (
               <View style={styles.buttonContainer}>
                 <Button deleteStyle={styles.deleteButton} onPress={onDelete}>
                   Delete
