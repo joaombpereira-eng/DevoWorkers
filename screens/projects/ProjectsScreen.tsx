@@ -47,8 +47,8 @@ export default function ProjectsScreen() {
         })
         .then(res => {
           setFilteredData(res.data);
-          setIsSubmitting(false);
           setAllProjects(res.data);
+          setIsSubmitting(false);
         });
     } catch (e) {
       console.log('error project');
@@ -60,7 +60,7 @@ export default function ProjectsScreen() {
   useEffect(() => {
     fetchProjects();
     dispatch(setProjects(allProjects));
-  }, []);
+  }, [projects]);
 
   function onPressHandler(type: string) {
     const newData = projects.filter(item => {

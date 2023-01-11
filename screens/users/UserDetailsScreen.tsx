@@ -132,16 +132,40 @@ export default function UserDetailsScreen() {
     return <LoadingOverlay />;
   }
 
+  console.log('projectsFilter');
+  console.log(projectsFilter);
+
+  const projectsSection =
+    projectsFilter.length !== 0 ? (
+      projectsFilter.map(item => (
+        <TouchableOpacity
+          onPress={() => {
+            dispatch(setProject(item));
+            navigation.navigate('ProjectDetails', {
+              projectId: item.projectId,
+            });
+          }}
+          key={item.projectId}
+          style={styles.valueContainer}>
+          <Text style={styles.value}>{item.name}</Text>
+        </TouchableOpacity>
+      ))
+    ) : (
+      <View style={styles.valueContainer}>
+        <Text style={styles.value}>No Projects</Text>
+      </View>
+    );
+
   return (
     <View style={styles.container}>
       <View style={styles.iconsContainer}>
-      {myUser.role === 'SysAdmin' && (
-        <View style={styles.editIcon}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('EditUser', {user: user})}>
-            <Icon name="edit" color="black" size={25} />
-          </TouchableOpacity>
-        </View>
+        {myUser.role === 'SysAdmin' && (
+          <View style={styles.editIcon}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('EditUser', {user: user})}>
+              <Icon name="edit" color="black" size={25} />
+            </TouchableOpacity>
+          </View>
         )}
         <View style={styles.exitIcon}>
           <IconButton
@@ -177,19 +201,7 @@ export default function UserDetailsScreen() {
               <View style={styles.infoWorkContainer}>
                 <Text style={styles.infoWork}>Projects</Text>
               </View>
-              {projectsFilter.map(item => (
-                <TouchableOpacity
-                  onPress={() => {
-                    dispatch(setProject(item));
-                    navigation.navigate('ProjectDetails', {
-                      projectId: item.projectId,
-                    });
-                  }}
-                  key={item.projectId}
-                  style={styles.valueContainer}>
-                  <Text style={styles.value}>{item.name}</Text>
-                </TouchableOpacity>
-              ))}
+              {projectsSection}
             </View>
             {myUser.role === 'SysAdmin' && (
               <View style={styles.buttonContainer}>

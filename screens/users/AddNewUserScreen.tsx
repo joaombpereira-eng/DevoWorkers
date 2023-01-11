@@ -30,6 +30,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL, COMMON_AVATAR_BASE64} from '../../util/constants';
 import {UserData} from '../../data/users';
+import LoadingOverlay from '../../components/LoadingOverlay';
 
 type AddNewUserScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -73,6 +74,7 @@ export default function AddNewUserScreen() {
   }
 
   async function addNewUser() {
+    setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
       await axios
@@ -94,10 +96,12 @@ export default function AddNewUserScreen() {
         )
         .then(res => {
           setNewUser(res.data);
+          setIsSubmitting(false);
         });
     } catch (e) {
       console.log('error add user');
       console.log(e);
+      setIsSubmitting(false);
     }
   }
 
@@ -121,18 +125,18 @@ export default function AddNewUserScreen() {
       return;
     }
 
-    if (!name || !role) {
+    if (!name || !role || !email) {
       Alert.alert('Fill the Boxes!');
       return;
     }
 
     addNewUser();
+    fetchUsers();
     dispatch(
       addUser({
         newUser,
       }),
     );
-    fetchUsers();
     navigation.navigate('Users');
   }
 
@@ -241,6 +245,10 @@ export default function AddNewUserScreen() {
   ) : (
     <Icon name="camera" size={30} />
   );
+
+  if (isSubmitting) {
+    return <LoadingOverlay />;
+  }
 
   return (
     <View style={styles.container}>

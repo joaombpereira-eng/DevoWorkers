@@ -45,7 +45,7 @@ export default function UsersScreen() {
       setAllUsers(res.data);
       setIsSubmitting(false);
     } catch (e) {
-      console.log('error');
+      console.log('error fetching users');
       console.log(e);
       setIsSubmitting(false);
     }
@@ -56,7 +56,7 @@ export default function UsersScreen() {
     dispatch(setUsers(allUsers));
     /*     console.log('users');
     console.log(allUsers.map(item => item.name)); */
-  }, [myUser]);
+  }, [myUser, users]);
 
   function searchFilter(text: string) {
     if (text) {
@@ -116,7 +116,7 @@ export default function UsersScreen() {
       <Input isUserScreen onChangeText={searchFilter} text={search} />
       <View style={styles.bodyContainer}>
         <FlatList
-          data={filteredData}
+          data={filteredData ? filteredData : allUsers}
           renderItem={({item}) => <UserCard {...item} />}
           keyExtractor={item => (item.userId + Math.random()).toString()}
         />
