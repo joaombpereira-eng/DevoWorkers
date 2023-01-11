@@ -72,6 +72,7 @@ export default function UserDetailsScreen() {
         },
       });
       dispatch(setUsers(res.data));
+      setAllUsers(res.data);
       setIsSubmitting(false);
     } catch (e) {
       console.log('error');
@@ -127,8 +128,7 @@ export default function UserDetailsScreen() {
 
   function onDelete() {
     deleteUser(user?.userId);
-    fetchUsers();
-    //dispatch(removeUser(user));
+    dispatch(removeUser(user));
     navigation.navigate('Users');
   }
 
