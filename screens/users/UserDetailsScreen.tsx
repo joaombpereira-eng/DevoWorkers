@@ -47,7 +47,6 @@ type UserDetailsScreenNavigationProp = CompositeNavigationProp<
 type UserDetailsScreenRouteProp = RouteProp<RootStackParamList, 'UserDetails'>;
 
 export default function UserDetailsScreen() {
-  const [allUsers, setAllUsers] = useState<UserData[]>([]);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [user, setUser] = useState<UserData>();
   const navigation = useNavigation<UserDetailsScreenNavigationProp>();
@@ -58,6 +57,9 @@ export default function UserDetailsScreen() {
   const {projects, loading, error} = useSelector(selectProjects);
   const userUpdated = useSelector(selectUser);
   const myUser = useSelector(selectUserLogged);
+
+  console.log('user Id Details');
+  console.log(userId);
 
   console.log('userUpdated');
   console.log(userUpdated.name);
@@ -72,7 +74,6 @@ export default function UserDetailsScreen() {
         },
       });
       dispatch(setUsers(res.data));
-      setAllUsers(res.data);
       setIsSubmitting(false);
     } catch (e) {
       console.log('error');
@@ -103,7 +104,7 @@ export default function UserDetailsScreen() {
     setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
-      const res = await axios.delete(`${BASE_URL}/user/${id}`, {
+      await axios.delete(`${BASE_URL}/user/${id}`, {
         headers: {
           Authorization: 'bearer ' + token,
         },

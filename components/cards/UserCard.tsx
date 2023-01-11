@@ -42,6 +42,8 @@ export default function UserCard({
       }),
     );
     navigation.navigate('UserDetails', {userId: userId});
+    console.log('userId Card');
+    console.log(userId);
   }
 
   return (

@@ -79,6 +79,7 @@ export default function AddNewUserScreen() {
           setIsSubmitting(false);
           dispatch(
             addUser({
+              userId: res.data.data,
               name: name,
               email: email,
               password: '12345678',
