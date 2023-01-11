@@ -32,30 +32,11 @@ export default function ProjectsScreen() {
   const [dateAscending, setDateAscending] = useState<boolean>(false);
   const [nameAscending, setNameAscending] = useState<boolean>(true);
   const [nameSort, setNameSort] = useState<boolean>(true);
-  const dispatch = useDispatch();
   const {projects, loading, error} = useSelector(selectProjects);
 
   async function fetchProjects() {
-    setIsSubmitting(true);
-    try {
-      const token = await AsyncStorage.getItem('AccessToken');
-      await axios
-        .get(`${BASE_URL}/project`, {
-          headers: {
-            Authorization: 'bearer ' + token,
-          },
-        })
-        .then(res => {
-          setFilteredData(res.data);
-          setAllProjects(res.data);
-          setIsSubmitting(false);
-          dispatch(setProjects(res.data));
-        });
-    } catch (e) {
-      console.log('error project');
-      console.log(e);
-      setIsSubmitting(false);
-    }
+    setFilteredData(projects);
+    setAllProjects(projects);
   }
 
   useEffect(() => {

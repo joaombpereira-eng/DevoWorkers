@@ -16,6 +16,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../util/constants';
 import LoadingOverlay from '../../components/LoadingOverlay';
+import {setProjects} from '../../redux/slices/projects/projectsListSlice';
 
 export type UsersScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList, 'Users'>,
@@ -52,8 +53,30 @@ export default function UsersScreen() {
     }
   }
 
+  async function fetchProjects() {
+    setIsSubmitting(true);
+    try {
+      const token = await AsyncStorage.getItem('AccessToken');
+      await axios
+        .get(`${BASE_URL}/project`, {
+          headers: {
+            Authorization: 'bearer ' + token,
+          },
+        })
+        .then(res => {
+          setIsSubmitting(false);
+          dispatch(setProjects(res.data));
+        });
+    } catch (e) {
+      console.log('error project');
+      console.log(e);
+      setIsSubmitting(false);
+    }
+  }
+
   useEffect(() => {
     fetchUsers();
+    fetchProjects();
   }, [myUser]);
 
   function searchFilter(text: string) {
