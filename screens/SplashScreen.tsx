@@ -4,6 +4,9 @@ import {useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {RootStackParamList} from '../navigator/RootNavigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import jwt_decode, {JwtPayload} from 'jwt-decode';
+import {useDispatch} from 'react-redux';
+import {setUserLogged} from '../redux/slices/login/loginSlice';
 
 type SplashScreenNavigationProps = NativeStackNavigationProp<
   RootStackParamList,
@@ -12,10 +15,13 @@ type SplashScreenNavigationProps = NativeStackNavigationProp<
 
 export default function SplashScreen() {
   const navigation = useNavigation<SplashScreenNavigationProps>();
+  const dispatch = useDispatch();
 
   async function handleToken() {
     const token = await AsyncStorage.getItem('AccessToken');
     if (token) {
+      const decoded = token && jwt_decode<JwtPayload>(token);
+      dispatch(setUserLogged({role: decoded?.role, email: decoded?.email}));
       navigation.navigate('Tab');
     } else {
       navigation.navigate('Login');

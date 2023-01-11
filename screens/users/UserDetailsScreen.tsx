@@ -115,6 +115,8 @@ export default function UserDetailsScreen() {
 
   useEffect(() => {
     getUserById(userId);
+    console.log('my user detail');
+    console.log(myUser);
   }, [userId, myUser, userUpdated]);
 
   const projectsFilter = projects.filter(item => {

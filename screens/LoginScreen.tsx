@@ -50,6 +50,7 @@ export default function LoginScreen() {
     } catch (e) {
       Alert.alert('Ops! There was a problem!', `Message: ${e}`);
       setIsSubmitting(false);
+      navigation.navigate('Login');
     }
   }
 

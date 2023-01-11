@@ -54,6 +54,8 @@ export default function UsersScreen() {
   useEffect(() => {
     fetchUsers();
     dispatch(setUsers(allUsers));
+    console.log('my user list users')
+    console.log(myUser)
     /*     console.log('users');
     console.log(allUsers.map(item => item.name)); */
   }, [myUser, users]);
