@@ -55,32 +55,10 @@ export default function UserDetailsScreen() {
   } = useRoute<UserDetailsScreenRouteProp>();
   const dispatch = useDispatch();
   const {projects, loading, error} = useSelector(selectProjects);
-  const userUpdated = useSelector(selectUser);
+  const userById = useSelector((state: RootState) =>
+    selectUserById(state, userId),
+  )[0];
   const myUser = useSelector(selectUserLogged);
-
-  console.log('user Id Details');
-  console.log(userId);
-
-  console.log('userUpdated');
-  console.log(userUpdated.name);
-
-  async function fetchUsers() {
-    setIsSubmitting(true);
-    try {
-      const token = await AsyncStorage.getItem('AccessToken');
-      const res = await axios.get(`${BASE_URL}/user`, {
-        headers: {
-          Authorization: 'bearer ' + token,
-        },
-      });
-      dispatch(setUsers(res.data));
-      setIsSubmitting(false);
-    } catch (e) {
-      console.log('error');
-      console.log(e);
-      setIsSubmitting(false);
-    }
-  }
 
   async function getUserById(id?: number) {
     setIsSubmitting(true);
