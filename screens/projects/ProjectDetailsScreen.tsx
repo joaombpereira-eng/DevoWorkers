@@ -45,8 +45,6 @@ export default function ProjectDetailsScreen() {
   } = useRoute<ProjectScreenRouteProp>();
   const dispatch = useDispatch();
   const {users, loading, error} = useSelector(selectUsers);
-  console.log('users projects');
-  console.log(users.map(item => item.name));
 
   async function getProjectById(id: string) {
     setIsSubmitting(true);

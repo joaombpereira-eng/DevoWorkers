@@ -70,7 +70,6 @@ export default function AddNewUserScreen() {
           },
           {
             headers: {
-              'Content-Type': 'application/json',
               Authorization: 'bearer ' + token,
             },
           },

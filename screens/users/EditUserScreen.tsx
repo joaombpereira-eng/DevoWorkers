@@ -74,7 +74,6 @@ export default function EditUser() {
       const token = await AsyncStorage.getItem('AccessToken');
       const res = await axios.get(`${BASE_URL}/user`, {
         headers: {
-          'Content-Type': 'application/json',
           Authorization: 'bearer ' + token,
         },
       });
@@ -105,7 +104,6 @@ export default function EditUser() {
         },
         {
           headers: {
-            'Content-Type': 'application/json',
             Authorization: 'bearer ' + token,
           },
         },
@@ -137,7 +135,7 @@ export default function EditUser() {
     setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
-      const res = await axios.get(`${BASE_URL}/user/${id}`, {
+      await axios.get(`${BASE_URL}/user/${id}`, {
         headers: {
           Authorization: 'bearer ' + token,
         },

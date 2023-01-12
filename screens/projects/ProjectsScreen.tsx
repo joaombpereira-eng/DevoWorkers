@@ -33,10 +33,6 @@ export default function ProjectsScreen() {
   const [nameAscending, setNameAscending] = useState<boolean>(true);
   const [nameSort, setNameSort] = useState<boolean>(true);
   const {projects, loading, error} = useSelector(selectProjects);
-  console.log('projects');
-  console.log(projects.map(item => item.name));
-  console.log('filteredData');
-  console.log(filteredData.map(item => item.name));
 
   function onPressHandler(type: string) {
     const newData = projects.filter(item => {

@@ -66,7 +66,6 @@ export default function UserDetailsScreen() {
       const token = await AsyncStorage.getItem('AccessToken');
       const res = await axios.get(`${BASE_URL}/user/${id}`, {
         headers: {
-          'Content-Type': 'application/json',
           Authorization: 'bearer ' + token,
         },
       });
@@ -85,7 +84,6 @@ export default function UserDetailsScreen() {
       const token = await AsyncStorage.getItem('AccessToken');
       await axios.delete(`${BASE_URL}/user/${id}`, {
         headers: {
-          'Content-Type': 'application/json',
           Authorization: 'bearer ' + token,
         },
       });
@@ -99,7 +97,7 @@ export default function UserDetailsScreen() {
 
   useEffect(() => {
     getUserById(userId);
-  }, [userId]);
+  }, [userById]);
 
   const projectsFilter = projects.filter(item => {
     if (user?.projects.includes(item.projectId)) {
@@ -116,6 +114,10 @@ export default function UserDetailsScreen() {
   if (isSubmitting) {
     return <LoadingOverlay />;
   }
+
+  /*   if (userById) {
+    setUser(userById);
+  } */
 
   const projectsSection =
     projectsFilter.length !== 0 ? (
@@ -156,7 +158,7 @@ export default function UserDetailsScreen() {
             name="close"
             color="black"
             size={25}
-            onPress={navigation.goBack}
+            onPress={() => navigation.navigate('Tab')}
           />
         </View>
       </View>
