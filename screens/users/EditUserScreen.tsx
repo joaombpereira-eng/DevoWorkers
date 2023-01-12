@@ -52,7 +52,7 @@ export default function EditUser() {
     params: {user},
   } = useRoute<EditUserScreenRouteProps>();
   const [rolePicked, setRolePicked] = useState<string | undefined>(user?.role);
-  const [imagePicked, setImagePicked] = useState<string>('');
+  const [imagePicked, setImagePicked] = useState<string | undefined>('');
   const [projectPicked, setProjectPicked] = useState<string>('');
   const {projects, loading, error} = useSelector(selectProjects);
   const dispatch = useDispatch();
@@ -180,8 +180,10 @@ export default function EditUser() {
         includeBase64: true,
       });
 
+      const image = result.assets && result.assets[0].base64;
+
       if (!result.didCancel) {
-        setImagePicked(result.assets[0].base64);
+        setImagePicked(image);
       }
     }
   }
@@ -197,8 +199,10 @@ export default function EditUser() {
         includeBase64: true,
       });
 
+      const image = result.assets && result.assets[0].base64;
+
       if (!result.didCancel) {
-        setImagePicked(result.assets[0].base64);
+        setImagePicked(image);
       }
     }
   }

@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwt_decode, {JwtPayload} from 'jwt-decode';
 import {useDispatch} from 'react-redux';
 import {setUserLogged} from '../redux/slices/login/loginSlice';
+import {pick, omit} from 'lodash';
 
 type SplashScreenNavigationProps = NativeStackNavigationProp<
   RootStackParamList,
@@ -21,6 +22,9 @@ export default function SplashScreen() {
     const token = await AsyncStorage.getItem('AccessToken');
     if (token) {
       const decoded = token && jwt_decode<JwtPayload>(token);
+      const pickResult = pick(decoded, 'role');
+      console.log('pickResult');
+      console.log(pickResult);
       dispatch(setUserLogged({role: decoded?.role, email: decoded?.email}));
       navigation.navigate('Tab');
     } else {

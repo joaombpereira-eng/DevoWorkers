@@ -39,12 +39,11 @@ type AddNewUserScreenNavigationProp = CompositeNavigationProp<
 
 export default function AddNewUserScreen() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [allUsers, setAllUsers] = useState<UserData[]>([]);
   const [role, setRole] = useState<Role>(roles[0]);
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [birthDate, setBirthDate] = useState<Date>(new Date());
-  const [imagePicked, setImagePicked] = useState<string>('');
+  const [imagePicked, setImagePicked] = useState<string | undefined>('');
   const [open, setOpen] = useState<boolean>(false);
   const navigation = useNavigation<AddNewUserScreenNavigationProp>();
   const dispatch = useDispatch();
@@ -175,8 +174,10 @@ export default function AddNewUserScreen() {
         includeBase64: true,
       });
 
+      const image = result.assets && result.assets[0].base64;
+
       if (!result.didCancel) {
-        setImagePicked(result.assets[0].base64);
+        setImagePicked(image);
       }
     }
   }
@@ -192,8 +193,10 @@ export default function AddNewUserScreen() {
         includeBase64: true,
       });
 
+      const image = result.assets && result.assets[0].base64;
+
       if (!result.didCancel) {
-        setImagePicked(result.assets[0].base64);
+        setImagePicked(image);
       }
     }
   }

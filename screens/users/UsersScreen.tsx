@@ -31,10 +31,6 @@ export default function UsersScreen() {
   const {users, loading, error} = useSelector(selectUsers);
   const myUser = useSelector(selectUserLogged);
   const navigation = useNavigation<UsersScreenNavigationProps>();
-  console.log('users name');
-  console.log(users.map(item => item.name));
-  console.log('users role');
-  console.log(users.map(item => item.role));
 
   async function fetchUsers() {
     setIsSubmitting(true);
