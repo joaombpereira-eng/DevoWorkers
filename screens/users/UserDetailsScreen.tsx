@@ -95,6 +95,24 @@ export default function UserDetailsScreen() {
     }
   }
 
+  async function fetchUsers() {
+    setIsSubmitting(true);
+    try {
+      const token = await AsyncStorage.getItem('AccessToken');
+      const res = await axios.get(`${BASE_URL}/user`, {
+        headers: {
+          Authorization: 'bearer ' + token,
+        },
+      });
+      dispatch(setUsers(res.data));
+      setIsSubmitting(false);
+    } catch (e) {
+      console.log('error');
+      console.log(e);
+      setIsSubmitting(false);
+    }
+  }
+
   useEffect(() => {
     getUserById(userId);
   }, [userById]);
@@ -111,13 +129,14 @@ export default function UserDetailsScreen() {
     navigation.navigate('Users');
   }
 
+  function onClosePress() {
+    fetchUsers();
+    navigation.navigate('Tab');
+  }
+
   if (isSubmitting) {
     return <LoadingOverlay />;
   }
-
-  /*   if (userById) {
-    setUser(userById);
-  } */
 
   const projectsSection =
     projectsFilter.length !== 0 ? (
@@ -158,7 +177,7 @@ export default function UserDetailsScreen() {
             name="close"
             color="black"
             size={25}
-            onPress={() => navigation.navigate('Tab')}
+            onPress={onClosePress}
           />
         </View>
       </View>

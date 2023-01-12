@@ -120,7 +120,6 @@ export default function EditUser() {
   function updateUserHandler() {
     if (validRole(rolePicked)) {
       updateUser();
-      getUserById(user?.userId);
       fetchUsers();
       navigation.navigate('UserDetails', {userId: user?.userId});
     } else {
@@ -128,23 +127,6 @@ export default function EditUser() {
         'Wrong Role!',
         'Insert one of the following Roles: SysAdmin, ProjectManager, Developer, QA or Designer',
       );
-    }
-  }
-
-  async function getUserById(id?: number) {
-    setIsSubmitting(true);
-    try {
-      const token = await AsyncStorage.getItem('AccessToken');
-      await axios.get(`${BASE_URL}/user/${id}`, {
-        headers: {
-          Authorization: 'bearer ' + token,
-        },
-      });
-      setIsSubmitting(false);
-    } catch (e) {
-      console.log('error get user');
-      console.log(e);
-      setIsSubmitting(false);
     }
   }
 
