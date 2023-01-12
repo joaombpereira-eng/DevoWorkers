@@ -66,6 +66,7 @@ export default function UserDetailsScreen() {
       const token = await AsyncStorage.getItem('AccessToken');
       const res = await axios.get(`${BASE_URL}/user/${id}`, {
         headers: {
+          'Content-Type': 'application/json',
           Authorization: 'bearer ' + token,
         },
       });
@@ -84,6 +85,7 @@ export default function UserDetailsScreen() {
       const token = await AsyncStorage.getItem('AccessToken');
       await axios.delete(`${BASE_URL}/user/${id}`, {
         headers: {
+          'Content-Type': 'application/json',
           Authorization: 'bearer ' + token,
         },
       });

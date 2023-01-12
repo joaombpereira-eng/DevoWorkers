@@ -33,15 +33,10 @@ export default function ProjectsScreen() {
   const [nameAscending, setNameAscending] = useState<boolean>(true);
   const [nameSort, setNameSort] = useState<boolean>(true);
   const {projects, loading, error} = useSelector(selectProjects);
-
-  async function fetchProjects() {
-    setFilteredData(projects);
-    setAllProjects(projects);
-  }
-
-  useEffect(() => {
-    fetchProjects();
-  }, []);
+  console.log('projects');
+  console.log(projects.map(item => item.name));
+  console.log('filteredData');
+  console.log(filteredData.map(item => item.name));
 
   function onPressHandler(type: string) {
     const newData = projects.filter(item => {
@@ -52,7 +47,10 @@ export default function ProjectsScreen() {
 
   function date() {
     if (!nameSort) {
-      let dateSorted = [...filteredData];
+      let dateSorted =
+        filteredData !== projects && filteredData.length !== 0
+          ? [...filteredData]
+          : [...projects];
       dateSorted = dateSorted.sort((a, b) => {
         if (dateAscending) {
           return a.startDate > b.startDate ? 1 : -1;
@@ -62,7 +60,10 @@ export default function ProjectsScreen() {
       });
       return dateSorted;
     } else {
-      let nameSorted = [...filteredData];
+      let nameSorted =
+        filteredData !== projects && filteredData.length !== 0
+          ? [...filteredData]
+          : [...projects];
       nameSorted = nameSorted.sort((a, b) => {
         if (nameAscending) {
           return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
@@ -83,7 +84,7 @@ export default function ProjectsScreen() {
 
   function searchFilter(text: string) {
     if (text) {
-      const newData = filteredData.filter(item => {
+      const newData = projects.filter(item => {
         const itemData = item.name.toUpperCase();
         const textData = text.toUpperCase();
         return itemData.includes(textData);
@@ -91,7 +92,7 @@ export default function ProjectsScreen() {
       setFilteredData(newData);
       setSearch(text);
     } else {
-      setFilteredData(allProjects);
+      setFilteredData([]);
       setSearch(text);
     }
   }

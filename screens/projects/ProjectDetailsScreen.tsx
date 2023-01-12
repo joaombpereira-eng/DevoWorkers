@@ -54,6 +54,7 @@ export default function ProjectDetailsScreen() {
       const token = await AsyncStorage.getItem('AccessToken');
       const res = await axios.get(`${BASE_URL}/project/${id}`, {
         headers: {
+          'Content-Type': 'application/json',
           Authorization: 'bearer ' + token,
         },
       });

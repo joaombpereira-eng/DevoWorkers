@@ -46,7 +46,6 @@ export default function AddNewUserScreen() {
   const [birthDate, setBirthDate] = useState<Date>(new Date());
   const [imagePicked, setImagePicked] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
-  const [newUser, setNewUser] = useState<UserData>();
   const navigation = useNavigation<AddNewUserScreenNavigationProp>();
   const dispatch = useDispatch();
 
@@ -71,6 +70,7 @@ export default function AddNewUserScreen() {
           },
           {
             headers: {
+              'Content-Type': 'application/json',
               Authorization: 'bearer ' + token,
             },
           },
