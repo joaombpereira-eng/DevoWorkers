@@ -7,16 +7,10 @@ import {RootStackParamList} from '../../navigator/RootNavigator';
 import Input from '../../components/forms/Input';
 import IconButton from '../../components/buttons/IconButton';
 import ProjectCard from '../../components/cards/ProjectCard';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {ProjectData} from '../../data/projects';
-import {useDispatch, useSelector} from 'react-redux';
-import {
-  selectProjects,
-  setProjects,
-} from '../../redux/slices/projects/projectsListSlice';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {BASE_URL} from '../../util/constants';
-import axios from 'axios';
+import {useSelector} from 'react-redux';
+import {selectProjects} from '../../redux/slices/projects/projectsListSlice';
 import LoadingOverlay from '../../components/LoadingOverlay';
 
 export type ProjectsScreenNavigationProps = CompositeNavigationProp<
@@ -27,21 +21,26 @@ export type ProjectsScreenNavigationProps = CompositeNavigationProp<
 export default function ProjectsScreen() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [filteredData, setFilteredData] = useState<ProjectData[]>([]);
-  const [allProjects, setAllProjects] = useState<ProjectData[]>([]);
   const [search, setSearch] = useState<string>('');
   const [dateAscending, setDateAscending] = useState<boolean>(false);
   const [nameAscending, setNameAscending] = useState<boolean>(true);
   const [nameSort, setNameSort] = useState<boolean>(true);
-  const {projects, loading, error} = useSelector(selectProjects);
+  const {projects} = useSelector(selectProjects);
 
-  function onPressHandler(type: string) {
+  const onPressHandler = (type: string) => {
     const newData = projects.filter(item => {
       return item.status === type;
     });
-    setFilteredData(newData);
-  }
+    if (newData.length === 0) {
+      setFilteredData([]);
+    } else {
+      setFilteredData(newData);
+    }
+    console.log('filteredData');
+    console.log(filteredData.map(item => item.name));
+  };
 
-  function date() {
+  const date = () => {
     if (!nameSort) {
       let dateSorted =
         filteredData !== projects && filteredData.length !== 0
@@ -69,16 +68,16 @@ export default function ProjectsScreen() {
       });
       return nameSorted;
     }
-  }
+  };
 
-  function lengthDataFiltered(type: string) {
+  const lengthDataFiltered = (type: string) => {
     const dataFiltered = projects.filter(project => {
       return project.status === type;
     });
     return dataFiltered.length;
-  }
+  };
 
-  function searchFilter(text: string) {
+  const searchFilter = (text: string) => {
     if (text) {
       const newData = projects.filter(item => {
         const itemData = item.name.toUpperCase();
@@ -91,7 +90,7 @@ export default function ProjectsScreen() {
       setFilteredData([]);
       setSearch(text);
     }
-  }
+  };
 
   if (isSubmitting) {
     return <LoadingOverlay />;

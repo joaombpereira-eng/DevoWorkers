@@ -20,12 +20,10 @@ import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {TabStackParamList} from '../../navigator/TabNavigator';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import IconButton from '../../components/buttons/IconButton';
-import InfoForm from '../../components/forms/InfoForm';
 import Button from '../../components/buttons/Button';
 import {Dropdown} from 'react-native-element-dropdown';
-import {Role, roles} from '../../data/roles';
-import {useEffect, useState} from 'react';
-import {ProjectData} from '../../data/projects';
+import {roles} from '../../data/roles';
+import {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectProjects} from '../../redux/slices/projects/projectsListSlice';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
@@ -33,7 +31,6 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../util/constants';
 import InputForm from '../../components/forms/InputForm';
-import {UserData} from '../../data/users';
 import {setUser} from '../../redux/slices/users/userSlice';
 import LoadingOverlay from '../../components/LoadingOverlay';
 import {setUsers} from '../../redux/slices/users/usersListSlice';
@@ -54,7 +51,7 @@ export default function EditUser() {
   const [rolePicked, setRolePicked] = useState<string | undefined>(user?.role);
   const [imagePicked, setImagePicked] = useState<string | undefined>('');
   const [projectPicked, setProjectPicked] = useState<string>('');
-  const {projects, loading, error} = useSelector(selectProjects);
+  const {projects} = useSelector(selectProjects);
   const dispatch = useDispatch();
 
   function validRole(rolePicked?: string) {

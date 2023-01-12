@@ -8,12 +8,10 @@ import {
 } from 'react-native';
 import InfoForm from '../../components/forms/InfoForm';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import IconButton from '../../components/buttons/IconButton';
 import {formattedDate} from '../../util/formattedDate';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectUserLogged} from '../../redux/slices/login/loginSlice';
 import {selectUsers} from '../../redux/slices/users/usersListSlice';
-import {useEffect} from 'react';
 import {setProject} from '../../redux/slices/projects/projectSlice';
 import {TabStackParamList} from '../../navigator/TabNavigator';
 import {RootStackParamList} from '../../navigator/RootNavigator';

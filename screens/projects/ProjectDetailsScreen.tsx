@@ -44,7 +44,7 @@ export default function ProjectDetailsScreen() {
     params: {projectId},
   } = useRoute<ProjectScreenRouteProp>();
   const dispatch = useDispatch();
-  const {users, loading, error} = useSelector(selectUsers);
+  const {users} = useSelector(selectUsers);
 
   async function getProjectById(id: string) {
     setIsSubmitting(true);

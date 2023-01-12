@@ -5,7 +5,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {TabStackParamList} from '../../navigator/TabNavigator';
 import {RootStackParamList} from '../../navigator/RootNavigator';
 import {UserData} from '../../data/users';
-import {useEffect, useLayoutEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import UserCard from '../../components/cards/UserCard';
 import Input from '../../components/forms/Input';
 import IconButton from '../../components/buttons/IconButton';
@@ -28,7 +28,7 @@ export default function UsersScreen() {
   const [filteredData, setFilteredData] = useState<UserData[]>([]);
   const [search, setSearch] = useState<string>('');
   const dispatch = useDispatch();
-  const {users, loading, error} = useSelector(selectUsers);
+  const {users} = useSelector(selectUsers);
   const myUser = useSelector(selectUserLogged);
   const navigation = useNavigation<UsersScreenNavigationProps>();
 

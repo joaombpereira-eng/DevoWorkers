@@ -9,7 +9,7 @@ import {
   PermissionsAndroid,
   Platform,
 } from 'react-native';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import IconButton from '../../components/buttons/IconButton';
 import InputForm from '../../components/forms/InputForm';
 import DateForm from '../../components/forms/DateForm';
@@ -29,7 +29,6 @@ import {formattedDate} from '../../util/formattedDate';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL, COMMON_AVATAR_BASE64} from '../../util/constants';
-import {UserData} from '../../data/users';
 import LoadingOverlay from '../../components/LoadingOverlay';
 
 type AddNewUserScreenNavigationProp = CompositeNavigationProp<
