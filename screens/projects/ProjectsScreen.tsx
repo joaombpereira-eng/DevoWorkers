@@ -11,7 +11,6 @@ import {useState} from 'react';
 import {ProjectData} from '../../data/projects';
 import {useSelector} from 'react-redux';
 import {selectProjects} from '../../redux/slices/projects/projectsListSlice';
-import LoadingOverlay from '../../components/LoadingOverlay';
 
 export type ProjectsScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList, 'Projects'>,
@@ -19,7 +18,6 @@ export type ProjectsScreenNavigationProps = CompositeNavigationProp<
 >;
 
 export default function ProjectsScreen() {
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [filteredData, setFilteredData] = useState<ProjectData[]>([]);
   const [search, setSearch] = useState<string>('');
   const [dateAscending, setDateAscending] = useState<boolean>(false);
@@ -36,8 +34,6 @@ export default function ProjectsScreen() {
     } else {
       setFilteredData(newData);
     }
-    console.log('filteredData');
-    console.log(filteredData.map(item => item.name));
   };
 
   const date = () => {
@@ -87,14 +83,10 @@ export default function ProjectsScreen() {
       setFilteredData(newData);
       setSearch(text);
     } else {
-      setFilteredData([]);
+      setFilteredData(projects);
       setSearch(text);
     }
   };
-
-  if (isSubmitting) {
-    return <LoadingOverlay />;
-  }
 
   return (
     <View style={styles.container}>

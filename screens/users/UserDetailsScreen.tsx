@@ -159,6 +159,7 @@ export default function UserDetailsScreen() {
     );
 
   const sysAdminRole = myUser.role === 'SysAdmin';
+  const sysAdminEmail = myUser.email === user?.email;
 
   return (
     <View style={styles.container}>
@@ -207,7 +208,7 @@ export default function UserDetailsScreen() {
               </View>
               {projectsSection}
             </View>
-            {sysAdminRole && (
+            {sysAdminRole && !sysAdminEmail && (
               <View style={styles.buttonContainer}>
                 <Button deleteStyle={styles.deleteButton} onPress={onDelete}>
                   Delete

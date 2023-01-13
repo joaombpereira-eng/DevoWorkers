@@ -32,9 +32,6 @@ export default function MyUserScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation<MyUserScreenNavigationProps>();
 
-  console.log('myUserFromToken');
-  console.log(myUserFromToken);
-
   const myUser = users.filter(user => user.email === myUserFromToken.email);
 
   const projectsFilter = projects.filter(item => {
