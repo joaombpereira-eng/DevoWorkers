@@ -12,32 +12,33 @@ import {
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
+import {RootStackParamList} from '../../navigator/RootNavigator';
+import {TabStackParamList} from '../../navigator/TabNavigator';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
-import {TabStackParamList} from '../../navigator/TabNavigator';
-import {RootStackParamList} from '../../navigator/RootNavigator';
-import {useDispatch, useSelector} from 'react-redux';
-import {setProject} from '../../redux/slices/projects/projectSlice';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import InfoForm from '../../components/forms/InfoForm';
 import IconButton from '../../components/buttons/IconButton';
 import Button from '../../components/buttons/Button';
+import LoadingOverlay from '../../components/LoadingOverlay';
+import {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../../redux/store/store';
+import {setProject} from '../../redux/slices/projects/projectSlice';
 import {
   removeUser,
   selectUserById,
   setUsers,
 } from '../../redux/slices/users/usersListSlice';
 import {selectUserLogged} from '../../redux/slices/login/loginSlice';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-import {BASE_URL} from '../../util/constants';
-import {useEffect, useState} from 'react';
-import {UserData} from '../../data/users';
-import {formattedDate} from '../../util/formattedDate';
 import {selectProjects} from '../../redux/slices/projects/projectsListSlice';
-import LoadingOverlay from '../../components/LoadingOverlay';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {RootState} from '../../redux/store/store';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {BASE_URL} from '../../util/constants';
+import {formattedDate} from '../../util/formattedDate';
 import {formattedImage} from '../../util/formattedImage';
+import {UserData} from '../../data/users';
+import {ProjectData} from '../../data/projects';
 
 type UserDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -47,7 +48,7 @@ type UserDetailsScreenNavigationProp = CompositeNavigationProp<
 type UserDetailsScreenRouteProp = RouteProp<RootStackParamList, 'UserDetails'>;
 
 export default function UserDetailsScreen() {
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(true);
   const [user, setUser] = useState<UserData>();
   const navigation = useNavigation<UserDetailsScreenNavigationProp>();
   const {
@@ -60,7 +61,7 @@ export default function UserDetailsScreen() {
   )[0];
   const myUser = useSelector(selectUserLogged);
 
-   const getUserById = async (id?: number) => {
+  const getUserById = async (id?: number) => {
     setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
@@ -76,7 +77,7 @@ export default function UserDetailsScreen() {
       console.log(e);
       setIsSubmitting(false);
     }
-  }
+  };
 
   const deleteUser = async (id?: number) => {
     setIsSubmitting(true);
@@ -134,6 +135,17 @@ export default function UserDetailsScreen() {
     navigation.navigate('Tab');
   };
 
+  const onEditIconPress = () => {
+    navigation.navigate('EditUser', {user: user});
+  };
+
+  const onProjectPress = (project: ProjectData) => {
+    dispatch(setProject(project));
+    navigation.navigate('ProjectDetails', {
+      projectId: project.projectId,
+    });
+  };
+
   if (isSubmitting) {
     return <LoadingOverlay />;
   }
@@ -142,12 +154,7 @@ export default function UserDetailsScreen() {
     projectsFilter.length !== 0 ? (
       projectsFilter.map(item => (
         <TouchableOpacity
-          onPress={() => {
-            dispatch(setProject(item));
-            navigation.navigate('ProjectDetails', {
-              projectId: item.projectId,
-            });
-          }}
+          onPress={() => onProjectPress(item)}
           key={item.projectId}
           style={styles.valueContainer}>
           <Text style={styles.value}>{item.name}</Text>
@@ -167,8 +174,7 @@ export default function UserDetailsScreen() {
       <View style={styles.iconsContainer}>
         {sysAdminRole && (
           <View style={styles.editIcon}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('EditUser', {user: user})}>
+            <TouchableOpacity onPress={onEditIconPress}>
               <Icon name="edit" color="black" size={25} />
             </TouchableOpacity>
           </View>

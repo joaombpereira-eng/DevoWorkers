@@ -17,18 +17,19 @@ import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {TabStackParamList} from '../../navigator/TabNavigator';
 import {RootStackParamList} from '../../navigator/RootNavigator';
 import InfoForm from '../../components/forms/InfoForm';
-import {useDispatch, useSelector} from 'react-redux';
 import IconButton from '../../components/buttons/IconButton';
-import {setUser} from '../../redux/slices/users/userSlice';
 import {useEffect, useState} from 'react';
-import {ProjectData} from '../../data/projects';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {BASE_URL} from '../../util/constants';
-import axios from 'axios';
-import {formattedDate} from '../../util/formattedDate';
-import {selectUsers} from '../../redux/slices/users/usersListSlice';
 import LoadingOverlay from '../../components/LoadingOverlay';
+import {useDispatch, useSelector} from 'react-redux';
+import {setUser} from '../../redux/slices/users/userSlice';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {selectUsers} from '../../redux/slices/users/usersListSlice';
+import {formattedDate} from '../../util/formattedDate';
 import {formattedImage} from '../../util/formattedImage';
+import {BASE_URL} from '../../util/constants';
+import {ProjectData} from '../../data/projects';
+import {UserData} from '../../data/users';
 
 type ProjectDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -53,7 +54,6 @@ export default function ProjectDetailsScreen() {
       const token = await AsyncStorage.getItem('AccessToken');
       const res = await axios.get(`${BASE_URL}/project/${id}`, {
         headers: {
-          'Content-Type': 'application/json',
           Authorization: 'bearer ' + token,
         },
       });
@@ -72,6 +72,11 @@ export default function ProjectDetailsScreen() {
 
   const onCloseIconPress = () => {
     navigation.goBack();
+  };
+
+  const onUserPress = (user: UserData) => {
+    dispatch(setUser(user));
+    navigation.navigate('UserDetails', {userId: user.userId});
   };
 
   const workforceFilter = users?.filter(item => {
@@ -117,10 +122,7 @@ export default function ProjectDetailsScreen() {
               </View>
               {workforceFilter.map(item => (
                 <TouchableOpacity
-                  onPress={() => {
-                    dispatch(setUser(item));
-                    navigation.navigate('UserDetails', {userId: item.userId});
-                  }}
+                  onPress={() => onUserPress(item)}
                   key={item.userId}
                   style={styles.valueContainer}>
                   <Text style={styles.value}>{item.name}</Text>

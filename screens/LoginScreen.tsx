@@ -1,17 +1,17 @@
 import {View, StyleSheet, Text, Alert} from 'react-native';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigator/RootNavigator';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import AuthForm from '../components/forms/AuthForm';
 import Button from '../components/buttons/Button';
+import LoadingOverlay from '../components/LoadingOverlay';
 import {useState} from 'react';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {BASE_URL} from '../util/constants';
 import {useDispatch} from 'react-redux';
 import {setUserLogged} from '../redux/slices/login/loginSlice';
-import LoadingOverlay from '../components/LoadingOverlay';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwt_decode from 'jwt-decode';
+import {BASE_URL} from '../util/constants';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,

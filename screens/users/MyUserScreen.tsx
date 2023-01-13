@@ -6,20 +6,21 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
+import {RootStackParamList} from '../../navigator/RootNavigator';
+import {TabStackParamList} from '../../navigator/TabNavigator';
+import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import InfoForm from '../../components/forms/InfoForm';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {formattedDate} from '../../util/formattedDate';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectUserLogged} from '../../redux/slices/login/loginSlice';
 import {selectUsers} from '../../redux/slices/users/usersListSlice';
 import {setProject} from '../../redux/slices/projects/projectSlice';
-import {TabStackParamList} from '../../navigator/TabNavigator';
-import {RootStackParamList} from '../../navigator/RootNavigator';
-import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
-import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {selectProjects} from '../../redux/slices/projects/projectsListSlice';
+import {formattedDate} from '../../util/formattedDate';
 import {formattedImage} from '../../util/formattedImage';
+import {ProjectData} from '../../data/projects';
 
 export type MyUserScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList, 'Users'>,
@@ -41,16 +42,18 @@ export default function MyUserScreen() {
     }
   });
 
+  const onProjectPress = (project: ProjectData) => {
+    dispatch(setProject(project));
+    navigation.navigate('ProjectDetails', {
+      projectId: project.projectId,
+    });
+  };
+
   const projectsSection =
     projectsFilter.length !== 0 ? (
       projectsFilter.map(item => (
         <TouchableOpacity
-          onPress={() => {
-            dispatch(setProject(item));
-            navigation.navigate('ProjectDetails', {
-              projectId: item.projectId,
-            });
-          }}
+          onPress={() => onProjectPress(item)}
           key={item.projectId}
           style={styles.valueContainer}>
           <Text style={styles.value}>{item.name}</Text>

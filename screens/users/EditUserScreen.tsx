@@ -16,24 +16,25 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import {RootStackParamList} from '../../navigator/RootNavigator';
-import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {TabStackParamList} from '../../navigator/TabNavigator';
+import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import IconButton from '../../components/buttons/IconButton';
 import Button from '../../components/buttons/Button';
+import InputForm from '../../components/forms/InputForm';
+import LoadingOverlay from '../../components/LoadingOverlay';
 import {Dropdown} from 'react-native-element-dropdown';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {roles} from '../../data/roles';
 import {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectProjects} from '../../redux/slices/projects/projectsListSlice';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {setUser} from '../../redux/slices/users/userSlice';
+import {setUsers} from '../../redux/slices/users/usersListSlice';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../util/constants';
-import InputForm from '../../components/forms/InputForm';
-import {setUser} from '../../redux/slices/users/userSlice';
-import LoadingOverlay from '../../components/LoadingOverlay';
-import {setUsers} from '../../redux/slices/users/usersListSlice';
+import {formattedImage} from '../../util/formattedImage';
 
 type EditUserScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -114,7 +115,7 @@ export default function EditUser() {
     }
   };
 
-  const updateUserHandler = () => {
+  const onUpdateButtonPress = () => {
     if (validRole(rolePicked)) {
       updateUser();
       fetchUsers();
@@ -229,25 +230,21 @@ export default function EditUser() {
 
   let avatarOrImagePicked = imagePicked ? (
     <Image
-      source={{uri: `data:image/png;base64,${imagePicked}`}}
+      source={{uri: formattedImage(imagePicked)}}
       style={styles.image}
       resizeMode="contain"
     />
   ) : (
-    <Image
-      source={{uri: `data:image/png;base64,${user?.avatar}`}}
-      style={styles.image}
-    />
+    <Image source={{uri: formattedImage(user?.avatar)}} style={styles.image} />
   );
-
-  if (isSubmitting) {
-    return <LoadingOverlay />;
-  }
 
   const onCloseIconPress = () => {
     navigation.goBack();
   };
 
+  if (isSubmitting) {
+    return <LoadingOverlay />;
+  }
   return (
     <View style={styles.container}>
       <View style={styles.iconsContainer}>
@@ -295,7 +292,7 @@ export default function EditUser() {
             <View style={styles.buttonContainer}>
               <Button
                 deleteStyle={styles.deleteButton}
-                onPress={updateUserHandler}>
+                onPress={onUpdateButtonPress}>
                 Update
               </Button>
             </View>

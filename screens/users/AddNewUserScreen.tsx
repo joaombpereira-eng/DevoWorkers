@@ -14,23 +14,23 @@ import IconButton from '../../components/buttons/IconButton';
 import InputForm from '../../components/forms/InputForm';
 import DateForm from '../../components/forms/DateForm';
 import Button from '../../components/buttons/Button';
+import LoadingOverlay from '../../components/LoadingOverlay';
 import {Dropdown} from 'react-native-element-dropdown';
+import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
-import {TabStackParamList} from '../../navigator/TabNavigator';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {TabStackParamList} from '../../navigator/TabNavigator';
 import {RootStackParamList} from '../../navigator/RootNavigator';
 import {Role, roles} from '../../data/roles';
-import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch} from 'react-redux';
 import {addUser, setUsers} from '../../redux/slices/users/usersListSlice';
 import {formattedDate} from '../../util/formattedDate';
+import {formattedImage} from '../../util/formattedImage';
+import {BASE_URL, COMMON_AVATAR_BASE64} from '../../util/constants';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {BASE_URL, COMMON_AVATAR_BASE64} from '../../util/constants';
-import LoadingOverlay from '../../components/LoadingOverlay';
-import {formattedImage} from '../../util/formattedImage';
 
 type AddNewUserScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,

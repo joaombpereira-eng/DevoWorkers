@@ -4,14 +4,10 @@ import {RootState} from '../../store/store';
 
 type UserState = {
   users: UserData[];
-  loading: boolean;
-  error: boolean;
 };
 
 const initialState: UserState = {
   users: [],
-  loading: false,
-  error: false,
 };
 
 const usersListSlice = createSlice({
@@ -37,22 +33,13 @@ const usersListSlice = createSlice({
         );
       }
     },
-    setLoading: (state, action) => {
-      state.loading = true;
-    },
     setUsers: (state, action) => {
-      state.loading = false;
-      state.error = false;
       state.users = action.payload;
-    },
-    setError: state => {
-      state.error = true;
     },
   },
 });
 
-export const {addUser, removeUser, setError, setLoading, setUsers} =
-  usersListSlice.actions;
+export const {addUser, removeUser, setUsers} = usersListSlice.actions;
 
 export const selectUsers = (state: RootState) => state.usersList;
 export const selectUserById = (state: RootState, id: number | undefined) =>

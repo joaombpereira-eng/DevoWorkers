@@ -1,22 +1,22 @@
 import {View, Text, StyleSheet, FlatList} from 'react-native';
+import {RootStackParamList} from '../../navigator/RootNavigator';
+import {TabStackParamList} from '../../navigator/TabNavigator';
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {TabStackParamList} from '../../navigator/TabNavigator';
-import {RootStackParamList} from '../../navigator/RootNavigator';
-import {UserData} from '../../data/users';
-import {useEffect, useState} from 'react';
 import UserCard from '../../components/cards/UserCard';
 import Input from '../../components/forms/Input';
 import IconButton from '../../components/buttons/IconButton';
+import LoadingOverlay from '../../components/LoadingOverlay';
+import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectUsers, setUsers} from '../../redux/slices/users/usersListSlice';
 import {selectUserLogged} from '../../redux/slices/login/loginSlice';
+import {setProjects} from '../../redux/slices/projects/projectsListSlice';
+import {UserData} from '../../data/users';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../util/constants';
-import LoadingOverlay from '../../components/LoadingOverlay';
-import {setProjects} from '../../redux/slices/projects/projectsListSlice';
 
 export type UsersScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList, 'Users'>,

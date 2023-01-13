@@ -1,5 +1,5 @@
 import moment from 'moment';
 
-export function formattedDate(date?: Date) {
+export const formattedDate = (date?: Date) => {
   return moment(date).utc().format('DD/MM/YYYY');
-}
+};

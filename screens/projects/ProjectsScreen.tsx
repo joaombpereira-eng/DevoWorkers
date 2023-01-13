@@ -1,16 +1,16 @@
 import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import {RootStackParamList} from '../../navigator/RootNavigator';
+import {TabStackParamList} from '../../navigator/TabNavigator';
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {CompositeNavigationProp} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {TabStackParamList} from '../../navigator/TabNavigator';
-import {RootStackParamList} from '../../navigator/RootNavigator';
 import Input from '../../components/forms/Input';
 import IconButton from '../../components/buttons/IconButton';
 import ProjectCard from '../../components/cards/ProjectCard';
 import {useState} from 'react';
-import {ProjectData} from '../../data/projects';
 import {useSelector} from 'react-redux';
 import {selectProjects} from '../../redux/slices/projects/projectsListSlice';
+import {ProjectData} from '../../data/projects';
 
 export type ProjectsScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList, 'Projects'>,
