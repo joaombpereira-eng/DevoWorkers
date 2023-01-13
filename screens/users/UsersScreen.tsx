@@ -54,16 +54,13 @@ export default function UsersScreen() {
     setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
-      await axios
-        .get(`${BASE_URL}/project`, {
-          headers: {
-            Authorization: 'bearer ' + token,
-          },
-        })
-        .then(res => {
-          setIsSubmitting(false);
-          dispatch(setProjects(res.data));
-        });
+      const res = await axios.get(`${BASE_URL}/project`, {
+        headers: {
+          Authorization: 'bearer ' + token,
+        },
+      });
+      dispatch(setProjects(res.data));
+      setIsSubmitting(false);
     } catch (e) {
       console.log('error project');
       console.log(e);

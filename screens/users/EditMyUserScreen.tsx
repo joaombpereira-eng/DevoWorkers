@@ -36,19 +36,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../util/constants';
 import {formattedImage} from '../../util/formattedImage';
 
-type EditUserScreenNavigationProps = CompositeNavigationProp<
+type EditMyUserScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
-  NativeStackNavigationProp<RootStackParamList, 'EditUser'>
+  NativeStackNavigationProp<RootStackParamList, 'EditMyUser'>
 >;
 
-type EditUserScreenRouteProps = RouteProp<RootStackParamList, 'EditUser'>;
+type EditMyUserScreenRouteProps = RouteProp<RootStackParamList, 'EditMyUser'>;
 
-export default function EditUserScreen() {
+export default function EditMyUserScreen() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const navigation = useNavigation<EditUserScreenNavigationProps>();
+  const navigation = useNavigation<EditMyUserScreenNavigationProps>();
   const {
     params: {user},
-  } = useRoute<EditUserScreenRouteProps>();
+  } = useRoute<EditMyUserScreenRouteProps>();
   const [rolePicked, setRolePicked] = useState<string | undefined>(user?.role);
   const [imagePicked, setImagePicked] = useState<string | undefined>('');
   const [projectPicked, setProjectPicked] = useState<string>('');
@@ -119,7 +119,7 @@ export default function EditUserScreen() {
     if (validRole(rolePicked)) {
       updateUser();
       fetchUsers();
-      navigation.navigate('UserDetails', {userId: user?.userId});
+      navigation.navigate('MyUser');
     } else {
       Alert.alert(
         'Wrong Role!',

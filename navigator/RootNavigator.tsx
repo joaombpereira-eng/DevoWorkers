@@ -7,6 +7,7 @@ import EditUserScreen from '../screens/users/EditUserScreen';
 import ProjectDetailsScreen from '../screens/projects/ProjectDetailsScreen';
 import SplashScreen from '../screens/SplashScreen';
 import {UserData} from '../data/users';
+import EditMyUserScreen from '../screens/users/EditMyUserScreen';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -16,6 +17,7 @@ export type RootStackParamList = {
   ProjectDetails: {projectId: string};
   AddNewUser: undefined;
   EditUser: {user: UserData | undefined};
+  EditMyUser: {user: UserData | undefined};
 };
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -47,6 +49,9 @@ export default function RootNavigator() {
       </RootStack.Group>
       <RootStack.Group>
         <RootStack.Screen name="EditUser" component={EditUserScreen} />
+      </RootStack.Group>
+      <RootStack.Group>
+        <RootStack.Screen name="EditMyUser" component={EditMyUserScreen} />
       </RootStack.Group>
     </RootStack.Navigator>
   );

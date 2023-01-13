@@ -21,6 +21,12 @@ import {selectProjects} from '../../redux/slices/projects/projectsListSlice';
 import {formattedDate} from '../../util/formattedDate';
 import {formattedImage} from '../../util/formattedImage';
 import {ProjectData} from '../../data/projects';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {BASE_URL} from '../../util/constants';
+import axios from 'axios';
+import {useEffect, useState} from 'react';
+import {UserData} from '../../data/users';
+import LoadingOverlay from '../../components/LoadingOverlay';
 
 export type MyUserScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList, 'Users'>,
@@ -28,6 +34,8 @@ export type MyUserScreenNavigationProps = CompositeNavigationProp<
 >;
 
 export default function MyUserScreen() {
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(true);
+  const [user, setUser] = useState<UserData>();
   const myUserFromToken = useSelector(selectUserLogged);
   const {users} = useSelector(selectUsers);
   const {projects} = useSelector(selectProjects);
@@ -36,11 +44,27 @@ export default function MyUserScreen() {
 
   const myUser = users.filter(user => user.email === myUserFromToken.email);
 
-  const projectsFilter = projects.filter(item => {
-    if (myUser[0]?.projects.includes(item.projectId)) {
-      return true;
+  const getUserById = async (id?: number) => {
+    setIsSubmitting(true);
+    try {
+      const token = await AsyncStorage.getItem('AccessToken');
+      const res = await axios.get(`${BASE_URL}/user/${id}`, {
+        headers: {
+          Authorization: 'bearer ' + token,
+        },
+      });
+      setUser(res.data);
+      setIsSubmitting(false);
+    } catch (e) {
+      console.log('error get user');
+      console.log(e);
+      setIsSubmitting(false);
     }
-  });
+  };
+
+  useEffect(() => {
+    getUserById(myUser[0].userId);
+  }, [myUser[0]]);
 
   const onProjectPress = (project: ProjectData) => {
     dispatch(setProject(project));
@@ -48,6 +72,16 @@ export default function MyUserScreen() {
       projectId: project.projectId,
     });
   };
+
+  const onEditIconPress = () => {
+    navigation.navigate('EditMyUser', {user: myUser[0]});
+  };
+
+  const projectsFilter = projects.filter(item => {
+    if (user?.projects.includes(item.projectId)) {
+      return true;
+    }
+  });
 
   const projectsSection =
     projectsFilter.length !== 0 ? (
@@ -65,9 +99,9 @@ export default function MyUserScreen() {
       </View>
     );
 
-  const onEditIconPress = () => {
-    navigation.navigate('EditUser', {user: myUser[0]});
-  };
+  if (isSubmitting) {
+    <LoadingOverlay />;
+  }
 
   return (
     <View style={styles.container}>
@@ -80,26 +114,23 @@ export default function MyUserScreen() {
         <ScrollView>
           <View style={styles.avatar}>
             <Image
-              source={{uri: formattedImage(myUser[0].avatar)}}
+              source={{uri: formattedImage(user?.avatar)}}
               style={styles.image}
             />
           </View>
           <View>
             <View style={styles.nameContainer}>
-              <Text style={styles.name}>{myUser[0]?.name}</Text>
+              <Text style={styles.name}>{user?.name}</Text>
             </View>
             <View style={styles.infoContainer}>
               <Text style={styles.info}>Personal Information</Text>
             </View>
-            <InfoForm info="Email" value={myUser[0]?.email} />
-            <InfoForm
-              info="Birthday"
-              value={formattedDate(myUser[0]?.birthDate)}
-            />
+            <InfoForm info="Email" value={user?.email} />
+            <InfoForm info="Birthday" value={formattedDate(user?.birthDate)} />
             <View style={[styles.infoContainer, {marginTop: 20}]}>
               <Text style={styles.info}>DevoWorker Information</Text>
             </View>
-            <InfoForm info="Role" value={myUser[0]?.role} />
+            <InfoForm info="Role" value={user?.role} />
             <View style={styles.workContainer}>
               <View style={styles.infoWorkContainer}>
                 <Text style={styles.infoWork}>Projects</Text>
