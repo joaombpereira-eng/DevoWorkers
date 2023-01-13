@@ -32,7 +32,7 @@ export default function UsersScreen() {
   const myUser = useSelector(selectUserLogged);
   const navigation = useNavigation<UsersScreenNavigationProps>();
 
-  async function fetchUsers() {
+  const fetchUsers = async () => {
     setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
@@ -48,9 +48,9 @@ export default function UsersScreen() {
       console.log(e);
       setIsSubmitting(false);
     }
-  }
+  };
 
-  async function fetchProjects() {
+  const fetchProjects = async () => {
     setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
@@ -69,14 +69,14 @@ export default function UsersScreen() {
       console.log(e);
       setIsSubmitting(false);
     }
-  }
+  };
 
   useEffect(() => {
     fetchUsers();
     fetchProjects();
   }, [myUser]);
 
-  function searchFilter(text: string) {
+  const searchFilter = (text: string) => {
     if (text) {
       const newData = users.filter(item => {
         const itemData = item.name.toUpperCase();
@@ -89,9 +89,9 @@ export default function UsersScreen() {
       setFilteredData([]);
       setSearch(text);
     }
-  }
+  };
 
-  async function logout() {
+  const onLogoutIconPress = async () => {
     try {
       delete axios.defaults.headers.common['Authorization'];
       AsyncStorage.removeItem('AccessToken');
@@ -100,7 +100,11 @@ export default function UsersScreen() {
       console.log(e);
       setIsSubmitting(false);
     }
-  }
+  };
+
+  const onAddUserIconPress = () => {
+    navigation.navigate('AddNewUser');
+  };
 
   if (isSubmitting) {
     return <LoadingOverlay />;
@@ -117,9 +121,7 @@ export default function UsersScreen() {
             <IconButton
               name="user-plus"
               color="black"
-              onPress={() => {
-                navigation.navigate('AddNewUser');
-              }}
+              onPress={onAddUserIconPress}
               size={25}
             />
           )}
@@ -127,7 +129,7 @@ export default function UsersScreen() {
             <IconButton
               name="sign-out"
               color="black"
-              onPress={logout}
+              onPress={onLogoutIconPress}
               size={25}
             />
           </View>

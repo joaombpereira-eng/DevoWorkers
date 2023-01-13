@@ -4,6 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import {ProjectsScreenNavigationProps} from '../../screens/projects/ProjectsScreen';
 import {setProject} from '../../redux/slices/projects/projectSlice';
 import {formattedDate} from '../../util/formattedDate';
+import {formattedImage} from '../../util/formattedImage';
 
 type Props = {
   projectId: string;
@@ -29,7 +30,7 @@ export default function ProjectCard({
   const navigation = useNavigation<ProjectsScreenNavigationProps>();
   const dispatch = useDispatch();
 
-  function onPress() {
+  const onItemPress = () => {
     dispatch(
       setProject({
         name,
@@ -43,11 +44,11 @@ export default function ProjectCard({
       }),
     );
     navigation.navigate('ProjectDetails', {projectId: projectId});
-  }
+  };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity onPress={onItemPress}>
         <View style={styles.rootContainer}>
           <View>
             <View style={styles.infoContainer}>
@@ -59,10 +60,7 @@ export default function ProjectCard({
             </View>
           </View>
           <View style={styles.logoContainer}>
-            <Image
-              source={{uri: `data:image/png;base64,${logo}`}}
-              style={styles.logo}
-            />
+            <Image source={{uri: formattedImage(logo)}} style={styles.logo} />
           </View>
         </View>
       </TouchableOpacity>

@@ -54,7 +54,7 @@ export default function EditUser() {
   const {projects} = useSelector(selectProjects);
   const dispatch = useDispatch();
 
-  function validRole(rolePicked?: string) {
+  const validRole = (rolePicked?: string) => {
     if (rolePicked) {
       const roleName = roles.filter(role => role.name === rolePicked);
       if (roleName.length > 0) {
@@ -63,9 +63,9 @@ export default function EditUser() {
         return false;
       }
     }
-  }
+  };
 
-  async function fetchUsers() {
+  const fetchUsers = async () => {
     setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
@@ -81,9 +81,9 @@ export default function EditUser() {
       console.log(e);
       setIsSubmitting(false);
     }
-  }
+  };
 
-  async function updateUser() {
+  const updateUser = async () => {
     setIsSubmitting(true);
     try {
       const projectAlreadyInUser = user?.projects.includes(projectPicked);
@@ -112,9 +112,9 @@ export default function EditUser() {
       console.log(e);
       setIsSubmitting(false);
     }
-  }
+  };
 
-  function updateUserHandler() {
+  const updateUserHandler = () => {
     if (validRole(rolePicked)) {
       updateUser();
       fetchUsers();
@@ -125,9 +125,9 @@ export default function EditUser() {
         'Insert one of the following Roles: SysAdmin, ProjectManager, Developer, QA or Designer',
       );
     }
-  }
+  };
 
-  async function requestCameraPermission() {
+  const requestCameraPermission = async () => {
     if (Platform.OS === 'android') {
       try {
         const granted = await PermissionsAndroid.request(
@@ -144,9 +144,9 @@ export default function EditUser() {
         return false;
       }
     } else return true;
-  }
+  };
 
-  async function requestExternalWritePermission() {
+  const requestExternalWritePermission = async () => {
     if (Platform.OS === 'android') {
       try {
         const granted = await PermissionsAndroid.request(
@@ -164,9 +164,9 @@ export default function EditUser() {
       }
       return false;
     } else return true;
-  }
+  };
 
-  async function pickImage() {
+  const pickImage = async () => {
     const isCameraPermitted = await requestCameraPermission();
     const isStoragePermitted = await requestExternalWritePermission();
 
@@ -183,9 +183,9 @@ export default function EditUser() {
         setImagePicked(image);
       }
     }
-  }
+  };
 
-  async function captureImage() {
+  const captureImage = async () => {
     const isCameraPermitted = await requestCameraPermission();
     const isStoragePermitted = await requestExternalWritePermission();
 
@@ -202,9 +202,9 @@ export default function EditUser() {
         setImagePicked(image);
       }
     }
-  }
+  };
 
-  function selectType() {
+  const selectType = () => {
     Alert.alert(
       'Select',
       'Let us know where you want the photo from',
@@ -225,7 +225,7 @@ export default function EditUser() {
         onDismiss: () => console.log('Deal later'),
       },
     );
-  }
+  };
 
   let avatarOrImagePicked = imagePicked ? (
     <Image
@@ -244,6 +244,10 @@ export default function EditUser() {
     return <LoadingOverlay />;
   }
 
+  const onCloseIconPress = () => {
+    navigation.goBack();
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.iconsContainer}>
@@ -251,7 +255,7 @@ export default function EditUser() {
           name="close"
           color="black"
           size={25}
-          onPress={navigation.goBack}
+          onPress={onCloseIconPress}
         />
       </View>
       <View style={styles.bodyContainer}>

@@ -30,6 +30,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL, COMMON_AVATAR_BASE64} from '../../util/constants';
 import LoadingOverlay from '../../components/LoadingOverlay';
+import {formattedImage} from '../../util/formattedImage';
 
 type AddNewUserScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -47,11 +48,11 @@ export default function AddNewUserScreen() {
   const navigation = useNavigation<AddNewUserScreenNavigationProp>();
   const dispatch = useDispatch();
 
-  function onPress() {
+  const onLeftArrowPress = () => {
     navigation.goBack();
-  }
+  };
 
-  async function addNewUser() {
+  const addNewUser = async () => {
     setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
@@ -92,9 +93,9 @@ export default function AddNewUserScreen() {
       console.log(e);
       setIsSubmitting(false);
     }
-  }
+  };
 
-  function saveHandler() {
+  const onSaveButtonPress = () => {
     const validBirthday: boolean = birthDate < new Date();
     const validEmail: boolean = email.includes('@');
     const validName: boolean = name.trim().length > 1;
@@ -121,9 +122,9 @@ export default function AddNewUserScreen() {
 
     addNewUser();
     navigation.navigate('Users');
-  }
+  };
 
-  async function requestCameraPermission() {
+  const requestCameraPermission = async () => {
     if (Platform.OS === 'android') {
       try {
         const granted = await PermissionsAndroid.request(
@@ -140,9 +141,9 @@ export default function AddNewUserScreen() {
         return false;
       }
     } else return true;
-  }
+  };
 
-  async function requestExternalWritePermission() {
+  const requestExternalWritePermission = async () => {
     if (Platform.OS === 'android') {
       try {
         const granted = await PermissionsAndroid.request(
@@ -160,9 +161,9 @@ export default function AddNewUserScreen() {
       }
       return false;
     } else return true;
-  }
+  };
 
-  async function pickImage() {
+  const pickImage = async () => {
     const isCameraPermitted = await requestCameraPermission();
     const isStoragePermitted = await requestExternalWritePermission();
 
@@ -179,9 +180,9 @@ export default function AddNewUserScreen() {
         setImagePicked(image);
       }
     }
-  }
+  };
 
-  async function captureImage() {
+  const captureImage = async () => {
     const isCameraPermitted = await requestCameraPermission();
     const isStoragePermitted = await requestExternalWritePermission();
 
@@ -198,9 +199,9 @@ export default function AddNewUserScreen() {
         setImagePicked(image);
       }
     }
-  }
+  };
 
-  function selectType() {
+  const selectType = () => {
     Alert.alert(
       'Select',
       'Let us know where you want the photo from',
@@ -221,11 +222,11 @@ export default function AddNewUserScreen() {
         onDismiss: () => console.log('Deal later'),
       },
     );
-  }
+  };
 
   let imageOrIcon = imagePicked ? (
     <Image
-      source={{uri: `data:image/png;base64,${imagePicked}`}}
+      source={{uri: formattedImage(imagePicked)}}
       style={styles.image}
       resizeMode="contain"
     />
@@ -244,7 +245,7 @@ export default function AddNewUserScreen() {
           name="chevron-left"
           color="black"
           size={30}
-          onPress={onPress}
+          onPress={onLeftArrowPress}
         />
         <Text style={styles.header}>Add New User</Text>
       </View>
@@ -306,7 +307,7 @@ export default function AddNewUserScreen() {
             selectedTextStyle={styles.selectedText}
           />
           <View style={styles.buttonContainer}>
-            <Button onPress={saveHandler}>Save</Button>
+            <Button onPress={onSaveButtonPress}>Save</Button>
           </View>
         </ScrollView>
       </View>

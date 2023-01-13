@@ -28,12 +28,12 @@ export default function LoginScreen() {
   const validEmail: boolean = emailInput.includes('@');
   const validPassword: boolean = passwordInput.length > 6;
 
-  function cleanInputs() {
+  const cleanInputs = () => {
     setEmailInput('');
     setPasswordInput('');
-  }
+  };
 
-  async function login(email: string, password: string) {
+  const login = async (email: string, password: string) => {
     setIsSubmitting(true);
     try {
       const res = await axios.post(`${BASE_URL}/user/login`, {
@@ -52,9 +52,9 @@ export default function LoginScreen() {
       setIsSubmitting(false);
       navigation.navigate('Login');
     }
-  }
+  };
 
-  function loginHandler() {
+  const onLoginPress = () => {
     if (validEmail && validPassword) {
       login(emailInput, passwordInput);
       dispatch(setUserLogged({email: emailInput}));
@@ -62,7 +62,7 @@ export default function LoginScreen() {
     } else {
       Alert.alert('Login failed', 'Your email or password is incorrect.');
     }
-  }
+  };
 
   if (isSubmitting) {
     return <LoadingOverlay />;
@@ -79,7 +79,7 @@ export default function LoginScreen() {
         input={passwordInput}
         onChangeText={setPasswordInput}
       />
-      <Button onPress={loginHandler}>Login</Button>
+      <Button onPress={onLoginPress}>Login</Button>
     </View>
   );
 }

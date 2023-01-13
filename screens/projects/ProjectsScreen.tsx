@@ -25,7 +25,7 @@ export default function ProjectsScreen() {
   const [nameSort, setNameSort] = useState<boolean>(true);
   const {projects} = useSelector(selectProjects);
 
-  const onPressHandler = (type: string) => {
+  const onTypePress = (type: string) => {
     const newData = projects.filter(item => {
       return item.status === type;
     });
@@ -88,6 +88,16 @@ export default function ProjectsScreen() {
     }
   };
 
+  const onSortAlphaIconPress = () => {
+    setNameAscending(!nameAscending);
+    setNameSort(true);
+  };
+
+  const onSortAmountIconPress = () => {
+    setDateAscending(!dateAscending);
+    setNameSort(false);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -99,20 +109,14 @@ export default function ProjectsScreen() {
                 name="sort-alpha-asc"
                 size={25}
                 color="black"
-                onPress={() => {
-                  setNameAscending(!nameAscending);
-                  setNameSort(true);
-                }}
+                onPress={onSortAlphaIconPress}
               />
             ) : (
               <IconButton
                 name="sort-alpha-desc"
                 size={25}
                 color={'black'}
-                onPress={() => {
-                  setNameAscending(!nameAscending);
-                  setNameSort(true);
-                }}
+                onPress={onSortAlphaIconPress}
               />
             )}
           </View>
@@ -122,20 +126,14 @@ export default function ProjectsScreen() {
                 name="sort-amount-asc"
                 size={25}
                 color="black"
-                onPress={() => {
-                  setDateAscending(!dateAscending);
-                  setNameSort(false);
-                }}
+                onPress={onSortAmountIconPress}
               />
             ) : (
               <IconButton
                 name="sort-amount-desc"
                 size={25}
                 color="black"
-                onPress={() => {
-                  setDateAscending(!dateAscending);
-                  setNameSort(false);
-                }}
+                onPress={onSortAmountIconPress}
               />
             )}
           </View>
@@ -148,17 +146,17 @@ export default function ProjectsScreen() {
           }}>
           <Text style={styles.filter}>All ({projects.length})</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => onPressHandler('ToStart')}>
+        <TouchableOpacity onPress={() => onTypePress('ToStart')}>
           <Text style={styles.filter}>
             To Start ({lengthDataFiltered('ToStart')})
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => onPressHandler('Active')}>
+        <TouchableOpacity onPress={() => onTypePress('Active')}>
           <Text style={styles.filter}>
             Active ({lengthDataFiltered('Active')})
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => onPressHandler('Finished')}>
+        <TouchableOpacity onPress={() => onTypePress('Finished')}>
           <Text style={styles.filter}>
             Finished ({lengthDataFiltered('Finished')})
           </Text>

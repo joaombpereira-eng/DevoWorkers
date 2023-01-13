@@ -37,6 +37,7 @@ import {selectProjects} from '../../redux/slices/projects/projectsListSlice';
 import LoadingOverlay from '../../components/LoadingOverlay';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {RootState} from '../../redux/store/store';
+import {formattedImage} from '../../util/formattedImage';
 
 type UserDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -59,7 +60,7 @@ export default function UserDetailsScreen() {
   )[0];
   const myUser = useSelector(selectUserLogged);
 
-  async function getUserById(id?: number) {
+   const getUserById = async (id?: number) => {
     setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
@@ -77,7 +78,7 @@ export default function UserDetailsScreen() {
     }
   }
 
-  async function deleteUser(id?: number) {
+  const deleteUser = async (id?: number) => {
     setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
@@ -92,9 +93,9 @@ export default function UserDetailsScreen() {
       console.log(e);
       setIsSubmitting(false);
     }
-  }
+  };
 
-  async function fetchUsers() {
+  const fetchUsers = async () => {
     setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
@@ -110,7 +111,7 @@ export default function UserDetailsScreen() {
       console.log(e);
       setIsSubmitting(false);
     }
-  }
+  };
 
   useEffect(() => {
     getUserById(userId);
@@ -122,16 +123,16 @@ export default function UserDetailsScreen() {
     }
   });
 
-  function onDelete() {
+  const onDeletePress = () => {
     deleteUser(user?.userId);
     dispatch(removeUser(user));
     navigation.navigate('Users');
-  }
+  };
 
-  function onClosePress() {
+  const onClosePress = () => {
     fetchUsers();
     navigation.navigate('Tab');
-  }
+  };
 
   if (isSubmitting) {
     return <LoadingOverlay />;
@@ -185,7 +186,7 @@ export default function UserDetailsScreen() {
         <ScrollView>
           <View style={styles.avatar}>
             <Image
-              source={{uri: `data:image/png;base64,${user?.avatar}`}}
+              source={{uri: formattedImage(user?.avatar)}}
               style={styles.image}
             />
           </View>
@@ -210,7 +211,9 @@ export default function UserDetailsScreen() {
             </View>
             {sysAdminRole && !sysAdminEmail && (
               <View style={styles.buttonContainer}>
-                <Button deleteStyle={styles.deleteButton} onPress={onDelete}>
+                <Button
+                  deleteStyle={styles.deleteButton}
+                  onPress={onDeletePress}>
                   Delete
                 </Button>
               </View>

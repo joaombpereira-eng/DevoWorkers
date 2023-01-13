@@ -28,6 +28,7 @@ import axios from 'axios';
 import {formattedDate} from '../../util/formattedDate';
 import {selectUsers} from '../../redux/slices/users/usersListSlice';
 import LoadingOverlay from '../../components/LoadingOverlay';
+import {formattedImage} from '../../util/formattedImage';
 
 type ProjectDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -46,7 +47,7 @@ export default function ProjectDetailsScreen() {
   const dispatch = useDispatch();
   const {users} = useSelector(selectUsers);
 
-  async function getProjectById(id: string) {
+  const getProjectById = async (id: string) => {
     setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
@@ -63,11 +64,15 @@ export default function ProjectDetailsScreen() {
       console.log(e);
       setIsSubmitting(false);
     }
-  }
+  };
 
   useEffect(() => {
     getProjectById(projectId);
   }, []);
+
+  const onCloseIconPress = () => {
+    navigation.goBack();
+  };
 
   const workforceFilter = users?.filter(item => {
     if (project?.workforce.includes(item.userId)) {
@@ -86,14 +91,16 @@ export default function ProjectDetailsScreen() {
           name="close"
           color="black"
           size={25}
-          onPress={navigation.goBack}
+          onPress={onCloseIconPress}
         />
       </View>
       <View style={styles.bodyContainer}>
         <ScrollView>
           <View style={styles.logoContainer}>
             <Image
-              source={{uri: `data:image/png;base64,${project?.logo}`}}
+              source={{
+                uri: formattedImage(project?.logo),
+              }}
               style={styles.logo}
             />
           </View>

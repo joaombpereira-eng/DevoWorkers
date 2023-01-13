@@ -19,6 +19,7 @@ import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {selectProjects} from '../../redux/slices/projects/projectsListSlice';
+import {formattedImage} from '../../util/formattedImage';
 
 export type MyUserScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList, 'Users'>,
@@ -61,11 +62,14 @@ export default function MyUserScreen() {
       </View>
     );
 
+  const onEditIconPress = () => {
+    navigation.navigate('EditUser', {user: myUser[0]});
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.iconsContainer}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('EditUser', {user: myUser[0]})}>
+        <TouchableOpacity onPress={onEditIconPress}>
           <Icon name="edit" color="black" size={25} />
         </TouchableOpacity>
       </View>
@@ -73,7 +77,7 @@ export default function MyUserScreen() {
         <ScrollView>
           <View style={styles.avatar}>
             <Image
-              source={{uri: `data:image/png;base64,${myUser[0]?.avatar}`}}
+              source={{uri: formattedImage(myUser[0].avatar)}}
               style={styles.image}
             />
           </View>

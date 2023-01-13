@@ -17,7 +17,7 @@ export default function SplashScreen() {
   const navigation = useNavigation<SplashScreenNavigationProps>();
   const dispatch = useDispatch();
 
-  async function handleToken() {
+  const handleToken = async () => {
     const token = await AsyncStorage.getItem('AccessToken');
     if (token) {
       const decoded = token && jwt_decode<JwtPayload>(token);
@@ -26,7 +26,7 @@ export default function SplashScreen() {
     } else {
       navigation.navigate('Login');
     }
-  }
+  };
 
   useEffect(() => {
     setTimeout(() => {

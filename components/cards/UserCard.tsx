@@ -3,6 +3,7 @@ import {useNavigation} from '@react-navigation/native';
 import {UsersScreenNavigationProps} from '../../screens/users/UsersScreen';
 import {setUser} from '../../redux/slices/users/userSlice';
 import {useDispatch} from 'react-redux';
+import {formattedImage} from '../../util/formattedImage';
 
 type Props = {
   userId: number;
@@ -28,7 +29,7 @@ export default function UserCard({
   const navigation = useNavigation<UsersScreenNavigationProps>();
   const dispatch = useDispatch();
 
-  function onPress() {
+  const onItemPress = () => {
     dispatch(
       setUser({
         userId,
@@ -42,11 +43,11 @@ export default function UserCard({
       }),
     );
     navigation.navigate('UserDetails', {userId: userId});
-  }
+  };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity onPress={onItemPress}>
         <View style={styles.rootContainer}>
           <View style={styles.infoOuterContainer}>
             <View style={styles.infoContainer}>
@@ -61,7 +62,7 @@ export default function UserCard({
           </View>
           <View style={styles.avatarContainer}>
             <Image
-              source={{uri: `data:image/png;base64,${avatar}`}}
+              source={{uri: formattedImage(avatar)}}
               style={styles.avatar}
               resizeMode="contain"
             />
