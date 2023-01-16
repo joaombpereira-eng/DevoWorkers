@@ -17,6 +17,7 @@ import {UserData} from '../../data/users';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../util/constants';
+import {axiosApiInstance} from '../../api/axiosApiInstance';
 
 export type UsersScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList, 'Users'>,
@@ -36,8 +37,9 @@ export default function UsersScreen() {
     setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
-      const res = await axios.get(`${BASE_URL}/user`, {
+      const res = await axiosApiInstance.get(`${BASE_URL}/user`, {
         headers: {
+          'Content-Type': 'application/json',
           Authorization: 'bearer ' + token,
         },
       });
@@ -54,7 +56,7 @@ export default function UsersScreen() {
     setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
-      const res = await axios.get(`${BASE_URL}/project`, {
+      const res = await axiosApiInstance.get(`${BASE_URL}/project`, {
         headers: {
           Authorization: 'bearer ' + token,
         },
@@ -92,6 +94,7 @@ export default function UsersScreen() {
     try {
       delete axios.defaults.headers.common['Authorization'];
       AsyncStorage.removeItem('AccessToken');
+      AsyncStorage.removeItem('RefreshToken');
       navigation.navigate('Login');
     } catch (e) {
       console.log(e);

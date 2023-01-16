@@ -31,6 +31,7 @@ import {formattedImage} from '../../util/formattedImage';
 import {BASE_URL, COMMON_AVATAR_BASE64} from '../../util/constants';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {axiosApiInstance} from '../../api/axiosApiInstance';
 
 type AddNewUserScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -56,7 +57,7 @@ export default function AddNewUserScreen() {
     setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
-      await axios
+      await axiosApiInstance
         .post(
           `${BASE_URL}/user`,
           {

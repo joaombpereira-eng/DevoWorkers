@@ -12,6 +12,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwt_decode from 'jwt-decode';
 import {BASE_URL} from '../util/constants';
+import {axiosApiInstance} from '../api/axiosApiInstance';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -36,7 +37,7 @@ export default function LoginScreen() {
   const login = async (email: string, password: string) => {
     setIsSubmitting(true);
     try {
-      const res = await axios.post(`${BASE_URL}/auth/login`, {
+      const res = await axiosApiInstance.post(`${BASE_URL}/auth/login`, {
         email: email,
         password: password,
       });

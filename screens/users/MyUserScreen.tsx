@@ -27,6 +27,7 @@ import axios from 'axios';
 import {useEffect, useState} from 'react';
 import {UserData} from '../../data/users';
 import LoadingOverlay from '../../components/LoadingOverlay';
+import {axiosApiInstance} from '../../api/axiosApiInstance';
 
 export type MyUserScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList, 'Users'>,
@@ -48,7 +49,7 @@ export default function MyUserScreen() {
     setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
-      const res = await axios.get(`${BASE_URL}/user/${id}`, {
+      const res = await axiosApiInstance.get(`${BASE_URL}/user/${id}`, {
         headers: {
           Authorization: 'bearer ' + token,
         },

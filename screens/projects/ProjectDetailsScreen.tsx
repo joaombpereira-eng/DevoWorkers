@@ -30,6 +30,7 @@ import {formattedImage} from '../../util/formattedImage';
 import {BASE_URL} from '../../util/constants';
 import {ProjectData} from '../../data/projects';
 import {UserData} from '../../data/users';
+import {axiosApiInstance} from '../../api/axiosApiInstance';
 
 type ProjectDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -52,7 +53,7 @@ export default function ProjectDetailsScreen() {
     setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
-      const res = await axios.get(`${BASE_URL}/project/${id}`, {
+      const res = await axiosApiInstance.get(`${BASE_URL}/project/${id}`, {
         headers: {
           Authorization: 'bearer ' + token,
         },

@@ -6,7 +6,7 @@ import {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {setUserLogged} from '../redux/slices/login/loginSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import jwt_decode, {JwtPayload} from 'jwt-decode';
+import jwt_decode from 'jwt-decode';
 
 type SplashScreenNavigationProps = NativeStackNavigationProp<
   RootStackParamList,

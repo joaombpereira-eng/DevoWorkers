@@ -35,6 +35,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../util/constants';
 import {formattedImage} from '../../util/formattedImage';
+import {axiosApiInstance} from '../../api/axiosApiInstance';
 
 type EditUserScreenNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -70,7 +71,7 @@ export default function EditUserScreen() {
     setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
-      const res = await axios.get(`${BASE_URL}/user`, {
+      const res = await axiosApiInstance.get(`${BASE_URL}/user`, {
         headers: {
           Authorization: 'bearer ' + token,
         },
@@ -92,7 +93,7 @@ export default function EditUserScreen() {
         !projectAlreadyInUser &&
         user?.projects.push(projectPicked);
       const token = await AsyncStorage.getItem('AccessToken');
-      const res = await axios.put(
+      const res = await axiosApiInstance.put(
         `${BASE_URL}/user`,
         {
           userId: user?.userId,

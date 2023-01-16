@@ -39,6 +39,7 @@ import {formattedDate} from '../../util/formattedDate';
 import {formattedImage} from '../../util/formattedImage';
 import {UserData} from '../../data/users';
 import {ProjectData} from '../../data/projects';
+import {axiosApiInstance} from '../../api/axiosApiInstance';
 
 type UserDetailsScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamList>,
@@ -65,7 +66,7 @@ export default function UserDetailsScreen() {
     setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
-      const res = await axios.get(`${BASE_URL}/user/${id}`, {
+      const res = await axiosApiInstance.get(`${BASE_URL}/user/${id}`, {
         headers: {
           Authorization: 'bearer ' + token,
         },
@@ -83,7 +84,7 @@ export default function UserDetailsScreen() {
     setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
-      await axios.delete(`${BASE_URL}/user/${id}`, {
+      await axiosApiInstance.delete(`${BASE_URL}/user/${id}`, {
         headers: {
           Authorization: 'bearer ' + token,
         },
@@ -100,7 +101,7 @@ export default function UserDetailsScreen() {
     setIsSubmitting(true);
     try {
       const token = await AsyncStorage.getItem('AccessToken');
-      const res = await axios.get(`${BASE_URL}/user`, {
+      const res = await axiosApiInstance.get(`${BASE_URL}/user`, {
         headers: {
           Authorization: 'bearer ' + token,
         },
