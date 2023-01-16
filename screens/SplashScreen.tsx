@@ -20,7 +20,7 @@ export default function SplashScreen() {
   const handleToken = async () => {
     const token = await AsyncStorage.getItem('AccessToken');
     if (token) {
-      const decoded = token && jwt_decode<JwtPayload>(token);
+      const decoded = jwt_decode(token);
       dispatch(setUserLogged({role: decoded?.role, email: decoded?.email}));
       navigation.navigate('Tab');
     } else {

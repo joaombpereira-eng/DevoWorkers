@@ -36,15 +36,17 @@ export default function LoginScreen() {
   const login = async (email: string, password: string) => {
     setIsSubmitting(true);
     try {
-      const res = await axios.post(`${BASE_URL}/user/login`, {
+      const res = await axios.post(`${BASE_URL}/auth/login`, {
         email: email,
         password: password,
       });
-      AsyncStorage.setItem('AccessToken', res.data.data);
+      AsyncStorage.setItem('AccessToken', res.data.data.accessToken);
+      AsyncStorage.setItem('RefreshToken', res.data.data.refreshToken);
       axios.defaults.headers.common[
         'Authorization'
-      ] = `bearer ${res.data.data}`;
-      const decoded = res.data.data && jwt_decode(res.data.data);
+      ] = `bearer ${res.data.data.accessToken}`;
+      const decoded =
+        res.data.data.accessToken && jwt_decode(res.data.data.accessToken);
       dispatch(setUserLogged({role: decoded?.role, email: decoded?.email}));
       navigation.navigate('Tab');
     } catch (e) {
